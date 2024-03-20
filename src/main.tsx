@@ -1,42 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Login from './routes/Login.tsx'
-import Signup from './routes/Signup.tsx'
-import Dashboard from './routes/Dashboard.tsx'
-import ProtectedRoute from './routes/ProtectedRoute.tsx'
-import ReservaCita from './routes/CitaReserve.tsx'
-
-import './index.css'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { AuthProvider } from './auth/AuthProvider.tsx'
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: < Login />
-  },
-  {
-    path: "/reserva",
-    element: < ReservaCita />
-  },
-  {
-    path: "/",
-    element: < ProtectedRoute />,
-    children: [
-      {
-        path: "dashboard",
-        element: <Dashboard />,
-      },
-    ],
-  },
-]); 
-
+import App from './App'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <App />
   </React.StrictMode>,
 )
 

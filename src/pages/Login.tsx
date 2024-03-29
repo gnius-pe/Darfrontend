@@ -19,21 +19,23 @@ const defaultTheme = createTheme();
 
 export default function Login(){
 
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     
-    const auth = useAuth();
+    const {setAuthenticated} = useAuth();
 
-    const handleLogin = async () => {
+    const handleLogin = async (event) => {
+        event.preventDefault();
+
         try {
-            const userData = { username, password };
+            const userData = { email, password };
             const response = await login(userData);
             // Aquí puedes manejar la respuesta de la API
             // y actualizar el estado de autenticación en el AuthProvider
-            if(auth.isAuthenticated) {
-                return <Navigate to="/dashboard"/>
-            }
             console.log(response);
+            if(response.success) {
+                setAuthenticated(true);
+            }
           } catch (error) {
             console.error(error);
           }
@@ -78,18 +80,18 @@ export default function Login(){
                     <Typography component="h1" variant="h5">
                         Login Dar
                     </Typography>
-                    <Box component="form" sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleLogin} sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            id="username"
+                            id="email"
                             label="Usuario"
-                            name="username"
-                            autoComplete="username"
+                            name="email"
+                            autoComplete="email"
                             autoFocus
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                         <TextField
                             margin="normal"
@@ -105,7 +107,6 @@ export default function Login(){
                         />
                     
                         <Button
-                            type="submit"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}

@@ -13,6 +13,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { login } from '../services/AuthService';
 
 const defaultTheme = createTheme();
 
@@ -23,9 +24,22 @@ export default function Login(){
     
     const auth = useAuth();
 
-    if(auth.isAuthenticated) {
-        return <Navigate to="/dashboard"/>
-    }
+    const handleLogin = async () => {
+        try {
+            const userData = { username, password };
+            const response = await login(userData);
+            // Aquí puedes manejar la respuesta de la API
+            // y actualizar el estado de autenticación en el AuthProvider
+            if(auth.isAuthenticated) {
+                return <Navigate to="/dashboard"/>
+            }
+            console.log(response);
+          } catch (error) {
+            console.error(error);
+          }
+    };
+
+    
 
     return (
     <>
@@ -95,6 +109,7 @@ export default function Login(){
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
+                            onClick={handleLogin}
                         >
                             Ingresar
                         </Button>

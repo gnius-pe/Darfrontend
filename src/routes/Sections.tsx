@@ -31,3 +31,10 @@ export default router;
 
 primero agregamos el codigo completo a un componente en Sections y luego algo que lo llame a pages
 y optimizar el path cuidado que estemos haciendo algo mal */
+/*children: [
+            {   path: "/user", element: <User /> },
+            {   path: "/pacientes", element: <Paciente /> },
+            {   path: "/misiones", element: <Mision /> },
+            {   path: "/area", element: <Areamedica /> },
+            {   path: "/medicos", element: <Medico /> },
+        ],*/

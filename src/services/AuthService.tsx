@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_URL = 'https://goldfish-app-sryot.ondigitalocean.app/api';
 
 interface LoginData {
-  username: string;
+  email: string;
   password: string;
 }
 

@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useAuth } from "../auth/AuthProvider"
 import DefaultLayout from "../layout/Defaultlayout"
 import { Navigate } from "react-router-dom";
+import axios from "axios";
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -18,10 +19,32 @@ const defaultTheme = createTheme();
 
 export default function Login(){
 
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    
+    const [error, setError] = useState("");
+
     const auth = useAuth();
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      try {
+        const response = await axios.post("https://goldfish-app-sryot.ondigitalocean.app/#/Sesion/post_api_login", {
+          email,
+          password,
+        });
+        if (response.status === 200) {
+          auth.isAuthenticated=true;
+          console.log(auth.isAuthenticated, "inicio exitoso");
+          
+        }
+        else{
+          console.log("peticion invalida contraseña incorrecta");
+        }
+      }
+      catch (error) {
+        setError("un error ah ocurrido aqui")
+      }
+    };
 
     if(auth.isAuthenticated) {
         return <Navigate to="/dashboard"/>
@@ -64,18 +87,18 @@ export default function Login(){
                     <Typography component="h1" variant="h5">
                         Login Dar
                     </Typography>
-                    <Box component="form" sx={{ mt: 1 }}>
+                    <Box component="form" sx={{ mt: 1 }} onSubmit={handleSubmit}>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            id="username"
+                            id="email"
                             label="Usuario"
-                            name="username"
-                            autoComplete="username"
+                            name="email"
+                            autoComplete="email"
                             autoFocus
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                         <TextField
                             margin="normal"

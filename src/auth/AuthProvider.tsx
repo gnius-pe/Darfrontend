@@ -14,8 +14,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   
-    const login = () => {
-        setIsAuthenticated(true);
+    const login = (isAuthenticated:boolean) => {
+        setIsAuthenticated(isAuthenticated);
     };
 
     const logout = () => {

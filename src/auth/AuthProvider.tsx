@@ -13,8 +13,9 @@ const AuthContext = createContext<{
 export function AuthProvider({ children }: AuthProviderProps) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+    console.log(isAuthenticated);
   
-    const login = (isAuthenticated:boolean) => {
+    const login = (isAuthenticated: boolean) => {
         setIsAuthenticated(isAuthenticated);
     };
 
@@ -26,6 +27,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
             {children}
         </AuthContext.Provider>
+
     );
 }
 

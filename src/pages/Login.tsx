@@ -23,7 +23,7 @@ export default function Login(){
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
-    const auth = useAuth();
+    const {isAuthenticated, setIsAuthenticated} = useAuth();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -33,9 +33,7 @@ export default function Login(){
           password,
         });
         if (response.status === 200) {
-          auth.isAuthenticated=true;
-          console.log(auth.isAuthenticated, "inicio exitoso");
-          
+            setIsAuthenticated(true);
         }
         else{
           console.log("peticion invalida contraseña incorrecta");
@@ -46,7 +44,7 @@ export default function Login(){
       }
     };
 
-    if(auth.isAuthenticated) {
+    if(setIsAuthenticated) {
         return <Navigate to="/dashboard"/>
     }
 

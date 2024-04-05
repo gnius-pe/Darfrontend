@@ -23,7 +23,7 @@ export default function Login(){
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
-    const {isAuthenticated, setIsAuthenticated} = useAuth();
+    const auth = useAuth();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -33,7 +33,9 @@ export default function Login(){
           password,
         });
         if (response.status === 200) {
-            setIsAuthenticated(true);
+            auth.login(() => {
+                window.location.href = "/dashboard"
+            })
         }
         else{
           console.log("peticion invalida contraseña incorrecta");
@@ -44,8 +46,8 @@ export default function Login(){
       }
     };
 
-    if(setIsAuthenticated) {
-        return <Navigate to="/dashboard"/>
+    if(auth.isAuthenticated && window.location.pathname === "/"){
+        return <Navigate to ="/dashboard" replace />;
     }
 
     return (

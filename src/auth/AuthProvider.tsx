@@ -11,17 +11,21 @@ const AuthContext = createContext<{
 });
 
 export function AuthProvider({ children }: AuthProviderProps) {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-    console.log(isAuthenticated);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+        const storedIsAuthenticated = localStorage.getItem("isAuthenticated");
+        return storedIsAuthenticated ? JSON.parse(storedIsAuthenticated) : false;
+      });
   
-    const login = (isAuthenticated: boolean) => {
-        setIsAuthenticated(isAuthenticated);
+    const login = (callback:() => void ) => {
+        setIsAuthenticated(true);
+        localStorage.setItem('isAuthenticated', "true");
+        callback();
     };
 
     const logout = () => {
         setIsAuthenticated(false);
-    };
+        localStorage.removeItem("isAuthenticated");
+      };
 
     return (
         <AuthContext.Provider value={{ isAuthenticated, login, logout }}>

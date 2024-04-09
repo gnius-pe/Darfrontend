@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Login from '../pages/Login.tsx';
 import Dashboard from '../pages/Dashboard.tsx';
-import ProtectedRoute from '../pages/ProtectedRoute.tsx';
+import ProtectedRoute from './ProtectedRoute.tsx';
 import ReservaCita from '../pages/CitaReserve.tsx';
 
 const router = createBrowserRouter([

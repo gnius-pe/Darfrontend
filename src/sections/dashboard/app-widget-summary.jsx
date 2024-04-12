@@ -14,7 +14,7 @@ export default function AppWidgetSummary({ title, total, icon, color = 'primary'
     <Card
       component={Stack}
       spacing={3}
-      direction="row"
+      direction="row" 
       sx={{
         px: 3,
         py: 5,

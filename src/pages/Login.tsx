@@ -27,11 +27,13 @@ export default function Login(){
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+      console.log(email);
       try {
         const response = await axios.post("https://goldfish-app-sryot.ondigitalocean.app/#/Sesion/post_api_login", {
           email,
           password,
         });
+        console.log(response);
         if (response.status === 200) {
             auth.login(() => {
                 window.location.href = "/dashboard"
@@ -48,6 +50,8 @@ export default function Login(){
 
     if(auth.isAuthenticated && window.location.pathname === "/"){
         return <Navigate to ="/dashboard" replace />;
+    }else{
+        window.alert(error);
     }
 
     return (

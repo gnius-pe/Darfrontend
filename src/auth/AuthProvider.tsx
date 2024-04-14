@@ -6,8 +6,12 @@ interface AuthProviderProps {
 
 const AuthContext = createContext<{
     isAuthenticated: boolean;
+    login: (callback: () => void) => void;
+    logout: () => void;
 }>({
-    isAuthenticated: false, 
+    isAuthenticated: false,
+    login: () => {},
+    logout: () => {}, 
 });
 
 export function AuthProvider({ children }: AuthProviderProps) {

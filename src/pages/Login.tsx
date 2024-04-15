@@ -51,7 +51,7 @@ export default function Login(){
     if(auth.isAuthenticated && window.location.pathname === "/"){
         return <Navigate to ="/dashboard" replace />;
     }else{
-        window.alert(error);
+        console.log(error)
     }
 
     return (

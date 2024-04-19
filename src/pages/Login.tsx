@@ -21,18 +21,20 @@ export default function Login(){
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-
     const auth = useAuth();
+    const [error, setError] = useState("")
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       try {
-        const response = await axios.post("https://goldfish-app-sryot.ondigitalocean.app/#/Sesion/post_api_login", {
+        const response = await axios.post(import.meta.env.VITE_API_KEY, {
           email,
           password,
         });
+        console.log(response.data);
         if (response.status === 200) {
+            const jwtToken = response.data.token;
+            localStorage.setItem("jwtToken", jwtToken);
             auth.login(() => {
                 window.location.href = "/dashboard"
             })
@@ -50,6 +52,11 @@ export default function Login(){
         return <Navigate to ="/dashboard" replace />;
     }
 
+    const handleLogout = () => {
+        localStorage.removeItem("jwtToken");
+        auth.logout();
+      };  
+    
     return (
     <>
     <DefaultLayout>

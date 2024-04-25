@@ -20,7 +20,11 @@ import departamentos from '../../assets/departamentos.json';
 import provincias from '../../assets/provincias.json';
 import distritos from '../../assets/distritos.json';
 
-export default function AddressForm({ children }) {
+interface AddressFormProps{
+  children?: React.ReactNode;
+}
+
+export default function AddressForm({ children }: AddressFormProps) {
 
   const [tipoDocumento, setTipoDocumento] = useState('');
   const [dni, setDni] = useState('');
@@ -63,30 +67,30 @@ export default function AddressForm({ children }) {
       });
   }, [tipoDocumento, dni]);
 
-  const handleTipoDocumentoChange = event => {
-    setTipoDocumento(event.target.value);
+  const handleTipoDocumentoChange = (event: React.ChangeEvent<{ value: unknown}>)  => {
+    setTipoDocumento(event.target.value as string);
   };
 
-  const handleDniChange = event => {
+  const handleDniChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDni(event.target.value);
   };
 
-  const handleNombresChange = event => {
+  const handleNombresChange = (event: React.ChangeEvent<HTMLInputElement>)  => {
     setNombres(event.target.value);
   };
 
-  const handleApellidosChange = event => {
+  const handleApellidosChange = (event: React.ChangeEvent<HTMLInputElement>)  => {
     setApellidos(event.target.value);
   };
 
   //nacionalidad
-  const handleNacionality = (event) => {
-    setNacionalidad(event.target.value);
+  const handleNacionality = (event: React.ChangeEvent<{ value: unknown}>)  => {
+    setNacionalidad(event.target.value as string);
   };
 
   //departamento
-  const handleDepartamento = (event) => {
-    const selectDepartamento = event.target.value;
+  const handleDepartamento = (event: React.ChangeEvent<{ value: unknown }>)  => {
+    const selectDepartamento = event.target.value as string;
     setDepartamento(selectDepartamento);
 
     const provinciasFiltradas = provincias.filter(provincia => provincia.department_id === selectDepartamento);
@@ -98,14 +102,14 @@ export default function AddressForm({ children }) {
   };  
 
   //provinvcia
-  const handleProvincia = (event) => {
-    setProvincia(event.target.value);
+  const handleProvincia = (event: React.ChangeEvent<{ value: unknown }>)  => {
+    setProvincia(event.target.value as string);
     setDistrito('');
   };
 
   //distritos
-  const handleDistrito = (event) => {
-    setDistrito(event.target.value);
+  const handleDistrito = (event: React.ChangeEvent<{ value: unknown }>)  => {
+    setDistrito(event.target.value as string);
   }; 
 
   return (

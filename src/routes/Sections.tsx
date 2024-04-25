@@ -3,6 +3,7 @@ import Login from '../pages/Login.tsx';
 import Dashboard from '../pages/Dashboard.tsx';
 import ProtectedRoute from './ProtectedRoute.tsx';
 import ReservaCita from '../pages/CitaReserve.tsx';
+import Paciente from '../pages/Paciente.tsx';
 
 const router = createBrowserRouter([
   {
@@ -21,20 +22,12 @@ const router = createBrowserRouter([
         path: "dashboard",
         element: <Dashboard />,
       },
+      {
+        path: "usuarios",
+        element: <Paciente />,
+      },
     ],
   },
 ]);
 
 export default router;
-
-/*agregar user, misiones. medicos, areas medicas y ver la parte del figma
-
-primero agregamos el codigo completo a un componente en Sections y luego algo que lo llame a pages
-y optimizar el path cuidado que estemos haciendo algo mal */
-/*children: [
-            {   path: "/user", element: <User /> },
-            {   path: "/pacientes", element: <Paciente /> },
-            {   path: "/misiones", element: <Mision /> },
-            {   path: "/area", element: <Areamedica /> },
-            {   path: "/medicos", element: <Medico /> },
-        ],*/

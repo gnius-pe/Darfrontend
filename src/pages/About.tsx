@@ -1,10 +1,10 @@
 import { Card, CardContent, Stack, Typography } from "@mui/material";
 
-const Dashboard = () => {
+const About = () => {
     return (
         <Stack spacing={2}>
             <Typography variant="h3" component={"h1"}>
-                Dashboard
+                About
             </Typography>
             <Card>
                 <CardContent>
@@ -30,4 +30,4 @@ const Dashboard = () => {
         </Stack>
     );
 };
-export default Dashboard;
+export default About;

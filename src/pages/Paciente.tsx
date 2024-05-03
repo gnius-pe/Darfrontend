@@ -1,5 +1,26 @@
-import { Helmet } from "react-helmet-async"
+import PropTypes from 'prop-types';
+import Box from '@mui/material/Box';
 
-export default function Paciente(){
-    return <h1>Hola paciente</h1>
+import Nav from '../sections/dashboard/nav';
+import Header from '../sections/dashboard/header';
+
+export default function Paciente() {
+  return (
+    <>
+      <Header />
+      <Box
+        sx={{
+          minHeight: 1,
+          display: 'flex',
+          flexDirection: { xs: 'column', lg: 'row' },
+        }}
+      >
+        <Nav />
+      </Box>
+    </>
+  );
 }
+
+Paciente.propTypes = {
+  children: PropTypes.node,
+};

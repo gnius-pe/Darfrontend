@@ -1,16 +1,15 @@
-import { lazy, Suspense } from 'react';
 import { createBrowserRouter, Outlet } from 'react-router-dom';
 import Login from '../pages/Login.tsx';
 import Dashboard from '../pages/Dashboard.tsx';
 import ProtectedRoute from './ProtectedRoute.tsx';
 import ReservaCita from '../pages/CitaReserve.tsx';
 
-export const Pacientes = lazy(() => import('../pages/Paciente.tsx'));
-export const Areamedica = lazy(() => import('../pages/Areamedica.tsx'));
-export const Medico = lazy(() => import('../pages/Medico.tsx')) ;
-export const Mision = lazy(() => import('../pages/Mision.tsx'));
-export const User = lazy(() => import('../pages/User.tsx'));
-export const App = lazy(() => import('../pages/AppView.tsx'));
+import Pacientes from '../pages/Paciente.tsx';
+import Areamedica from '../pages/Areamedica.tsx';
+import Medico from '../pages/Medico.tsx';
+import Mision from '../pages/Mision.tsx';
+import User from '../pages/User.tsx';
+import App from '../pages/AppView.tsx';
 
 const router = createBrowserRouter([
   {
@@ -27,13 +26,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "dashboard",
-        element: (
-          <Dashboard>
-            <Suspense>
-              <Outlet />
-            </Suspense>
-          </Dashboard>
-        ),
+        element: <Dashboard />,
         children: [
           { element: <App />, index:true },
           {

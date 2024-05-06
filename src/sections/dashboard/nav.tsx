@@ -61,7 +61,7 @@ export default function Nav({ openNav, onCloseNav }) {
   );
 
   const renderMenu = (
-    <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
+    <Stack component="nav" spacing={0.5} sx={{ px: 2 }} className="bg-slate-800">
       {navConfig.map((item) => (
         <NavItem key={item.title} item={item} />
       ))}
@@ -71,25 +71,13 @@ export default function Nav({ openNav, onCloseNav }) {
   const renderUpgrade = (
     <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
       <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
-        <Box
-          component="img"
-          src="/assets/images/avatars/avatar_25.jpg"
-          sx={{ width: 100, position: 'absolute', top: -50 }}
-        />
-
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="h6">Paul</Typography>
-
-          <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
-            Administrador
-          </Typography>
-        </Box>
 
         <Button
           href="#"
           target="_blank"
           variant="contained"
           color="inherit"
+          className="bg-blue-800"
         >
           Cerrar cesion
         </Button>

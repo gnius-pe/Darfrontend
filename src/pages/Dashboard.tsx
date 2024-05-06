@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Nav from '../sections/dashboard/nav';
 import Header from '../sections/dashboard/header';
 import Main from '../sections/dashboard/main';
+import { Outlet } from 'react-router-dom';
 
 export default function Dashboard() {
   const [openNav, setOpenNav] = useState(false);
@@ -22,7 +23,7 @@ export default function Dashboard() {
       >
         <Nav openNav={openNav} onCloseNav={() => setOpenNav(false)}/>
 
-        <Main />
+        <Outlet/>
       </Box>
     </>
   );

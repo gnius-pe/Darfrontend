@@ -1,9 +1,15 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Outlet } from 'react-router-dom';
 import Login from '../pages/Login.tsx';
 import Dashboard from '../pages/Dashboard.tsx';
 import ProtectedRoute from './ProtectedRoute.tsx';
 import ReservaCita from '../pages/CitaReserve.tsx';
-import Paciente from '../pages/Paciente.tsx';
+
+import Pacientes from '../pages/Paciente.tsx';
+import Areamedica from '../pages/Areamedica.tsx';
+import Medico from '../pages/Medico.tsx';
+import Mision from '../pages/Mision.tsx';
+import User from '../pages/User.tsx';
+import App from '../pages/AppView.tsx';
 
 const router = createBrowserRouter([
   {
@@ -21,13 +27,32 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <Dashboard />,
+        children: [
+          { element: <App />, index:true },
+          {
+            path: "pacientes",
+            element: <Pacientes />
+          },
+          {
+            path: "areamedica",
+            element: <Areamedica />
+          },
+          {
+            path: "medico",
+            element: <Medico />
+          },
+          {
+            path: "mision",
+            element: <Mision />
+          },
+          {
+            path: "user",
+            element: <User />
+          }
+        ],
       },
-      {
-        path: "usuarios",
-        element: <Paciente />,
-      },
-    ],
-  },
+    ]
+  }
 ]);
 
 export default router;

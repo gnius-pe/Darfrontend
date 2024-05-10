@@ -1,3 +1,5 @@
 export default function Header(){
-  return
+  return(
+    <h1>Header</h1>
+  )
 }

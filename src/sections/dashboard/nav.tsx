@@ -73,11 +73,11 @@ export default function Nav({ openNav, onCloseNav }) {
       <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
 
         <Button
+          className="bg-custom-purple-800"
           href="#"
           target="_blank"
           variant="contained"
-          color="inherit"
-          className="bg-blue-800"
+          
         >
           Cerrar cesion
         </Button>
@@ -122,6 +122,7 @@ export default function Nav({ openNav, onCloseNav }) {
             width: NAV.WIDTH,
             borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
           }}
+          className="bg-gray-700"
         >
           {renderContent}
         </Box>

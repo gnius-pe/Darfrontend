@@ -11,7 +11,7 @@ export default function Dashboard() {
   const [openNav, setOpenNav] = useState(false);
   return (
     <>
-      <Header />
+      <Header/>
       
       <Box
         sx={{
@@ -19,6 +19,7 @@ export default function Dashboard() {
           display: 'flex',
           flexDirection: { xs: 'column', lg: 'row' },
         }}
+        className="bg-white"
       >
         <Nav openNav={openNav} onCloseNav={() => setOpenNav(false)}/>
 

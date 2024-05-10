@@ -53,13 +53,6 @@ const navConfig = [
       <Icon name="" /> // Puedes añadir el icono correspondiente aquí
     ),
   },
-  {
-    title: 'Página no encontrada',
-    path: '/page-not-found',
-    icon: (
-      <Icon name="" /> // Puedes añadir el icono correspondiente aquí
-    ),
-  },
 ];
 
 export default navConfig;

@@ -92,13 +92,6 @@ export default function AddressForm({ children }: AddressFormProps) {
   const handleDepartamento = (event: React.ChangeEvent<{ value: unknown }>)  => {
     const selectDepartamento = event.target.value as string;
     setDepartamento(selectDepartamento);
-
-    const provinciasFiltradas = provincias.filter(provincia => provincia.department_id === selectDepartamento);
-    setProvincia('');
-    setDistrito('');
-
-    const distritosFiltrados = distritos.filter(distrito => distrito.department_id === selectDepartamento);
-    setDistrito('');
   };  
 
   //provinvcia
@@ -187,7 +180,7 @@ export default function AddressForm({ children }: AddressFormProps) {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-            <Calendar/>
+            <Calendar label='Fecha de Inicio'/>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField

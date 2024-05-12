@@ -6,11 +6,16 @@ import 'dayjs/locale/es';
 
 dayjs.locale('es');
 
-export default function Calendar() {
+
+interface CalendarProps {
+  label: string;
+}
+
+export default function Calendar({ label }: CalendarProps) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='es'>
       <DatePicker
-        label="Fecha de Nacimiento"
+        label={label}
         views={['day', 'month', 'year']}
         format='DD/MM/YYYY'
         slotProps={{

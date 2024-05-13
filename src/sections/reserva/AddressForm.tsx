@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -12,6 +12,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
+import { SelectChangeEvent } from '@mui/material/Select';
 import axios from 'axios';
 
 import Calendar from '../../components/Date';
@@ -20,14 +21,15 @@ import departamentos from '../../assets/departamentos.json';
 import provincias from '../../assets/provincias.json';
 import distritos from '../../assets/distritos.json';
 
-interface AddressFormProps{
-  children?: React.ReactNode;
+
+interface AddressFormProps {
+  onChange: (data: any) => void;
 }
 
-export default function AddressForm({ children }: AddressFormProps) {
+const AddressForm: React.FC<AddressFormProps> = ({ onChange }) => {
 
   const [tipoDocumento, setTipoDocumento] = useState('');
-  const [dni, setDni] = useState('');
+  const [numberId, setnumberId] = useState('');
   const [nombres, setNombres] = useState('');
   const [apellidos, setApellidos] = useState('');
   const [nacionalidad, setNacionalidad] = useState('');
@@ -43,65 +45,70 @@ export default function AddressForm({ children }: AddressFormProps) {
       return; // Salir del efecto si no es "DNI"
     }
 
-    if (!dni) return; // No hacer la solicitud si el DNI está vacío
+    if (!numberId || !(/^\d{8}$/.test(numberId))) return; // No hacer la solicitud si el DNI está vacío
 
-
+    
     // Hacer la solicitud a la API
-    axios.get(`https://dniruc.apisperu.com/api/v1/dni/${dni}?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBhdWxlbGRvdGVybzQ1NkBnbWFpbC5jb20ifQ.w3QyBrX1rCtVfaNT496rClCWWIBFnWzGGLCtWj8yDAs`)
-      .then(response => {
-        const data = response.data;
-        if (data.success) {
-          setNombres(data.nombres);
-          setApellidos(`${data.apellidoPaterno} ${data.apellidoMaterno}`);
-        } else {
-          // Manejar caso de error o DNI no encontrado
-          console.error('Error al obtener datos del DNI');
-          setNombres('');
-          setApellidos('');
-        }
-      })
-      .catch(error => {
-        console.error('Error al obtener datos del DNI:', error);
-        setNombres('');
-        setApellidos('');
-      });
-  }, [tipoDocumento, dni]);
+    axios.get(`https://dniruc.apisperu.com/api/v1/dni/${numberId}?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBhdWxlbGRvdGVybzQ1NkBnbWFpbC5jb20ifQ.w3QyBrX1rCtVfaNT496rClCWWIBFnWzGGLCtWj8yDAs`)
+  .then(response => {
+    const data = response.data;
+    console.log(numberId.length);
+    if (data.success) {
+      setNombres(data.nombres);
+      setApellidos(`${data.apellidoPaterno} ${data.apellidoMaterno}`);
+      onChange({ name: data.nombres }); // Agregamos esta línea
+    } else {
+      // Manejar caso de error o DNI no encontrado
+      console.error('Error al obtener datos del DNI');
+      setNombres('');
+      setApellidos('');
+    }
+  })
+  .catch(error => {
+    console.error('Error al obtener datos del DNI:', error);
+    setNombres('');
+    setApellidos('');
+  });
+  }, [tipoDocumento, numberId]);
 
-  const handleTipoDocumentoChange = (event: React.ChangeEvent<{ value: unknown}>)  => {
-    setTipoDocumento(event.target.value as string);
-  };
+  const handleTipoDocumentoChange = useCallback((event: SelectChangeEvent<string>) => {
+    setTipoDocumento(event.target.value);
+  }, []);
 
-  const handleDniChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDni(event.target.value);
-  };
+  const handleDniChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setnumberId(event.target.value);
+    onChange({ numberId: event.target.value });
+  }, [onChange]);
 
-  const handleNombresChange = (event: React.ChangeEvent<HTMLInputElement>)  => {
+  const handleNombresChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setNombres(event.target.value);
-  };
+    onChange({ name: event.target.value });
+  }, [onChange]);
 
   const handleApellidosChange = (event: React.ChangeEvent<HTMLInputElement>)  => {
     setApellidos(event.target.value);
   };
 
+
   //nacionalidad
-  const handleNacionality = (event: React.ChangeEvent<{ value: unknown}>)  => {
+  const handleNacionality = (event: SelectChangeEvent<string>)  => {
     setNacionalidad(event.target.value as string);
   };
 
   //departamento
-  const handleDepartamento = (event: React.ChangeEvent<{ value: unknown }>)  => {
+  const handleDepartamento = (event: SelectChangeEvent<string>)  => {
     const selectDepartamento = event.target.value as string;
     setDepartamento(selectDepartamento);
   };  
 
   //provinvcia
-  const handleProvincia = (event: React.ChangeEvent<{ value: unknown }>)  => {
+  const handleProvincia = (event: SelectChangeEvent<string>) => {
     setProvincia(event.target.value as string);
     setDistrito('');
   };
 
   //distritos
-  const handleDistrito = (event: React.ChangeEvent<{ value: unknown }>)  => {
+  const handleDistrito = (event: SelectChangeEvent<string>)  => {
     setDistrito(event.target.value as string);
   }; 
 
@@ -137,7 +144,7 @@ export default function AddressForm({ children }: AddressFormProps) {
             fullWidth
             autoComplete="off"
             variant="standard"
-            value={dni}
+            value={numberId}
             onChange={handleDniChange}
             inputProps={tipoDocumento === 'DNI' ? { maxLength: 8 } : {}}
           />
@@ -173,6 +180,7 @@ export default function AddressForm({ children }: AddressFormProps) {
             required
             id="email"
             name="email"
+            type='email'
             label="Correo electornico"
             fullWidth
             autoComplete="off"
@@ -180,7 +188,7 @@ export default function AddressForm({ children }: AddressFormProps) {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-            <Calendar label='Fecha de Inicio'/>
+            <Calendar label='Fecha de Nacimiento'/>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -302,4 +310,6 @@ export default function AddressForm({ children }: AddressFormProps) {
       </Grid>
     </React.Fragment>
   );
-}
+};
+
+export default AddressForm;

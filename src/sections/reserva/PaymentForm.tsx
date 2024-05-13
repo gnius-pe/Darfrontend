@@ -35,38 +35,37 @@ export default function PaymentForm() {
         <Grid item xs={12} md={6}>
           <TextField
             required
-            id="cardNumber"
+            id="Hora"
             label="Hora"
             fullWidth
-            autoComplete="cc-number"
+            autoComplete="none"
             variant="standard"
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
             required
-            id="expDate"
+            id="mensaje"
             label="Mensaje"
             fullWidth
-            autoComplete="cc-exp"
             variant="standard"
           />
         </Grid>
         <Grid item xs={12}>
           <FormControlLabel
-            control={<Checkbox color="secondary" name="saveCard" value="yes" />}
+            control={<Checkbox color="secondary" name="analisis" value="yes" />}
             label="¿Cuentas con examenes o algun analisis sobre tu consulta que tenga menos de 30 dias?"
           />
         </Grid>
         <Grid item xs={12}>
           <FormControlLabel
-            control={<Checkbox color="secondary" name="saveCard" value="yes" />}
+            control={<Checkbox color="secondary" name="ayuda" value="yes" />}
             label="¿Estas interesado en recibir ayuda espiritual?"
           />
         </Grid>
         <Grid item xs={12}>
           <FormControlLabel
-            control={<Checkbox color="secondary" name="saveCard" value="yes" />}
+            control={<Checkbox color="secondary" name="visita" value="yes" />}
             label="¿Deseas ser contactado para futuras actividades o eventos religiosos?"
           />
         </Grid>

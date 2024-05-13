@@ -52,11 +52,13 @@ const AddressForm: React.FC<AddressFormProps> = ({ onChange }) => {
     axios.get(`https://dniruc.apisperu.com/api/v1/dni/${numberId}?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBhdWxlbGRvdGVybzQ1NkBnbWFpbC5jb20ifQ.w3QyBrX1rCtVfaNT496rClCWWIBFnWzGGLCtWj8yDAs`)
   .then(response => {
     const data = response.data;
-    console.log(numberId.length);
     if (data.success) {
-      setNombres(data.nombres);
-      setApellidos(`${data.apellidoPaterno} ${data.apellidoMaterno}`);
-      onChange({ name: data.nombres }); // Agregamos esta línea
+      const nombres = data.nombres;
+      const apellidos = `${data.apellidoPaterno} ${data.apellidoMaterno}`;
+      const objeto = { name: nombres, lastName: apellidos };
+      setNombres(nombres);
+      setApellidos(apellidos);
+      onChange(objeto); // Update the state with the new object
     } else {
       // Manejar caso de error o DNI no encontrado
       console.error('Error al obtener datos del DNI');
@@ -85,9 +87,10 @@ const AddressForm: React.FC<AddressFormProps> = ({ onChange }) => {
     onChange({ name: event.target.value });
   }, [onChange]);
 
-  const handleApellidosChange = (event: React.ChangeEvent<HTMLInputElement>)  => {
+  const handleApellidosChange = useCallback((event: React.ChangeEvent<HTMLInputElement>)  => {
     setApellidos(event.target.value);
-  };
+    onChange({ lastName: event.target.value });
+  },[onChange]);
 
 
   //nacionalidad

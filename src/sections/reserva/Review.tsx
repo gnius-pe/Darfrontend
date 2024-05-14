@@ -5,13 +5,17 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 
+interface ReviewFormProps {
+  formData: any; // Tipo de tus datos del formulario
+}
+
 interface Product {
   name: string;
   desc: string;
   fech: String;
 }
 
-interface Payment {
+interface PersonalDate {
   name: string;
   detail: string;
 }
@@ -35,15 +39,19 @@ const products: Product[] = [
 ];
 
 const addresses: string[] = ['Jr. Tiahuanaco 501', 'Apurimac', 'Abancay', 'Tiban', 'Peru'];
-const payments: Payment[] = [
+const datos: PersonalDate[] = [
   { name: 'Cel', detail: '999 999 999' },
   { name: 'Correo electronico', detail: 'example@mui.com' },
   { name: 'DNI', detail: '10203040' },
   { name: 'Nacimiento', detail: '10/10/2000' },
-  { name: 'Sexo', detail: 'Masculino'},
+  { name: 'Sexo', detail: 'Masculino' },
 ];
 
-export default function Review() {
+const Review: React.FC<ReviewFormProps> = ({ formData }) => {
+  const { name, lastName } = formData;//tal como esta estructurado en el interface formProps
+
+
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -54,7 +62,7 @@ export default function Review() {
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Nombres y Direccion
           </Typography>
-          <Typography gutterBottom>Juan Aguirre</Typography>
+          <Typography gutterBottom>{name}</Typography>
           <Typography gutterBottom>{addresses.join(', ')}</Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
@@ -62,13 +70,13 @@ export default function Review() {
             Contacto
           </Typography>
           <Grid container>
-            {payments.map((payment) => (
-              <React.Fragment key={payment.name}>
+            {datos.map((dato) => (
+              <React.Fragment key={dato.name}>
                 <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.name}</Typography>
+                  <Typography gutterBottom>{dato.name}</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.detail}</Typography>
+                  <Typography gutterBottom>{dato.detail}</Typography>
                 </Grid>
               </React.Fragment>
             ))}
@@ -82,9 +90,9 @@ export default function Review() {
             <Typography variant="body2">{product.fech}</Typography>
           </ListItem>
         ))}
-        
       </List>
-      
     </React.Fragment>
   );
-}
+};
+
+export default Review;

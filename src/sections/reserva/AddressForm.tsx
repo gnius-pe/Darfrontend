@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, ChangeEvent} from 'react';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -23,29 +23,51 @@ import distritos from '../../assets/distritos.json';
 
 
 interface AddressFormProps {
+  formData: any;
   onChange: (data: any) => void;
 }
 
-const AddressForm: React.FC<AddressFormProps> = ({ onChange }) => {
+const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
 
-  const [tipoDocumento, setTipoDocumento] = useState('');
-  const [numberId, setnumberId] = useState('');
-  const [nombres, setNombres] = useState('');
-  const [apellidos, setApellidos] = useState('');
-  const [nacionalidad, setNacionalidad] = useState('');
-  const [departamento, setDepartamento] = useState('');
-  const [provincia, setProvincia] = useState('');
-  const [distrito, setDistrito] = useState('');
+  const [tipoDocumento, setTipoDocumento] = useState(formData.typeId);
+const [numberId, setnumberId] = useState(formData.numberId);
+  const [nombres, setNombres] = useState(formData.name);
+  const [apellidos, setApellidos] = useState(formData.lastName);
+  const [nacionalidad, setNacionalidad] = useState(formData.nacionality);
+  const [departamento, setDepartamento] = useState(formData.departamento);
+  const [provincia, setProvincia] = useState(formData.provincia);
+  const [distrito, setDistrito] = useState(formData.distrito);
+  const [sexo, setSexo] = useState(formData.sexo);
+  const [ birthDate, setBirthDate] = useState(formData.birthDate);
+  const [firstNumberPhone, setFirstNumberPhone] = useState(formData.firstNumberPhone);
+  const [email, setEmail] = useState(formData.email);
+  const [ direccion, setDireccion] = useState(formData.direccion);
+
+  useEffect(() => {
+    setTipoDocumento(formData.typeId);
+    setnumberId(formData.numberId);
+    setNombres(formData.name);
+    setApellidos(formData.lastName);
+    setNacionalidad(formData.nacionality);
+    setDepartamento(formData.departamento);
+    setProvincia(formData.provincia);
+    setDistrito(formData.distrito);
+    setSexo(formData.sexo);
+    setBirthDate(formData.birthDate);
+    setFirstNumberPhone(formData.firstNumberPhone);
+    setEmail(formData.email);
+    setDireccion(formData.direccion);
+  },[formData])
 
   useEffect(() => {
     if (tipoDocumento !== 'DNI') {
       // Si el tipo de documento no es "DNI", restablecer los nombres y apellidos
-      setNombres('');
-      setApellidos('');
+      setNombres(formData.name);
+      setApellidos(formData.lastName);
       return; // Salir del efecto si no es "DNI"
     }
 
-    if (!numberId || !(/^\d{8}$/.test(numberId))) return; // No hacer la solicitud si el DNI está vacío
+    if (!numberId || !(/^\d{8}$/.test(numberId))) return; // No hacer la solicitud si el DNI está vacío o no es igual a 8 caract
 
     
     // Hacer la solicitud a la API
@@ -62,58 +84,99 @@ const AddressForm: React.FC<AddressFormProps> = ({ onChange }) => {
     } else {
       // Manejar caso de error o DNI no encontrado
       console.error('Error al obtener datos del DNI');
-      setNombres('');
-      setApellidos('');
+      setNombres(formData.name);
+      setApellidos(formData.lastName);
     }
   })
   .catch(error => {
     console.error('Error al obtener datos del DNI:', error);
-    setNombres('');
-    setApellidos('');
+    setNombres(formData.name);
+    setApellidos(formData.lastName);
   });
   }, [tipoDocumento, numberId]);
 
-  const handleTipoDocumentoChange = useCallback((event: SelectChangeEvent<string>) => {
-    setTipoDocumento(event.target.value);
-  }, []);
-
-  const handleDniChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setnumberId(event.target.value);
-    onChange({ numberId: event.target.value });
-  }, [onChange]);
-
-  const handleNombresChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setNombres(event.target.value);
-    onChange({ name: event.target.value });
-  }, [onChange]);
-
-  const handleApellidosChange = useCallback((event: React.ChangeEvent<HTMLInputElement>)  => {
-    setApellidos(event.target.value);
-    onChange({ lastName: event.target.value });
-  },[onChange]);
-
-
-  //nacionalidad
-  const handleNacionality = (event: SelectChangeEvent<string>)  => {
-    setNacionalidad(event.target.value as string);
+  const handleTipoDocumentoChange = (event: SelectChangeEvent<string>) => {
+    const newTypeid = event.target.value
+    setTipoDocumento(newTypeid);
+    onChange({ ...formData, typeId: newTypeid });
   };
 
+  const handleDniChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newDni = event.target.value;
+    setnumberId(newDni);
+    onChange({ ...formData, numberId: newDni });
+  };
+
+  const handleNombresChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = event.target.value;
+    setNombres(newName);
+    onChange({ ...formData, name: newName});
+  };
+
+  const handleApellidosChange = (event: React.ChangeEvent<HTMLInputElement>)  => {
+    const newLastName = event.target.value;
+    setApellidos(newLastName);
+    onChange({ ...formData, lastName: newLastName});
+  };
+
+  //nacionalidad
+  const handleNacionality = (event: SelectChangeEvent<string>) => {
+    const newNacionality = event.target.value;
+    setNacionalidad(newNacionality);
+    onChange({ ...formData, nacionality: newNacionality});
+  };
   //departamento
   const handleDepartamento = (event: SelectChangeEvent<string>)  => {
-    const selectDepartamento = event.target.value as string;
-    setDepartamento(selectDepartamento);
-  };  
+    const newDepartamento = event.target.value;
+    setDepartamento(newDepartamento);
+    onChange({ ...formData, departamento: newDepartamento});
+  };
 
   //provinvcia
   const handleProvincia = (event: SelectChangeEvent<string>) => {
-    setProvincia(event.target.value as string);
-    setDistrito('');
+    const newProvincia = event.target.value;
+    setProvincia(newProvincia);
+    setDistrito(formData.distrito);
+    onChange({ ...formData, provincia: newProvincia});
   };
 
   //distritos
-  const handleDistrito = (event: SelectChangeEvent<string>)  => {
-    setDistrito(event.target.value as string);
-  }; 
+  const handleDistrito =(event: SelectChangeEvent<string>)  => {
+    const newDistrito = event.target.value;
+    setDistrito(newDistrito);
+    onChange({ ...formData, distrito: newDistrito});
+  };
+
+  //sexo
+  const handleSexo = (event: SelectChangeEvent<string>) => {
+    const newSexo = event.target.value;
+    setSexo(newSexo);
+    onChange({ ...formData, sexo: newSexo});
+  };
+
+  //fecha de nacimiento
+  const handleDate = (date: Date | null) => {
+      setBirthDate(date);
+      onChange({ ...formData, birthDate: date})
+  };
+
+  const handleNumberPhone = (event: ChangeEvent<HTMLInputElement>) => {
+    const newNumberPhone = event.target.value;
+    setFirstNumberPhone(newNumberPhone);
+    onChange({ ...formData, firstNumberPhone: newNumberPhone});
+  };
+
+  const handleDireccion = (event: ChangeEvent<HTMLInputElement>) => {
+    const newDireccion = event.target.value;
+    setDireccion(newDireccion);
+    onChange({ ...formData, direccion: newDireccion});
+  };
+
+  const handleEmail = (event: ChangeEvent<HTMLInputElement>) => {
+    const newEmail = event.target.value;
+    setEmail(newEmail);
+    onChange({ ...formData, email: newEmail});
+  };
 
   return (
     <React.Fragment>
@@ -188,10 +251,15 @@ const AddressForm: React.FC<AddressFormProps> = ({ onChange }) => {
             fullWidth
             autoComplete="off"
             variant="standard"
+            value={email}
+            onChange={handleEmail}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-            <Calendar label='Fecha de Nacimiento'/>
+            <Calendar 
+              label='Fecha de Nacimiento'
+              handleDate={handleDate}  
+            />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -202,6 +270,8 @@ const AddressForm: React.FC<AddressFormProps> = ({ onChange }) => {
             fullWidth
             autoComplete="off"
             variant="standard"
+            value={firstNumberPhone}
+            onChange={handleNumberPhone}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -211,6 +281,8 @@ const AddressForm: React.FC<AddressFormProps> = ({ onChange }) => {
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
+            value={sexo}
+            onChange={handleSexo}
           >
             <FormControlLabel value="femenino" control={<Radio />} label="F" />
             <FormControlLabel value="masculino" control={<Radio />} label="M" />
@@ -308,6 +380,8 @@ const AddressForm: React.FC<AddressFormProps> = ({ onChange }) => {
             fullWidth
             autoComplete="off"
             variant="standard"
+            value={direccion}
+            onChange={handleDireccion}
           />
         </Grid>
       </Grid>

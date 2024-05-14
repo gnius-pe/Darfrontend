@@ -11,12 +11,13 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import PaymentForm from './PaymentForm';
+import LocationForm from './LocationForm';
 import AddressForm from './AddressForm';
 import Review from './Review';
 
 
 interface FormData {
+  typeId: string;
   numberId: string;
   name: string;
   lastName: string;
@@ -24,16 +25,17 @@ interface FormData {
   firstNumberPhone: string;
   sexo: string;
   birthDate: Date;
-  nacionalidad: string;
+  nacionality: string;
   departamento: string;
   provincia: string;
   distrito: string;
   direccion: string;
   fechareserva: Date;
+  hora: string;
   mensaje: string;
   analisis: boolean;
   ayuda: boolean;
-  visitador: boolean;
+  visita: boolean;
 }
 
 const steps = ['Datos personales', 'Detalles de atencion', 'Revisa tu cita'];
@@ -43,6 +45,7 @@ const steps = ['Datos personales', 'Detalles de atencion', 'Revisa tu cita'];
 export default function Checkout() {
 
   const [formData, setFormData] = useState<FormData>({
+    typeId: '',
     numberId: '',
     name: '',
     lastName: '',
@@ -50,16 +53,17 @@ export default function Checkout() {
     firstNumberPhone: '',
     sexo: '',
     birthDate: new Date(),
-    nacionalidad: '',
+    nacionality: '',
     departamento: '',
     provincia: '',
     distrito: '',
     direccion: '',
     fechareserva: new Date(),
+    hora: '',
     mensaje: '',
     analisis: false,
     ayuda: false,
-    visitador: false,
+    visita: false,
   });
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -67,9 +71,9 @@ export default function Checkout() {
   function getStepContent(step: number) {
     switch (step) {
       case 0:
-        return <AddressForm onChange={handleFormChange} />;
+        return <AddressForm formData={formData} onChange={(data)=> handleFormChange(data)} />;
       case 1:
-        return <PaymentForm onChange={handleFormChange} />;
+        return <LocationForm formData={formData} onChange={(data)=> handleFormChange(data)} />;
       case 2:
         return <Review formData={formData} />;
       default:

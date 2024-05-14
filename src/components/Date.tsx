@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -9,9 +10,16 @@ dayjs.locale('es');
 
 interface CalendarProps {
   label: string;
+  handleDate: (date: Date | null) => void;
 }
 
-export default function Calendar({ label }: CalendarProps) {
+export default function Calendar({ label, handleDate }: CalendarProps) {
+  const [ selectedDate, setselectedDate] = useState<Date | null>(null);
+
+  const handleDateChange = (date: Date | null) =>{
+    setselectedDate(date);
+    handleDate(date);
+  }
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='es'>
       <DatePicker
@@ -23,6 +31,8 @@ export default function Calendar({ label }: CalendarProps) {
             size: 'small',
           },
         }}
+        value={selectedDate}
+        onChange={handleDateChange}
       />
     </LocalizationProvider>
   );

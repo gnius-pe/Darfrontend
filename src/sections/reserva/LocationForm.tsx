@@ -1,151 +1,151 @@
 import * as React from 'react';
-import { useState, useCallback, ChangeEvent, useEffect } from 'react';
-import Typography from '@mui/material/Typography';
+import { useState, useEffect, ChangeEvent } from 'react';
 import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-
-
+import Typography from '@mui/material/Typography';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormLabel from '@mui/material/FormLabel';
-import { SelectChangeEvent } from '@mui/material';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import { SelectChangeEvent } from '@mui/material/Select';
 
-interface LocationFormProps{
-  formData: any ;
-  onChange:(data:any) => void;
+import departamentos from '../../assets/departamentos.json';
+import provincias from '../../assets/provincias.json';
+import distritos from '../../assets/distritos.json';
+
+interface LocationForProps{
+  formData:any;
+  onChange: (data:any) => void;
 }
 
-const LocationForm: React.FC<LocationFormProps>=({formData, onChange}) => {
+const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
 
-  const [ dateReserva, setdateReserva] = useState(formData.fechareserva);
-  const [ hora, setHora] = useState(formData.hora);
-  const [ mensaje, setmensaje] = useState(formData.mensaje);
-  const [ checkAnalisis, setcheckAnalisis] = useState(formData.analisis);
-  const [ checkAyuda, setcheckAyuda] = useState(formData.ayuda);
-  const [ checkVisita, setcheckVisita] = useState(formData.visita);
+  
+  const [departamento, setDepartamento] = useState(formData.departamento);
+  const [provincia, setProvincia] = useState(formData.provincia);
+  const [distrito, setDistrito] = useState(formData.distrito);
+  const [ direccion, setDireccion] = useState(formData.direccion);
 
   useEffect(() => {
-    setdateReserva(formData.fechareserva);
-    setmensaje(formData.mensaje);
-    setHora(formData.hora);
-    setcheckAnalisis(formData.analisis);
-    setcheckAyuda(formData.ayuda);
-    setcheckVisita(formData.visita);
+    setDepartamento(formData.departamento);
+    setProvincia(formData.provincia);
+    setDistrito(formData.distrito);
+    setDireccion(formData.direccion);
   },[formData])
 
-  const handleDateReserva = (event: SelectChangeEvent<String>)=>{
-    const newDateReserva = event.target.value;
-    setdateReserva(newDateReserva);
-    onChange({ ...formData, fechareserva: newDateReserva });
+   //departamento
+   const handleDepartamento = (event: SelectChangeEvent<string>)  => {
+    const newDepartamento = event.target.value;
+    setDepartamento(newDepartamento);
+    onChange({ ...formData, departamento: newDepartamento});
   };
 
-  const handleHora = (event: ChangeEvent<HTMLInputElement>)=>{
-    const newHora = event.target.value;
-    setHora(newHora);
-    onChange({ ...formData, hora: newHora });
+  //provinvcia
+  const handleProvincia = (event: SelectChangeEvent<string>) => {
+    const newProvincia = event.target.value;
+    setProvincia(newProvincia);
+    setDistrito(formData.distrito);
+    onChange({ ...formData, provincia: newProvincia});
   };
 
-  const handleMensaje = (event: ChangeEvent<HTMLInputElement>)=>{
-    const newMensaje = event.target.value;
-    setmensaje(newMensaje);
-    onChange({ ...formData,mensaje: newMensaje });
+  //distritos
+  const handleDistrito =(event: SelectChangeEvent<string>)  => {
+    const newDistrito = event.target.value;
+    setDistrito(newDistrito);
+    onChange({ ...formData, distrito: newDistrito});
   };
-
-  const hadnleCheckAnalisis = (event: ChangeEvent<HTMLInputElement>)=>{
-    const isChecked = event.target.checked;
-    setcheckAnalisis(isChecked);
-    onChange({ ...formData, analisis: isChecked });
-  };
-
-  const hadnleCheckAyuda = (event: ChangeEvent<HTMLInputElement>)=>{
-    const isChecked = event.target.checked;
-    setcheckAyuda(isChecked);
-    onChange({ ...formData, ayuda: isChecked });
-  };
-  const hadnleCheckVisita = (event: ChangeEvent<HTMLInputElement>)=>{
-    const isChecked = event.target.checked;
-    setcheckVisita(isChecked);
-    onChange({ ...formData, visita: isChecked });
+  
+  const handleDireccion = (event: ChangeEvent<HTMLInputElement>) => {
+    const newDireccion = event.target.value;
+    setDireccion(newDireccion);
+    onChange({ ...formData, direccion: newDireccion});
   };
 
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Detalles de Cita
+        Locacion
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-        <FormControl>
-          <FormLabel id="demo-row-radio-buttons-group-label">Fecha de reserva</FormLabel>
-          <RadioGroup
-            row
-            aria-labelledby="demo-row-radio-buttons-group-label"
-            name="row-radio-buttons-group"
-            value={dateReserva}
-            onChange={handleDateReserva}
+        <Grid item xs={12} sm={6}>
+        <FormControl fullWidth>
+          <InputLabel id="tipo-documento-label">Departamento</InputLabel>
+          <Select
+            labelId="tipo-documento-label"
+            id="demo-simple-select"
+            value={departamento}
+            label="Departamento"
+            onChange={handleDepartamento}
+            fullWidth
           >
-            <FormControlLabel value='12/02/2024' control={<Radio />} label="12" />
-            <FormControlLabel value="13/02/2024" control={<Radio />} label="13" />
-            <FormControlLabel value="14/02/2024" control={<Radio />} label="14" />
-          </RadioGroup>
+            {departamentos.map((departamento) => (
+              <MenuItem key={departamento.id} value={departamento.id}>
+               {departamento.name}
+              </MenuItem>
+            ))}
+          </Select>
         </FormControl>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} sm={6}>
+          <FormControl fullWidth>
+          <InputLabel id="tipo-documento-label">Provincia</InputLabel>
+          <Select
+            labelId="tipo-documento-label"
+            id="demo-simple-select"
+            value={provincia}
+            label="Provincia"
+            onChange={handleProvincia}
+            fullWidth
+            disabled={!departamento}
+          >
+            {provincias
+            .filter(provincia => provincia.department_id === departamento)
+            .map((provincia) => (
+              <MenuItem key={provincia.id} value={provincia.id}>
+                {provincia.name}
+              </MenuItem>
+          ))}
+          </Select>
+        </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl fullWidth>
+          <InputLabel id="tipo-documento-label">Distrito</InputLabel>
+          <Select
+            labelId="tipo-documento-label"
+            id="demo-simple-select"
+            value={distrito}
+            label="Distrito"
+            onChange={handleDistrito}
+            fullWidth
+            disabled={!provincia}
+          >
+             {distritos
+            .filter(distrito => distrito.province_id === provincia)
+            .map((distrito) => (
+              <MenuItem key={distrito.id} value={distrito.id}>
+                {distrito.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        </Grid>
+        <Grid item xs={12}>
           <TextField
             required
-            id="Hora"
-            label="Hora"
+            id="city"
+            name="city"
+            label="Direccion"
             fullWidth
-            autoComplete="none"
+            autoComplete="off"
             variant="standard"
-            value={hora}
-            onChange={handleHora}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="mensaje"
-            label="Mensaje"
-            fullWidth
-            variant="standard"
-            value={mensaje}
-            onChange={handleMensaje}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox color="secondary" 
-                              name="analisis" 
-                              value={checkAnalisis} 
-                              onChange={hadnleCheckAnalisis}/>}
-            label="¿Cuentas con examenes o algun analisis sobre tu consulta que tenga menos de 30 dias?"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox color="secondary" 
-                                name="ayuda"
-                                value={checkAyuda}
-                                onChange={hadnleCheckAyuda}/>}
-            label="¿Estas interesado en recibir ayuda espiritual?"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox color="secondary" 
-                                name="visita" 
-                                value={checkVisita}
-                                onChange={hadnleCheckVisita} />}
-            label="¿Deseas ser contactado para futuras actividades o eventos religiosos?"
+            value={direccion}
+            onChange={handleDireccion}
           />
         </Grid>
       </Grid>
     </React.Fragment>
   );
-}
+};
 
 export default LocationForm;

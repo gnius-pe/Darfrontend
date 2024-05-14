@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import LocationForm from './LocationForm';
 import AddressForm from './AddressForm';
 import Review from './Review';
+import Cita from './Cita';
 
 
 interface FormData {
@@ -23,6 +24,7 @@ interface FormData {
   lastName: string;
   email: string;
   firstNumberPhone: string;
+  secondNumberPhone: string;
   sexo: string;
   birthDate: Date;
   nacionality: string;
@@ -38,7 +40,7 @@ interface FormData {
   visita: boolean;
 }
 
-const steps = ['Datos personales', 'Detalles de atencion', 'Revisa tu cita'];
+const steps = ['Datos', 'Ubicacion', 'Cita','revision'];
 
 
 
@@ -51,6 +53,7 @@ export default function Checkout() {
     lastName: '',
     email: '',
     firstNumberPhone: '',
+    secondNumberPhone: '',
     sexo: '',
     birthDate: new Date(),
     nacionality: '',
@@ -73,8 +76,10 @@ export default function Checkout() {
       case 0:
         return <AddressForm formData={formData} onChange={(data)=> handleFormChange(data)} />;
       case 1:
-        return <LocationForm formData={formData} onChange={(data)=> handleFormChange(data)} />;
+        return <LocationForm formData={formData} onChange={(data)=> handleFormChange(data)}/>;
       case 2:
+        return < Cita formData={formData} onChange={(data)=> handleFormChange(data)} />;
+      case 3:
         return <Review formData={formData} />;
       default:
         throw new Error('Unknown step');

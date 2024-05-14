@@ -16,10 +16,6 @@ import { SelectChangeEvent } from '@mui/material/Select';
 import axios from 'axios';
 
 import Calendar from '../../components/Date';
-import nacionalidades from '../../assets/nacionalidades.json';
-import departamentos from '../../assets/departamentos.json';
-import provincias from '../../assets/provincias.json';
-import distritos from '../../assets/distritos.json';
 
 
 interface AddressFormProps {
@@ -33,30 +29,21 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
 const [numberId, setnumberId] = useState(formData.numberId);
   const [nombres, setNombres] = useState(formData.name);
   const [apellidos, setApellidos] = useState(formData.lastName);
-  const [nacionalidad, setNacionalidad] = useState(formData.nacionality);
-  const [departamento, setDepartamento] = useState(formData.departamento);
-  const [provincia, setProvincia] = useState(formData.provincia);
-  const [distrito, setDistrito] = useState(formData.distrito);
   const [sexo, setSexo] = useState(formData.sexo);
   const [ birthDate, setBirthDate] = useState(formData.birthDate);
   const [firstNumberPhone, setFirstNumberPhone] = useState(formData.firstNumberPhone);
   const [email, setEmail] = useState(formData.email);
-  const [ direccion, setDireccion] = useState(formData.direccion);
+  const [ nacionalidad, setNacionalidad] = useState('Peru');
 
   useEffect(() => {
     setTipoDocumento(formData.typeId);
     setnumberId(formData.numberId);
     setNombres(formData.name);
     setApellidos(formData.lastName);
-    setNacionalidad(formData.nacionality);
-    setDepartamento(formData.departamento);
-    setProvincia(formData.provincia);
-    setDistrito(formData.distrito);
     setSexo(formData.sexo);
     setBirthDate(formData.birthDate);
     setFirstNumberPhone(formData.firstNumberPhone);
     setEmail(formData.email);
-    setDireccion(formData.direccion);
   },[formData])
 
   useEffect(() => {
@@ -119,34 +106,6 @@ const [numberId, setnumberId] = useState(formData.numberId);
     onChange({ ...formData, lastName: newLastName});
   };
 
-  //nacionalidad
-  const handleNacionality = (event: SelectChangeEvent<string>) => {
-    const newNacionality = event.target.value;
-    setNacionalidad(newNacionality);
-    onChange({ ...formData, nacionality: newNacionality});
-  };
-  //departamento
-  const handleDepartamento = (event: SelectChangeEvent<string>)  => {
-    const newDepartamento = event.target.value;
-    setDepartamento(newDepartamento);
-    onChange({ ...formData, departamento: newDepartamento});
-  };
-
-  //provinvcia
-  const handleProvincia = (event: SelectChangeEvent<string>) => {
-    const newProvincia = event.target.value;
-    setProvincia(newProvincia);
-    setDistrito(formData.distrito);
-    onChange({ ...formData, provincia: newProvincia});
-  };
-
-  //distritos
-  const handleDistrito =(event: SelectChangeEvent<string>)  => {
-    const newDistrito = event.target.value;
-    setDistrito(newDistrito);
-    onChange({ ...formData, distrito: newDistrito});
-  };
-
   //sexo
   const handleSexo = (event: SelectChangeEvent<string>) => {
     const newSexo = event.target.value;
@@ -166,17 +125,15 @@ const [numberId, setnumberId] = useState(formData.numberId);
     onChange({ ...formData, firstNumberPhone: newNumberPhone});
   };
 
-  const handleDireccion = (event: ChangeEvent<HTMLInputElement>) => {
-    const newDireccion = event.target.value;
-    setDireccion(newDireccion);
-    onChange({ ...formData, direccion: newDireccion});
-  };
-
   const handleEmail = (event: ChangeEvent<HTMLInputElement>) => {
     const newEmail = event.target.value;
     setEmail(newEmail);
     onChange({ ...formData, email: newEmail});
   };
+
+  const handleNacionalidad = (event: SelectChangeEvent<string>) => {
+    setNacionalidad(event.target.value);
+  }
 
   return (
     <React.Fragment>
@@ -241,7 +198,7 @@ const [numberId, setnumberId] = useState(formData.numberId);
             onChange={handleApellidosChange}
           />
         </Grid>
-        <Grid item xs={12} sm={12}>
+        <Grid item xs={12} sm={6}>
           <TextField
             required
             id="email"
@@ -264,8 +221,8 @@ const [numberId, setnumberId] = useState(formData.numberId);
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="celnumber"
-            name="celnumber"
+            id="firstcelnumber"
+            name="firstcelnumber"
             label="celular o Telefono"
             fullWidth
             autoComplete="off"
@@ -275,7 +232,17 @@ const [numberId, setnumberId] = useState(formData.numberId);
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormControl>
+          <TextField
+            required
+            id="secondcelnumber"
+            name="secondcelnumber"
+            label="Segundo celular (opcional)"
+            fullWidth
+            autoComplete="off"
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
           <FormLabel id="demo-row-radio-buttons-group-label">Sexo</FormLabel>
           <RadioGroup
             row
@@ -284,10 +251,9 @@ const [numberId, setnumberId] = useState(formData.numberId);
             value={sexo}
             onChange={handleSexo}
           >
-            <FormControlLabel value="femenino" control={<Radio />} label="F" />
-            <FormControlLabel value="masculino" control={<Radio />} label="M" />
+            <FormControlLabel value="femenino" control={<Radio />} label="Femen" />
+            <FormControlLabel value="masculino" control={<Radio />} label="Mascu" />
           </RadioGroup>
-        </FormControl>
        </Grid>
        <Grid item xs={12} sm={6}>
           <FormControl fullWidth>
@@ -297,92 +263,15 @@ const [numberId, setnumberId] = useState(formData.numberId);
             id="demo-simple-select"
             value={nacionalidad}
             label="Nacionalidad"
-            onChange={handleNacionality}
             fullWidth
+            onChange={handleNacionalidad}
           >
-            {nacionalidades.map((nacionalidad) => (
-              <MenuItem key={nacionalidad.id} value={nacionalidad.title}>
-                {nacionalidad.title}
+            
+              <MenuItem key='Peru' value={'Peru'}>
+                Peru
               </MenuItem>
-            ))}
           </Select>
         </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-          <InputLabel id="tipo-documento-label">Departamento</InputLabel>
-          <Select
-            labelId="tipo-documento-label"
-            id="demo-simple-select"
-            value={departamento}
-            label="Departamento"
-            onChange={handleDepartamento}
-            fullWidth
-          >
-            {departamentos.map((departamento) => (
-              <MenuItem key={departamento.id} value={departamento.id}>
-               {departamento.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-          <InputLabel id="tipo-documento-label">Provincia</InputLabel>
-          <Select
-            labelId="tipo-documento-label"
-            id="demo-simple-select"
-            value={provincia}
-            label="Provincia"
-            onChange={handleProvincia}
-            fullWidth
-            disabled={!departamento}
-          >
-            {provincias
-            .filter(provincia => provincia.department_id === departamento)
-            .map((provincia) => (
-              <MenuItem key={provincia.id} value={provincia.id}>
-                {provincia.name}
-              </MenuItem>
-          ))}
-          </Select>
-        </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-          <InputLabel id="tipo-documento-label">Distrito</InputLabel>
-          <Select
-            labelId="tipo-documento-label"
-            id="demo-simple-select"
-            value={distrito}
-            label="Distrito"
-            onChange={handleDistrito}
-            fullWidth
-            disabled={!provincia}
-          >
-             {distritos
-            .filter(distrito => distrito.province_id === provincia)
-            .map((distrito) => (
-              <MenuItem key={distrito.id} value={distrito.id}>
-                {distrito.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="city"
-            name="city"
-            label="Direccion"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
-            value={direccion}
-            onChange={handleDireccion}
-          />
         </Grid>
       </Grid>
     </React.Fragment>

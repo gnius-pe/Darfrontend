@@ -3,6 +3,7 @@ import Login from '../pages/Login.tsx';
 import Dashboard from '../pages/Dashboard.tsx';
 import ProtectedRoute from './ProtectedRoute.tsx';
 import ReservaCita from '../pages/CitaReserve.tsx';
+import CreateNewMision from '../sections/misiones/CreateNewMision.tsx';
 
 import Pacientes from '../pages/Paciente.tsx';
 import Areamedica from '../pages/Areamedica.tsx';
@@ -10,6 +11,7 @@ import Medico from '../pages/Medico.tsx';
 import Mision from '../pages/Mision.tsx';
 import User from '../pages/User.tsx';
 import App from '../pages/AppView.tsx';
+
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: "/reserva",
     element: <ReservaCita />
+  },
+  {
+    path: "/nuevaMision",
+    element: <CreateNewMision/>
   },
   {
     path: "/",

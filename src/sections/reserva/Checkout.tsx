@@ -33,6 +33,7 @@ interface FormData {
   distrito: string;
   direccion: string;
   fechareserva: Date;
+  especiality: string;
   hora: string;
   mensaje: string;
   analisis: boolean;
@@ -62,6 +63,7 @@ export default function Checkout() {
     distrito: '',
     direccion: '',
     fechareserva: new Date(),
+    especiality: '',
     hora: '',
     mensaje: '',
     analisis: false,
@@ -98,9 +100,56 @@ export default function Checkout() {
     setActiveStep(activeStep - 1);
   };
 
-  const handleSubmit = () => {
-    console.log('datos del formulario', formData);
-  };
+  const handleSubmit = async () => {
+    const dataFormPaciente = {
+      personalInformation: {
+        name: formData.name,
+        lastName: formData.lastName,
+        numberIdentification: formData.numberId,
+        email: formData.email,
+        firtsNumberPhone: formData.firstNumberPhone,
+        secondNumberPhone: formData.secondNumberPhone,
+        sexo: formData.sexo,
+        birthDate: formData.birthDate.toISOString(),
+      },
+      location: {
+        department: formData.departamento,
+        province: formData.provincia,
+        district: formData.distrito,
+        reference: formData.direccion,
+      },
+      cita: {
+        appointmentDate: formData.fechareserva,
+        specialty: formData.especiality,
+        appointmentdetail: formData.mensaje,
+      },
+      questionExamRecent: formData.analisis,
+      spiritualSupport: formData.ayuda,
+      futureActivities: formData.visita,
+    };
+  
+    try {
+      const response = await fetch('https://goldfish-app-sryot.ondigitalocean.app/api/patient', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataFormPaciente),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const result = await response.text(); // Leer el mensaje de texto de la respuesta
+      console.log('Success:', result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  
+    console.log(dataFormPaciente);
+  };  
+  
 
   return (
     <React.Fragment>

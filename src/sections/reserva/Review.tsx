@@ -63,7 +63,7 @@ const Review: React.FC<ReviewFormProps> = ({ formData }) => {
             Nombres y Direccion
           </Typography>
           <Typography gutterBottom>{name}</Typography>
-          <Typography gutterBottom>{addresses.join(', ')}</Typography>
+          <Typography gutterBottom>LoL</Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>

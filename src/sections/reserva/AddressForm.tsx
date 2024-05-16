@@ -17,21 +17,21 @@ import axios from 'axios';
 
 import Calendar from '../../components/Date';
 
-
 interface AddressFormProps {
-  formData: any;
-  onChange: (data: any) => void;
+  formData:any;
+  onChange: (data: any ) => void;
 }
 
 const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
 
   const [tipoDocumento, setTipoDocumento] = useState(formData.typeId);
-const [numberId, setnumberId] = useState(formData.numberId);
+  const [numberId, setnumberId] = useState(formData.numberId);
   const [nombres, setNombres] = useState(formData.name);
   const [apellidos, setApellidos] = useState(formData.lastName);
   const [sexo, setSexo] = useState(formData.sexo);
   const [ birthDate, setBirthDate] = useState(formData.birthDate);
   const [firstNumberPhone, setFirstNumberPhone] = useState(formData.firstNumberPhone);
+  const [secondcelnumber, setSecondcelnumber] = useState(formData.secondNumberPhone);
   const [email, setEmail] = useState(formData.email);
   const [ nacionalidad, setNacionalidad] = useState('Peru');
 
@@ -41,8 +41,9 @@ const [numberId, setnumberId] = useState(formData.numberId);
     setNombres(formData.name);
     setApellidos(formData.lastName);
     setSexo(formData.sexo);
-    setBirthDate(formData.birthDate);
+    setBirthDate(formData.birthDate); 
     setFirstNumberPhone(formData.firstNumberPhone);
+    setSecondcelnumber(formData.secondNumberPhone);
     setEmail(formData.email);
   },[formData])
 
@@ -123,6 +124,12 @@ const [numberId, setnumberId] = useState(formData.numberId);
     const newNumberPhone = event.target.value;
     setFirstNumberPhone(newNumberPhone);
     onChange({ ...formData, firstNumberPhone: newNumberPhone});
+  };
+
+  const handlesecNumberPhone = (event: ChangeEvent<HTMLInputElement>) => {
+    const newNumberPhone = event.target.value;
+    setSecondcelnumber(newNumberPhone);
+    onChange({ ...formData, secondNumberPhone: newNumberPhone});
   };
 
   const handleEmail = (event: ChangeEvent<HTMLInputElement>) => {
@@ -240,6 +247,8 @@ const [numberId, setnumberId] = useState(formData.numberId);
             fullWidth
             autoComplete="off"
             variant="standard"
+            value={secondcelnumber}
+            onChange={handlesecNumberPhone}
           />
         </Grid>
         <Grid item xs={12} sm={6}>

@@ -34,6 +34,16 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
   const [secondcelnumber, setSecondcelnumber] = useState(formData.secondNumberPhone);
   const [email, setEmail] = useState(formData.email);
   const [ nacionalidad, setNacionalidad] = useState('Peru');
+  const [tipoDocumentoFilled, setTipoDocumentoFilled] = useState(false);
+  const [errors, setErrors] = useState({
+    tipoDocumento: false,
+    numberId: false,
+    nombres: false,
+    apellidos: false,
+    sexo: false,
+    birthDate: false,
+    firstNumberPhone: false,
+  });
 
   useEffect(() => {
     setTipoDocumento(formData.typeId);
@@ -86,6 +96,7 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
   const handleTipoDocumentoChange = (event: SelectChangeEvent<string>) => {
     const newTypeid = event.target.value
     setTipoDocumento(newTypeid);
+    setTipoDocumentoFilled(event.target.value !== '');
     onChange({ ...formData, typeId: newTypeid });
   };
 
@@ -116,9 +127,17 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
 
   //fecha de nacimiento
   const handleDate = (date: Date | null) => {
+    if (date) {
+      const formattedDate = date.toISOString().split('T')[0];
       setBirthDate(date);
-      onChange({ ...formData, birthDate: date})
+      onChange({ ...formData, birthDate: formattedDate });
+    } else {
+      setBirthDate(date);
+      onChange({ ...formData, birthDate: null });
+    }
   };
+  
+  
 
   const handleNumberPhone = (event: ChangeEvent<HTMLInputElement>) => {
     const newNumberPhone = event.target.value;
@@ -170,13 +189,16 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
             required
             id="document-id"
             name="document-id"
-            label="N° de Documento"
+            label={errors.numberId ? "ingrese DNI":"N° de Documento"}
             fullWidth
             autoComplete="off"
             variant="standard"
             value={numberId}
             onChange={handleDniChange}
             inputProps={tipoDocumento === 'DNI' ? { maxLength: 8 } : {}}
+            onBlur={() => setErrors((prev) => ({ ...prev, numberId: !numberId }))}
+            error={errors.numberId}
+            color={numberId ? "success" : "secondary"}  
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -184,12 +206,15 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
             required
             id="nombres"
             name="nombres"
-            label="Nombres"
+            label={errors.nombres ? "ingrese Nombre":"Nombres"}
             fullWidth
             autoComplete="off"
             variant="standard"
             value={nombres}
             onChange={handleNombresChange}
+            onBlur={() => setErrors((prev) => ({ ...prev, nombres: !nombres }))}
+            error={errors.nombres}
+            color={nombres ? "success" : "secondary"}  
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -197,17 +222,19 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
             required
             id="apellidos"
             name="apellidos"
-            label="Apellidos"
+            label={errors.apellidos ? "ingrese Apellidos":"Apellidos"}
             fullWidth
             autoComplete="off"
             variant="standard"
             value={apellidos}
             onChange={handleApellidosChange}
+            onBlur={() => setErrors((prev) => ({ ...prev, apellidos: !apellidos }))}
+            error={errors.apellidos}
+            color={apellidos ? "success" : "secondary"} 
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            required
             id="email"
             name="email"
             type='email'
@@ -230,17 +257,19 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
             required
             id="firstcelnumber"
             name="firstcelnumber"
-            label="celular o Telefono"
+            label={errors.firstNumberPhone ? "ingrese Celular":"Celular o telefono"}
             fullWidth
             autoComplete="off"
             variant="standard"
             value={firstNumberPhone}
             onChange={handleNumberPhone}
+            onBlur={() => setErrors((prev) => ({ ...prev, firstNumberPhone: !firstNumberPhone }))}
+            error={errors.firstNumberPhone}
+            color={firstNumberPhone? "success" : "secondary"}  
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            required
             id="secondcelnumber"
             name="secondcelnumber"
             label="Segundo celular (opcional)"

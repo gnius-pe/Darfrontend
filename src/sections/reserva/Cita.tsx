@@ -17,9 +17,9 @@ interface CitaFormProps {
 }
 
 const FechasReserva = [
-  { id: "001", fecha: "2024-07-12" },
-  { id: "002", fecha: "2024-07-13" },
-  { id: "003", fecha: "2024-07-14" },
+  { id: "2", extendFecha: 'vie 12 Jul', fecha: '2024-07-12' },
+  { id: "3", extendFecha: 'sab 13 Jul', fecha: '2024-07-13' },
+  { id: "4", extendFecha: 'dom 14 Jul', fecha: '2024-07-14' },
 ];
 
 const Especialidades = [
@@ -32,7 +32,7 @@ const Especialidades = [
 ];
 
 const CitaForm: React.FC<CitaFormProps> = ({ formData, onChange }) => {
-  const [dateReserva, setDateReserva] = useState(formData.fechareserva);
+  const [dateReserva, setDateReserva] = useState( formData.fechareserva || '');
   const [hora, setHora] = useState(formData.hora);
   const [especialidad, setEspecialidad] = useState(formData.especiality);
   const [mensaje, setMensaje] = useState(formData.mensaje);
@@ -58,12 +58,14 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, onChange }) => {
 
   const handleDateReserva = (event: SelectChangeEvent<string>) => {
     const newDateReservaString = event.target.value;
-    setDateReserva(newDateReservaString);
-    const newDateReservaDate = new Date(newDateReservaString);
-    onChange({ ...formData, fechareserva: newDateReservaDate });
+    if (FechasReserva.some(fecha => fecha.fecha === newDateReservaString)) {
+        setDateReserva(newDateReservaString);
+        onChange({ ...formData, fechareserva: newDateReservaString });
+    }
     setErrors((prev) => ({ ...prev, fechareserva: !newDateReservaString }));
-  };
+};
 
+  
   const handleHora = (event: ChangeEvent<HTMLInputElement>) => {
     const newHora = event.target.value;
     setHora(newHora);
@@ -110,21 +112,20 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, onChange }) => {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-            <InputLabel id="fecha">Fecha</InputLabel>
+          <FormControl fullWidth error={errors.fechareserva}>
+            <InputLabel id="fecha-label">{errors.fechareserva ? "Fecha de reserva":" Seleccione"}</InputLabel>
             <Select
-              labelId="fecha"
+              labelId="fecha-label"
               id="fecha-select"
               value={dateReserva}
               label="Fecha"
               onChange={handleDateReserva}
               onBlur={() => setErrors((prev) => ({ ...prev, fechareserva: !dateReserva }))}
               fullWidth
-              error={errors.fechareserva}
             >
               {FechasReserva.map((fecha) => (
-                <MenuItem key={fecha.id} value={fecha.fecha}>
-                  {fecha.fecha}
+                <MenuItem key={fecha.id} value={fecha.fecha.toString()} >
+                  {fecha.extendFecha}
                 </MenuItem>
               ))}
             </Select>
@@ -142,33 +143,32 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, onChange }) => {
             onChange={handleHora}
             onBlur={() => setErrors((prev) => ({ ...prev, hora: !hora }))}
             error={errors.hora}
-            color="warning"
-            focused={errors.hora}
+            color={hora ? "success" : "secondary"}  
+            focused
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-  <FormControl fullWidth error={errors.especiality}>
-    <InputLabel id="especialidad-label">
-      {errors.especiality ? "Seleccione" : "Especialidad"}
-    </InputLabel>
-    <Select
-      labelId="especialidad-label"
-      id="select-especialidad"
-      value={especialidad}
-      label="Especialidad"
-      onChange={handleEspecialidad}
-      onBlur={() => setErrors((prev) => ({ ...prev, especiality: !especialidad }))}
-      fullWidth
-    >
-      {Especialidades.map((especialidad) => (
-        <MenuItem key={especialidad.id} value={especialidad.especialidad}>
-          {especialidad.especialidad}
-        </MenuItem>
-      ))}
-    </Select>
-  </FormControl>
-</Grid>
-
+          <FormControl fullWidth error={errors.especiality}>
+            <InputLabel id="especialidad-label">
+              {errors.especiality ? "Seleccione" : "Especialidad"}
+            </InputLabel>
+            <Select
+              labelId="especialidad-label"
+              id="select-especialidad"
+              value={especialidad}
+              label="Especialidad"
+              onChange={handleEspecialidad}
+              onBlur={() => setErrors((prev) => ({ ...prev, especiality: !especialidad }))}
+              fullWidth
+            >
+              {Especialidades.map((especialidad) => (
+                <MenuItem key={especialidad.id} value={especialidad.especialidad}>
+                  {especialidad.especialidad}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
         <Grid item xs={12}>
           <TextField
             required
@@ -180,8 +180,8 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, onChange }) => {
             onChange={handleMensaje}
             onBlur={() => setErrors((prev) => ({ ...prev, mensaje: !mensaje }))}
             error={errors.mensaje}
-            color="warning"
-            focused={errors.mensaje}
+            color={mensaje ? "success" : "secondary"}  
+            focused={errors.mensaje || Boolean(mensaje)}  
           />
         </Grid>
         <Grid item xs={12}>

@@ -26,13 +26,13 @@ interface FormData {
   firstNumberPhone: string;
   secondNumberPhone: string;
   sexo: string;
-  birthDate: Date;
+  birthDate: string;
   nacionality: string;
   departamento: string;
   provincia: string;
   distrito: string;
   direccion: string;
-  fechareserva: Date;
+  fechareserva: string;
   especiality: string;
   hora: string;
   mensaje: string;
@@ -46,6 +46,7 @@ const steps = ['Datos', 'Ubicacion', 'Cita','revision'];
 
 
 export default function Checkout() {
+  const formatDate = (date: Date) => date.toISOString().split('T')[0];
 
   const [formData, setFormData] = useState<FormData>({
     typeId: '',
@@ -56,13 +57,13 @@ export default function Checkout() {
     firstNumberPhone: '',
     secondNumberPhone: '',
     sexo: '',
-    birthDate: new Date(),
+    birthDate: formatDate(new Date()),
     nacionality: '',
     departamento: '',
     provincia: '',
     distrito: '',
     direccion: '',
-    fechareserva: new Date(),
+    fechareserva: formatDate(new Date()),
     especiality: '',
     hora: '',
     mensaje: '',
@@ -76,7 +77,7 @@ export default function Checkout() {
   function getStepContent(step: number) {
     switch (step) {
       case 0:
-        return <AddressForm formData={formData} onChange={(data)=> handleFormChange(data)} />;
+        return <AddressForm formData={formData} onChange={(data)=> handleFormChange(data)}/>;
       case 1:
         return <LocationForm formData={formData} onChange={(data)=> handleFormChange(data)}/>;
       case 2:
@@ -110,7 +111,7 @@ export default function Checkout() {
         firtsNumberPhone: formData.firstNumberPhone,
         secondNumberPhone: formData.secondNumberPhone,
         sexo: formData.sexo,
-        birthDate: formData.birthDate.toISOString(),
+        birthDate: formData.birthDate,
       },
       location: {
         department: formData.departamento,

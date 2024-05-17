@@ -6,90 +6,102 @@ import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 
 interface ReviewFormProps {
-  formData: any; // Tipo de tus datos del formulario
+  formData: any; 
 }
-
-interface Product {
-  name: string;
-  desc: string;
-  fech: String;
-}
-
-interface PersonalDate {
-  name: string;
-  detail: string;
-}
-
-const products: Product[] = [
-  {
-    name: 'Odontologia',
-    desc: '',
-    fech: '10/10/2024',
-  },
-  {
-    name: 'oftalmologia',
-    desc: '',
-    fech: '10/10/2024',
-  },
-  {
-    name: 'Medicina general',
-    desc: '',
-    fech: '10/10/2024',
-  },
-];
-
-const addresses: string[] = ['Jr. Tiahuanaco 501', 'Apurimac', 'Abancay', 'Tiban', 'Peru'];
-const datos: PersonalDate[] = [
-  { name: 'Cel', detail: '999 999 999' },
-  { name: 'Correo electronico', detail: 'example@mui.com' },
-  { name: 'DNI', detail: '10203040' },
-  { name: 'Nacimiento', detail: '10/10/2000' },
-  { name: 'Sexo', detail: 'Masculino' },
-];
 
 const Review: React.FC<ReviewFormProps> = ({ formData }) => {
-  const { name, lastName } = formData;//tal como esta estructurado en el interface formProps
-
-
+  const { name, lastName, numberId, firstNumberPhone, sexo, birthDate, departamento, provincia, distrito, direccion, fechareserva, especiality, hora, mensaje, analisis, ayuda, visita } = formData;//tal como esta estructurado en el interface formProps
 
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        Paciente
-      </Typography>
+
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Nombres y Direccion
-          </Typography>
-          <Typography gutterBottom>{name}</Typography>
-          <Typography gutterBottom>LoL</Typography>
-        </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Contacto
+          <Typography variant="h6" gutterBottom sx={{ mt: 2 }} className="text-red-700">
+            Datos Personales
           </Typography>
           <Grid container>
-            {datos.map((dato) => (
-              <React.Fragment key={dato.name}>
+              <Typography gutterBottom className={`${name} ${lastName}` ? 'text-blue-800' : 'bg-red-400'}>{`${name} ${lastName}`}</Typography>
+              <React.Fragment >
                 <Grid item xs={6}>
-                  <Typography gutterBottom>{dato.name}</Typography>
+                  <Typography gutterBottom className={numberId ? 'text-blue-800' : 'bg-red-400'}>DNI</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography gutterBottom>{dato.detail}</Typography>
+                  <Typography gutterBottom >{numberId}</Typography>
                 </Grid>
               </React.Fragment>
-            ))}
+              <React.Fragment >
+                <Grid item xs={6}>
+                  <Typography gutterBottom className={firstNumberPhone ? 'text-blue-800' : 'bg-red-400'}>Celular</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography gutterBottom >{firstNumberPhone}</Typography>
+                </Grid>
+              </React.Fragment>
+              <React.Fragment >
+                <Grid item xs={6}>
+                  <Typography gutterBottom className={sexo ? 'text-blue-800' : 'bg-red-400'}>sexo</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography gutterBottom >{sexo}</Typography>
+                </Grid>
+              </React.Fragment>
+              <React.Fragment >
+                <Grid item xs={6}>
+                  <Typography gutterBottom className={birthDate ? 'text-blue-800' : 'bg-red-400'}>Nacimiento</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography gutterBottom >{birthDate}</Typography>
+                </Grid>
+              </React.Fragment>
+            </Grid>
+        </Grid>
+        <Grid item container direction="column" xs={12} sm={6}>
+          <Typography variant="h6" gutterBottom sx={{ mt: 2 }} className="text-red-700">
+            Locacion
+          </Typography>
+          <Grid container>
+              <React.Fragment >
+                <Grid item xs={6}>
+                  <Typography gutterBottom className={departamento ? 'text-blue-800' : 'bg-red-400'}>Departamento</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography gutterBottom >{departamento}</Typography>
+                </Grid>
+              </React.Fragment>
+              <React.Fragment >
+                <Grid item xs={6}>
+                  <Typography gutterBottom className={provincia ? 'text-blue-800' : 'bg-red-400'}>Provincia</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography gutterBottom >{provincia}</Typography>
+                </Grid>
+              </React.Fragment><React.Fragment >
+                <Grid item xs={6}>
+                  <Typography gutterBottom className={distrito ? 'text-blue-800' : 'bg-red-400'}>Distrito</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography gutterBottom >{distrito}</Typography>
+                </Grid>
+              </React.Fragment><React.Fragment > 
+                <Grid item xs={6}>
+                  <Typography gutterBottom className={direccion ? 'text-blue-800' : 'bg-red-400'}>Direccion</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography gutterBottom >{direccion}</Typography>
+                </Grid>
+              </React.Fragment>
           </Grid>
         </Grid>
       </Grid>
+      <Typography variant="h6" gutterBottom className="text-red-600">
+        Citas
+      </Typography>
       <List disablePadding>
-        {products.map((product) => (
-          <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
-            <ListItemText primary={product.name} secondary={product.desc} />
-            <Typography variant="body2">{product.fech}</Typography>
+          <ListItem sx={{ py: 0, px: 0 }}>
+            <ListItemText primary={especiality} secondary={hora} />
+            <Typography variant="body2">{fechareserva}</Typography>
           </ListItem>
-        ))}
       </List>
     </React.Fragment>
   );

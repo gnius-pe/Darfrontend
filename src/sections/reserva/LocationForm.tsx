@@ -25,6 +25,12 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
   const [provincia, setProvincia] = useState(formData.provincia);
   const [distrito, setDistrito] = useState(formData.distrito);
   const [ direccion, setDireccion] = useState(formData.direccion);
+  const [errors, setErrors] = useState({
+    departamento:false,
+    provincia:false,
+    distrito:false,
+    direccion:false,
+  });
 
   useEffect(() => {
     setDepartamento(formData.departamento);
@@ -68,79 +74,82 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
-        <FormControl fullWidth>
-          <InputLabel id="tipo-documento-label">Departamento</InputLabel>
-          <Select
-            labelId="tipo-documento-label"
-            id="demo-simple-select"
-            value={departamento}
-            label="Departamento"
-            onChange={handleDepartamento}
-            fullWidth
-          >
-            {departamentos.map((departamento) => (
-              <MenuItem key={departamento.id} value={departamento.id}>
-               {departamento.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          <FormControl fullWidth>
+            <InputLabel id="departamento-label">Departamento</InputLabel>
+            <Select
+              labelId="departamento-label"
+              id="select-departamento"
+              value={departamento}
+              label="Departamento"
+              onChange={handleDepartamento}
+              fullWidth
+            >
+              {departamentos.map((departamento) => (
+                <MenuItem key={departamento.id} value={departamento.name}>
+                  {departamento.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth>
-          <InputLabel id="tipo-documento-label">Provincia</InputLabel>
-          <Select
-            labelId="tipo-documento-label"
-            id="demo-simple-select"
-            value={provincia}
-            label="Provincia"
-            onChange={handleProvincia}
-            fullWidth
-            disabled={!departamento}
-          >
-            {provincias
-            .filter(provincia => provincia.department_id === departamento)
-            .map((provincia) => (
-              <MenuItem key={provincia.id} value={provincia.id}>
-                {provincia.name}
-              </MenuItem>
-          ))}
-          </Select>
-        </FormControl>
+            <InputLabel id="provincia-label">Provincia</InputLabel>
+            <Select
+              labelId="provincia-label"
+              id="select-provincia"
+              value={provincia}
+              label="Provincia"
+              onChange={handleProvincia}
+              fullWidth
+              disabled={!departamento}
+            >
+              {provincias
+                .filter(provincia => provincia.department_id === departamentos.find(dep => dep.name === departamento)?.id)
+                .map((provincia) => (
+                  <MenuItem key={provincia.id} value={provincia.name}>
+                    {provincia.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth>
-          <InputLabel id="tipo-documento-label">Distrito</InputLabel>
-          <Select
-            labelId="tipo-documento-label"
-            id="demo-simple-select"
-            value={distrito}
-            label="Distrito"
-            onChange={handleDistrito}
-            fullWidth
-            disabled={!provincia}
-          >
-             {distritos
-            .filter(distrito => distrito.province_id === provincia)
-            .map((distrito) => (
-              <MenuItem key={distrito.id} value={distrito.id}>
-                {distrito.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+            <InputLabel id="distrito-label">Distrito</InputLabel>
+            <Select
+              labelId="distrito-label"
+              id="select-distrito"
+              value={distrito}
+              label="Distrito"
+              onChange={handleDistrito}
+              fullWidth
+              disabled={!provincia}
+            >
+              {distritos
+                .filter(distrito => distrito.province_id === provincias.find(prov => prov.name === provincia)?.id)
+                .map((distrito) => (
+                  <MenuItem key={distrito.id} value={distrito.name}>
+                    {distrito.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
         </Grid>
         <Grid item xs={12}>
           <TextField
             required
             id="city"
             name="city"
-            label="Direccion"
+            label={errors.direccion ? "agregue su direccion" : "Direccion"}
             fullWidth
             autoComplete="off"
             variant="standard"
             value={direccion}
             onChange={handleDireccion}
+            onBlur={() => setErrors((prev) => ({ ...prev, direccion: !direccion }))}
+            error={errors.direccion}
+            color={direccion ? "success" : "secondary"}  
           />
         </Grid>
       </Grid>

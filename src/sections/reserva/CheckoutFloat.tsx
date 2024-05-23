@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { useState } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Toolbar from '@mui/material/Toolbar';
 import Paper from '@mui/material/Paper';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -15,7 +13,13 @@ import LocationForm from './LocationForm';
 import AddressForm from './AddressForm';
 import Review from './Review';
 import Cita from './Cita';
+import { FC } from 'react';
 
+interface NewUserModal{
+    isOpen: boolean;
+    onClose: () => void;
+  }
+  
 
 interface FormData {
   typeId: string;
@@ -45,7 +49,10 @@ const steps = ['Datos', 'Ubicacion', 'Cita','revision'];
 
 
 
-export default function Checkout() {
+const CheckoutFloat: FC<NewUserModal> = ({isOpen, onClose}) => {
+
+  if(!isOpen) return null;
+
   const formatDate = (date: Date) => date.toISOString().split('T')[0];
 
   const [formData, setFormData] = useState<FormData>({
@@ -154,27 +161,24 @@ export default function Checkout() {
 
   return (
     <React.Fragment>
+      <div className='fixed inset-0 bg-black bg-opacity-50'>
       <CssBaseline />
-      <AppBar
-        position="absolute"
-        color="default"
-        elevation={0}
-        sx={{
-          position: 'relative',
-          borderBottom: (t) => `1px solid ${t.palette.divider}`,
-        }}
-      >
-        <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
-            DAR Regsitro
-          </Typography>
-        </Toolbar>
-      </AppBar>
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Typography component="h1" variant="h4" align="center">
-            Reserva de cita
-          </Typography>
+          <div className='relative'>
+            <Typography component="h1" variant="h4" align="center">
+              Reserva de cita
+            </Typography>
+            <button  
+              className="absolute top-0 right-0 mt-2 mr-2 focus:outline-none "
+              onClick={onClose}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
+              </svg>
+
+            </button>
+          </div>
           <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
             {steps.map((label) => (
               <Step key={label}>
@@ -217,6 +221,8 @@ export default function Checkout() {
           )}
         </Paper>
       </Container>
+      </div>
     </React.Fragment>
   );
-}
+};
+export default CheckoutFloat;

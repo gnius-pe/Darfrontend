@@ -2,16 +2,6 @@ import * as React from 'react';
 import { useState, useEffect, ChangeEvent} from 'react';
 
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormLabel from '@mui/material/FormLabel';
 import { SelectChangeEvent } from '@mui/material/Select';
 import axios from 'axios';
 
@@ -93,8 +83,8 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
   });
   }, [tipoDocumento, numberId]);
 
-  const handleTipoDocumentoChange = (event: SelectChangeEvent<string>) => {
-    const newTypeid = event.target.value
+  const handleTipoDocumentoChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const newTypeid = event.target.value;
     setTipoDocumento(newTypeid);
     setTipoDocumentoFilled(event.target.value !== '');
     onChange({ ...formData, typeId: newTypeid });
@@ -157,93 +147,84 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
     onChange({ ...formData, email: newEmail});
   };
 
-  const handleNacionalidad = (event: SelectChangeEvent<string>) => {
+  const handleNacionalidad = (event: ChangeEvent<HTMLSelectElement>) => {
     setNacionalidad(event.target.value);
   }
 
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
+      <h2  className="text-lg font-bold mb-4">
         Datos Personales
-      </Typography>
+      </h2>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-          <InputLabel id="tipo-documento-label">Documento</InputLabel>
-          <Select
-            labelId="tipo-documento-label"
-            id="documento"
+        <div>
+          <select
+            id="tipo-documento"
             value={tipoDocumento}
-            label="Documento"
             onChange={handleTipoDocumentoChange}
-            fullWidth
+            className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
           >
-            <MenuItem value={'DNI'}>DNI</MenuItem>
-            <MenuItem value={'Pasaporte'}>Pasaporte</MenuItem>
-            <MenuItem value={'Carnet de extranjeria'}>Carnet de extr.</MenuItem>
-          </Select>
-        </FormControl>
+            <option value="" disabled selected hidden>Documento</option>
+            <option value="DNI">DNI</option>
+            <option value="Pasaporte">Pasaporte</option>
+            <option value="Carnet de extranjeria">Carnet de extranjería</option>
+          </select>
+        </div>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
+          <input
             required
+            placeholder={errors.numberId ? "ingrese su N° de DNI" : "N° de Documento"}
+            type="text"
             id="document-id"
             name="document-id"
-            label={errors.numberId ? "ingrese DNI":"N° de Documento"}
-            fullWidth
-            autoComplete="off"
-            variant="standard"
             value={numberId}
             onChange={handleDniChange}
-            inputProps={tipoDocumento === 'DNI' ? { maxLength: 8 } : {}}
             onBlur={() => setErrors((prev) => ({ ...prev, numberId: !numberId }))}
-            error={errors.numberId}
-            color={numberId ? "success" : "secondary"}  
+            className={`w-full border ${errors.numberId ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
+            autoComplete="off"
+            maxLength={tipoDocumento === 'DNI' ? 8 : undefined}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
+          <input
             required
             id="nombres"
             name="nombres"
-            label={errors.nombres ? "ingrese Nombre":"Nombres"}
-            fullWidth
+            type='text'
+            placeholder={errors.nombres ? "ingrese Nombre":"Nombres"}
             autoComplete="off"
-            variant="standard"
             value={nombres}
             onChange={handleNombresChange}
             onBlur={() => setErrors((prev) => ({ ...prev, nombres: !nombres }))}
-            error={errors.nombres}
-            color={nombres ? "success" : "secondary"}  
+            className={`w-full border ${errors.nombres ? 'border-red-500': 'border-gray-300'}rounded p-2 focus:outline-none focus:border-blue-500`}  
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
+          <input
             required
             id="apellidos"
             name="apellidos"
-            label={errors.apellidos ? "ingrese Apellidos":"Apellidos"}
-            fullWidth
+            type='text'
+            placeholder={errors.apellidos ? "ingrese Apellidos":"Apellidos"}
             autoComplete="off"
-            variant="standard"
             value={apellidos}
             onChange={handleApellidosChange}
             onBlur={() => setErrors((prev) => ({ ...prev, apellidos: !apellidos }))}
-            error={errors.apellidos}
-            color={apellidos ? "success" : "secondary"} 
+            className={`w-full border ${errors.apellidos ? 'border-red-500': 'border-gray-300'}rounded p-2 focus:outline-none focus:border-blue-500`}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
+          <input
             id="email"
             name="email"
             type='email'
-            label="Correo electornico"
-            fullWidth
+            placeholder="email(Opcional)"
             autoComplete="off"
-            variant="standard"
             value={email}
             onChange={handleEmail}
+            className='w-full border rounded p-2 focus:outline-none focus:border-blue-500'
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -253,63 +234,69 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
             />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
+          <input
             required
             id="firstcelnumber"
             name="firstcelnumber"
-            label={errors.firstNumberPhone ? "ingrese Celular":"Celular o telefono"}
-            fullWidth
+            placeholder={errors.firstNumberPhone ? "ingrese Celular":"Celular o telefono"}
+            type='number'
             autoComplete="off"
-            variant="standard"
             value={firstNumberPhone}
             onChange={handleNumberPhone}
             onBlur={() => setErrors((prev) => ({ ...prev, firstNumberPhone: !firstNumberPhone }))}
-            error={errors.firstNumberPhone}
-            color={firstNumberPhone? "success" : "secondary"}  
+            className={`w-full border ${errors.firstNumberPhone ? 'border-red-500': 'border-gray-300'}rounded p-2 focus:outline-none focus:border-blue-500`}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
+          <input
             id="secondcelnumber"
             name="secondcelnumber"
-            label="Segundo celular (opcional)"
-            fullWidth
+            placeholder="Segundo celular (opcional)"
             autoComplete="off"
-            variant="standard"
             value={secondcelnumber}
             onChange={handlesecNumberPhone}
+            className='w-full border rounded p-2 focus:outline-none focus:border-blue-500'
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormLabel id="demo-row-radio-buttons-group-label">Sexo</FormLabel>
-          <RadioGroup
-            row
-            aria-labelledby="demo-row-radio-buttons-group-label"
-            name="row-radio-buttons-group"
-            value={sexo}
-            onChange={handleSexo}
-          >
-            <FormControlLabel value="femenino" control={<Radio />} label="Femen" />
-            <FormControlLabel value="masculino" control={<Radio />} label="Mascu" />
-          </RadioGroup>
+          <div className="flex items-center space-x-4">
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                name="sexo"
+                value="femenino"
+                checked={sexo === 'femenino'}
+                onChange={handleSexo}
+                className="form-radio text-blue-600"
+              />
+              <span className="ml-2">Femenino</span>
+            </label>
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                name="sexo"
+                value="masculino"
+                checked={sexo === 'masculino'}
+                onChange={handleSexo}
+                className="form-radio text-blue-600"
+              />
+              <span className="ml-2">Masculino</span>
+            </label>
+          </div>
        </Grid>
        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-          <InputLabel id="tipo-documento-label">Nacionalidad</InputLabel>
-          <Select
-            labelId="tipo-documento-label"
+          <div>
+          <select
             id="demo-simple-select"
             value={nacionalidad}
-            label="Nacionalidad"
-            fullWidth
             onChange={handleNacionalidad}
+            className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
           >
-            
-              <MenuItem key='Peru' value={'Peru'}>
+              <option value={'Peru'}>
                 Peru
-              </MenuItem>
-          </Select>
-        </FormControl>
+              </option>
+          </select>
+        </div>
         </Grid>
       </Grid>
     </React.Fragment>

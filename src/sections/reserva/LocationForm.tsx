@@ -2,12 +2,6 @@ import * as React from 'react';
 import { useState, useEffect, ChangeEvent } from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import { SelectChangeEvent } from '@mui/material/Select';
 
 import departamentos from '../../assets/departamentos.json';
 import provincias from '../../assets/provincias.json';
@@ -40,14 +34,14 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
   },[formData])
 
    //departamento
-   const handleDepartamento = (event: SelectChangeEvent<string>)  => {
+   const handleDepartamento = (event: ChangeEvent<HTMLSelectElement>)  => {
     const newDepartamento = event.target.value;
     setDepartamento(newDepartamento);
     onChange({ ...formData, departamento: newDepartamento});
   };
 
   //provinvcia
-  const handleProvincia = (event: SelectChangeEvent<string>) => {
+  const handleProvincia = (event: ChangeEvent<HTMLSelectElement>) => {
     const newProvincia = event.target.value;
     setProvincia(newProvincia);
     setDistrito(formData.distrito);
@@ -55,7 +49,7 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
   };
 
   //distritos
-  const handleDistrito =(event: SelectChangeEvent<string>)  => {
+  const handleDistrito =(event: ChangeEvent<HTMLSelectElement>)  => {
     const newDistrito = event.target.value;
     setDistrito(newDistrito);
     onChange({ ...formData, distrito: newDistrito});
@@ -74,82 +68,71 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-            <InputLabel id="departamento-label">Departamento</InputLabel>
-            <Select
-              labelId="departamento-label"
+          <div>
+            <select
               id="select-departamento"
               value={departamento}
-              label="Departamento"
+              aria-placeholder="Departamento"
               onChange={handleDepartamento}
-              fullWidth
+              className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
             >
               {departamentos.map((departamento) => (
-                <MenuItem key={departamento.id} value={departamento.name}>
+                <option key={departamento.id} value={departamento.name}>
                   {departamento.name}
-                </MenuItem>
+                </option>
               ))}
-            </Select>
-          </FormControl>
+            </select>
+          </div>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-            <InputLabel id="provincia-label">Provincia</InputLabel>
-            <Select
-              labelId="provincia-label"
+          <div>
+            <select
               id="select-provincia"
               value={provincia}
-              label="Provincia"
               onChange={handleProvincia}
-              fullWidth
-              disabled={!departamento}
+              className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
             >
               {provincias
                 .filter(provincia => provincia.department_id === departamentos.find(dep => dep.name === departamento)?.id)
                 .map((provincia) => (
-                  <MenuItem key={provincia.id} value={provincia.name}>
+                  <option key={provincia.id} value={provincia.name}>
                     {provincia.name}
-                  </MenuItem>
+                  </option>
                 ))}
-            </Select>
-          </FormControl>
+            </select>
+          </div>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-            <InputLabel id="distrito-label">Distrito</InputLabel>
-            <Select
-              labelId="distrito-label"
+          <div>
+            <select
               id="select-distrito"
               value={distrito}
-              label="Distrito"
               onChange={handleDistrito}
-              fullWidth
               disabled={!provincia}
+              className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
             >
               {distritos
                 .filter(distrito => distrito.province_id === provincias.find(prov => prov.name === provincia)?.id)
                 .map((distrito) => (
-                  <MenuItem key={distrito.id} value={distrito.name}>
+                  <option key={distrito.id} value={distrito.name}>
                     {distrito.name}
-                  </MenuItem>
+                  </option>
                 ))}
-            </Select>
-          </FormControl>
+            </select>
+          </div>
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <input
             required
             id="city"
             name="city"
-            label={errors.direccion ? "agregue su direccion" : "Direccion"}
-            fullWidth
+            type='text'
+            placeholder={errors.direccion ? "agregue su direccion" : "Direccion"}
             autoComplete="off"
-            variant="standard"
             value={direccion}
             onChange={handleDireccion}
             onBlur={() => setErrors((prev) => ({ ...prev, direccion: !direccion }))}
-            error={errors.direccion}
-            color={direccion ? "success" : "secondary"}  
+            className={`w-full border ${errors.direccion ? 'border-red-500': 'border-gray-300'}rounded p-2 focus:outline-none focus:border-blue-500`}
           />
         </Grid>
       </Grid>

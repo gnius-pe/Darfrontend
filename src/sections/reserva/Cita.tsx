@@ -2,14 +2,8 @@ import * as React from 'react';
 import { useState, ChangeEvent, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import { SelectChangeEvent } from '@mui/material';
 
 interface CitaFormProps {
   formData: any;
@@ -56,7 +50,7 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, onChange }) => {
     setCheckVisita(formData.visita);
   }, [formData]);
 
-  const handleDateReserva = (event: SelectChangeEvent<string>) => {
+  const handleDateReserva = (event: ChangeEvent<HTMLSelectElement>) => {
     const newDateReservaString = event.target.value;
     if (FechasReserva.some(fecha => fecha.fecha === newDateReservaString)) {
         setDateReserva(newDateReservaString);
@@ -73,7 +67,7 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, onChange }) => {
     setErrors((prev) => ({ ...prev, hora: !newHora }));
   };
 
-  const handleEspecialidad = (event: SelectChangeEvent<string>) => {
+  const handleEspecialidad = (event: ChangeEvent<HTMLSelectElement>) => {
     const newEspecialidad = event.target.value;
     setEspecialidad(newEspecialidad);
     onChange({ ...formData, especiality: newEspecialidad });
@@ -107,109 +101,112 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, onChange }) => {
 
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
+      <h2 className="text-lg font-bold mb-4">
         Detalles de Cita
-      </Typography>
-      <Grid container spacing={3}>
+      </h2>
+      <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth error={errors.fechareserva}>
-            <InputLabel id="fecha-label">{errors.fechareserva ? "Fecha de reserva":" Seleccione"}</InputLabel>
-            <Select
-              labelId="fecha-label"
+          <div>
+            <select
               id="fecha-select"
               value={dateReserva}
-              label="Fecha"
               onChange={handleDateReserva}
               onBlur={() => setErrors((prev) => ({ ...prev, fechareserva: !dateReserva }))}
-              fullWidth
+              className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
             >
               {FechasReserva.map((fecha) => (
-                <MenuItem key={fecha.id} value={fecha.fecha.toString()} >
+                <option key={fecha.id} value={fecha.fecha}>
                   {fecha.extendFecha}
-                </MenuItem>
+                </option>
               ))}
-            </Select>
-          </FormControl>
+            </select>
+          </div>
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField
+          <input 
             required
             id="Hora"
-            label={errors.hora ? "Agregue una hora" : "Hora"}
-            fullWidth
+            placeholder={errors.hora ? "Agregue una hora" : "Hora"}
             autoComplete="none"
-            variant="standard"
             value={hora}
             onChange={handleHora}
             onBlur={() => setErrors((prev) => ({ ...prev, hora: !hora }))}
-            error={errors.hora}
-            color={hora ? "success" : "secondary"}  
-            focused
+            className={`w-full border ${errors.hora ? 'border-red-500': 'border-gray-300'}rounded p-2 focus:outline-none focus:border-blue-500`}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth error={errors.especiality}>
-            <InputLabel id="especialidad-label">
-              {errors.especiality ? "Seleccione" : "Especialidad"}
-            </InputLabel>
-            <Select
-              labelId="especialidad-label"
+          <div>
+            <select
               id="select-especialidad"
               value={especialidad}
-              label="Especialidad"
               onChange={handleEspecialidad}
               onBlur={() => setErrors((prev) => ({ ...prev, especiality: !especialidad }))}
-              fullWidth
+              className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
             >
               {Especialidades.map((especialidad) => (
-                <MenuItem key={especialidad.id} value={especialidad.especialidad}>
+                <option key={especialidad.id} value={especialidad.especialidad}>
                   {especialidad.especialidad}
-                </MenuItem>
+                </option>
               ))}
-            </Select>
-          </FormControl>
+            </select>
+          </div>
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <input
             required
             id="mensaje"
-            label={errors.mensaje ? "Agregue un mensaje" : "Mensaje"}
-            fullWidth
-            variant="standard"
+            type='text'
+            placeholder={errors.mensaje ? "Agregue un mensaje" : "Mensaje"}
             value={mensaje}
             onChange={handleMensaje}
             onBlur={() => setErrors((prev) => ({ ...prev, mensaje: !mensaje }))}
-            error={errors.mensaje}
-            color={mensaje ? "success" : "secondary"}  
-            focused={errors.mensaje || Boolean(mensaje)}  
+            className={`w-full border ${errors.mensaje ? 'border-red-500': 'border-gray-300'}rounded p-2 focus:outline-none focus:border-blue-500`}
           />
         </Grid>
         <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox color="secondary"
-              name="analisis"
-              checked={checkAnalisis}
-              onChange={handleCheckAnalisis} />}
-            label="¿Cuentas con examenes o algun analisis sobre tu consulta que tenga menos de 30 dias?"
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            id="analisis"
+            name="analisis"
+            checked={checkAnalisis}
+            onChange={handleCheckAnalisis}
+            className="form-checkbox text-secondary h-5 w-5"
           />
+          <label htmlFor="analisis" className="ml-2 text-gray-900">
+            ¿Cuentas con exámenes o algún análisis sobre tu consulta que tenga menos de 30 días?
+          </label>
+        </div>
         </Grid>
         <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox color="secondary"
-              name="ayuda"
-              checked={checkAyuda}
-              onChange={handleCheckAyuda} />}
-            label="¿Estas interesado en recibir ayuda espiritual?"
+          <div className="flex items-center">
+          <input
+            type="checkbox"
+            id="ayuda"
+            name="ayuda"
+            checked={checkAyuda}
+            onChange={handleCheckAyuda}
+            className="form-checkbox text-secondary h-4 w-4"
           />
+          <label htmlFor="ayuda" className="ml-2 text-gray-900">
+            ¿Estas interesado en recibir ayuda espiritual?
+          </label>
+        </div>
         </Grid>
         <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox color="secondary"
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="visita"
               name="visita"
               checked={checkVisita}
-              onChange={handleCheckVisita} />}
-            label="¿Deseas ser contactado para futuras actividades o eventos religiosos?"
-          />
+              onChange={handleCheckVisita}
+              className="form-checkbox text-secondary h-4 w-4"
+            />
+            <label htmlFor="visita" className="ml-2 text-gray-900">
+              ¿Deseas ser contactado para futuras actividades o eventos religiosos?
+            </label>
+          </div>
         </Grid>
       </Grid>
     </React.Fragment>

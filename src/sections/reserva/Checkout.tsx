@@ -9,15 +9,14 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
+import AddressForm from './AddressForm';
 import Review from './Review';
 
 const steps = ['Datos personales', 'Detalles de atencion', 'Revisa tu cita'];
 
-function getStepContent(step) {
+function getStepContent(step: number) {
   switch (step) {
     case 0:
       return <AddressForm />;

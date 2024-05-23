@@ -11,7 +11,3 @@ function App() {
 }
 
 export default App;
-/* ver lo del formulario para conservar temporalmente
-segundo agregar los archivo del dashboard
-ya esta el login
-me falta agregar la parte de lo hecho con el dashboard*/

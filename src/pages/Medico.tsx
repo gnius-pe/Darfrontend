@@ -1,3 +1,4 @@
 export default function Medico(){
-    return <h1> Medicos</h1>
+    console.log("Medico");
+    return <h1 className="text-blue-700"> Medicos Lorem, ipsum dolor sit amet consectetur adipisicing elit. Porro suscipit voluptate repudiandae quod. Molestias qui quae odio, vero itaque ratione, error libero cupiditate explicabo eum illum, obcaecati fugiat accusantium natus.</h1>
 }

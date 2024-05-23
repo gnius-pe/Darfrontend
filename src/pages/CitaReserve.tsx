@@ -1,4 +1,4 @@
-import Checkout from '../sections/reserva/Checkout.jsx';
+import Checkout from '../sections/reserva/Checkout.tsx';
 import DefaultLayout from '../layout/Defaultlayout.js';
 
 export default function ReservaCita(){

@@ -72,12 +72,28 @@ export default function Checkout() {
     visita: false,
   });
 
+  ///paginador del formulario
   const [activeStep, setActiveStep] = React.useState(0);
+  ////variable de errores
+  const [errors, setErrors]= useState<any>({});
+
+  const validatePage = (pageIndex: number) => {
+    const newErrors: any = {};
+    if (pageIndex === 0) {
+      if (!formData.name) newErrors.name = 'ingrese un nombre'        
+      if (!formData.lastName) newErrors.lastName ='ingrese apellidos'
+      if (!formData.numberId) newErrors.numberId ='ingrese su DNI'
+      if (!formData.firstNumberPhone) newErrors.firstNumberPhone = 'ingrese su numero'
+      if (!formData.birthDate) newErrors.birthDate = 'ingrese su fecha de nacimiento'
+      if (!formData.sexo) newErrors.sexo = 'seleccione su sexo' 
+    }
+    return newErrors;
+  }
 
   function getStepContent(step: number) {
     switch (step) {
       case 0:
-        return <AddressForm formData={formData} onChange={(data)=> handleFormChange(data)}/>;
+        return <AddressForm formData={formData} errors = {errors} onChange={(data)=> handleFormChange(data)}/>;
       case 1:
         return <LocationForm formData={formData} onChange={(data)=> handleFormChange(data)}/>;
       case 2:
@@ -89,16 +105,30 @@ export default function Checkout() {
     }
   }
 
-  const handleFormChange = (data: any) => {
-    setFormData((prevFormData) => ({ ...prevFormData, ...data }));
-  };
-
   const handleNext = () => {
-    setActiveStep(activeStep + 1);
+    const newErrors = validatePage(activeStep);
+    if (Object.keys(newErrors).length === 0){
+      setActiveStep(activeStep + 1);
+    } else {
+      setErrors(newErrors);
+    }
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
+  };
+
+  const handleFormChange = (data: any) => {
+    setFormData((prevFormData) => ({ ...prevFormData, ...data }));
+
+    //remueve los errores del formulario 
+    const newErrors = { ...errors }
+    for ( const key in data){
+      if (data[key]){
+        delete newErrors[key];
+      }
+    }
+    setErrors(newErrors);
   };
 
   const handleSubmit = async () => {
@@ -175,7 +205,7 @@ export default function Checkout() {
           <Typography component="h1" variant="h4" align="center">
             Reserva de cita
           </Typography>
-          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 3 }}>
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>

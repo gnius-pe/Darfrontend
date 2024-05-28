@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -6,11 +7,23 @@ import 'dayjs/locale/es';
 
 dayjs.locale('es');
 
-export default function Calendar() {
+
+interface CalendarProps {
+  label: string;
+  handleDate: (date: Date | null) => void;
+}
+
+export default function Calendar({ label, handleDate }: CalendarProps) {
+  const [ selectedDate, setselectedDate] = useState<Date | null>(null);
+
+  const handleDateChange = (date: Date | null) =>{
+    setselectedDate(date);
+    handleDate(date);
+  }
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='es'>
       <DatePicker
-        label="Fecha de Nacimiento"
+        label={label}
         views={['day', 'month', 'year']}
         format='DD/MM/YYYY'
         slotProps={{
@@ -18,6 +31,8 @@ export default function Calendar() {
             size: 'small',
           },
         }}
+        value={selectedDate}
+        onChange={handleDateChange}
       />
     </LocalizationProvider>
   );

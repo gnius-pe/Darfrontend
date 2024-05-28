@@ -1,312 +1,306 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent} from 'react';
 
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormLabel from '@mui/material/FormLabel';
+import { SelectChangeEvent } from '@mui/material/Select';
 import axios from 'axios';
 
 import Calendar from '../../components/Date';
-import nacionalidades from '../../assets/nacionalidades.json';
-import departamentos from '../../assets/departamentos.json';
-import provincias from '../../assets/provincias.json';
-import distritos from '../../assets/distritos.json';
 
-interface AddressFormProps{
-  children?: React.ReactNode;
+interface AddressFormProps {
+  formData:any;
+  onChange: (data: any ) => void;
 }
 
-export default function AddressForm({ children }: AddressFormProps) {
+const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
 
-  const [tipoDocumento, setTipoDocumento] = useState('');
-  const [dni, setDni] = useState('');
-  const [nombres, setNombres] = useState('');
-  const [apellidos, setApellidos] = useState('');
-  const [nacionalidad, setNacionalidad] = useState('');
-  const [departamento, setDepartamento] = useState('');
-  const [provincia, setProvincia] = useState('');
-  const [distrito, setDistrito] = useState('');
+  const [tipoDocumento, setTipoDocumento] = useState(formData.typeId);
+  const [numberId, setnumberId] = useState(formData.numberId);
+  const [nombres, setNombres] = useState(formData.name);
+  const [apellidos, setApellidos] = useState(formData.lastName);
+  const [sexo, setSexo] = useState(formData.sexo);
+  const [ birthDate, setBirthDate] = useState(formData.birthDate);
+  const [firstNumberPhone, setFirstNumberPhone] = useState(formData.firstNumberPhone);
+  const [secondcelnumber, setSecondcelnumber] = useState(formData.secondNumberPhone);
+  const [email, setEmail] = useState(formData.email);
+  const [ nacionalidad, setNacionalidad] = useState('Peru');
+  const [tipoDocumentoFilled, setTipoDocumentoFilled] = useState(false);
+  const [errors, setErrors] = useState({
+    tipoDocumento: false,
+    numberId: false,
+    nombres: false,
+    apellidos: false,
+    sexo: false,
+    birthDate: false,
+    firstNumberPhone: false,
+  });
+
+  useEffect(() => {
+    setTipoDocumento(formData.typeId);
+    setnumberId(formData.numberId);
+    setNombres(formData.name);
+    setApellidos(formData.lastName);
+    setSexo(formData.sexo);
+    setBirthDate(formData.birthDate); 
+    setFirstNumberPhone(formData.firstNumberPhone);
+    setSecondcelnumber(formData.secondNumberPhone);
+    setEmail(formData.email);
+  },[formData])
 
   useEffect(() => {
     if (tipoDocumento !== 'DNI') {
       // Si el tipo de documento no es "DNI", restablecer los nombres y apellidos
-      setNombres('');
-      setApellidos('');
+      setNombres(formData.name);
+      setApellidos(formData.lastName);
       return; // Salir del efecto si no es "DNI"
     }
 
-    if (!dni) return; // No hacer la solicitud si el DNI está vacío
+    if (!numberId || !(/^\d{8}$/.test(numberId))) return; // No hacer la solicitud si el DNI está vacío o no es igual a 8 caract
 
-
+    
     // Hacer la solicitud a la API
-    axios.get(`https://dniruc.apisperu.com/api/v1/dni/${dni}?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBhdWxlbGRvdGVybzQ1NkBnbWFpbC5jb20ifQ.w3QyBrX1rCtVfaNT496rClCWWIBFnWzGGLCtWj8yDAs`)
-      .then(response => {
-        const data = response.data;
-        if (data.success) {
-          setNombres(data.nombres);
-          setApellidos(`${data.apellidoPaterno} ${data.apellidoMaterno}`);
-        } else {
-          // Manejar caso de error o DNI no encontrado
-          console.error('Error al obtener datos del DNI');
-          setNombres('');
-          setApellidos('');
-        }
-      })
-      .catch(error => {
-        console.error('Error al obtener datos del DNI:', error);
-        setNombres('');
-        setApellidos('');
-      });
-  }, [tipoDocumento, dni]);
+    axios.get(`https://dniruc.apisperu.com/api/v1/dni/${numberId}?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBhdWxlbGRvdGVybzQ1NkBnbWFpbC5jb20ifQ.w3QyBrX1rCtVfaNT496rClCWWIBFnWzGGLCtWj8yDAs`)
+  .then(response => {
+    const data = response.data;
+    if (data.success) {
+      const nombres = data.nombres;
+      const apellidos = `${data.apellidoPaterno} ${data.apellidoMaterno}`;
+      const objeto = { name: nombres, lastName: apellidos };
+      setNombres(nombres);
+      setApellidos(apellidos);
+      onChange(objeto); // Update the state with the new object
+    } else {
+      // Manejar caso de error o DNI no encontrado
+      console.error('Error al obtener datos del DNI');
+      setNombres(formData.name);
+      setApellidos(formData.lastName);
+    }
+  })
+  .catch(error => {
+    console.error('Error al obtener datos del DNI:', error);
+    setNombres(formData.name);
+    setApellidos(formData.lastName);
+  });
+  }, [tipoDocumento, numberId]);
 
-  const handleTipoDocumentoChange = (event: React.ChangeEvent<{ value: unknown}>)  => {
-    setTipoDocumento(event.target.value as string);
+  const handleTipoDocumentoChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const newTypeid = event.target.value;
+    setTipoDocumento(newTypeid);
+    setTipoDocumentoFilled(event.target.value !== '');
+    onChange({ ...formData, typeId: newTypeid });
   };
 
   const handleDniChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDni(event.target.value);
+    const newDni = event.target.value;
+    setnumberId(newDni);
+    onChange({ ...formData, numberId: newDni });
   };
 
-  const handleNombresChange = (event: React.ChangeEvent<HTMLInputElement>)  => {
-    setNombres(event.target.value);
+  const handleNombresChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = event.target.value;
+    setNombres(newName);
+    onChange({ ...formData, name: newName});
   };
 
   const handleApellidosChange = (event: React.ChangeEvent<HTMLInputElement>)  => {
-    setApellidos(event.target.value);
+    const newLastName = event.target.value;
+    setApellidos(newLastName);
+    onChange({ ...formData, lastName: newLastName});
   };
 
-  //nacionalidad
-  const handleNacionality = (event: React.ChangeEvent<{ value: unknown}>)  => {
-    setNacionalidad(event.target.value as string);
+  //sexo
+  const handleSexo = (event: SelectChangeEvent<string>) => {
+    const newSexo = event.target.value;
+    setSexo(newSexo);
+    onChange({ ...formData, sexo: newSexo});
   };
 
-  //departamento
-  const handleDepartamento = (event: React.ChangeEvent<{ value: unknown }>)  => {
-    const selectDepartamento = event.target.value as string;
-    setDepartamento(selectDepartamento);
+  //fecha de nacimiento
+  const handleDate = (date: Date | null) => {
+    if (date) {
+      const formattedDate = date.toISOString().split('T')[0];
+      setBirthDate(date);
+      onChange({ ...formData, birthDate: formattedDate });
+    } else {
+      setBirthDate(date);
+      onChange({ ...formData, birthDate: null });
+    }
+  };
+  
+  
 
-    const provinciasFiltradas = provincias.filter(provincia => provincia.department_id === selectDepartamento);
-    setProvincia('');
-    setDistrito('');
-
-    const distritosFiltrados = distritos.filter(distrito => distrito.department_id === selectDepartamento);
-    setDistrito('');
-  };  
-
-  //provinvcia
-  const handleProvincia = (event: React.ChangeEvent<{ value: unknown }>)  => {
-    setProvincia(event.target.value as string);
-    setDistrito('');
+  const handleNumberPhone = (event: ChangeEvent<HTMLInputElement>) => {
+    const newNumberPhone = event.target.value;
+    setFirstNumberPhone(newNumberPhone);
+    onChange({ ...formData, firstNumberPhone: newNumberPhone});
   };
 
-  //distritos
-  const handleDistrito = (event: React.ChangeEvent<{ value: unknown }>)  => {
-    setDistrito(event.target.value as string);
-  }; 
+  const handlesecNumberPhone = (event: ChangeEvent<HTMLInputElement>) => {
+    const newNumberPhone = event.target.value;
+    setSecondcelnumber(newNumberPhone);
+    onChange({ ...formData, secondNumberPhone: newNumberPhone});
+  };
+
+  const handleEmail = (event: ChangeEvent<HTMLInputElement>) => {
+    const newEmail = event.target.value;
+    setEmail(newEmail);
+    onChange({ ...formData, email: newEmail});
+  };
+
+  const handleNacionalidad = (event: ChangeEvent<HTMLSelectElement>) => {
+    setNacionalidad(event.target.value);
+  }
 
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
+      <h2  className="text-lg font-bold mb-4">
         Datos Personales
-      </Typography>
+      </h2>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-          <InputLabel id="tipo-documento-label">Documento</InputLabel>
-          <Select
-            labelId="tipo-documento-label"
-            id="documento"
+        <div>
+          <select
+            id="tipo-documento"
             value={tipoDocumento}
-            label="Documento"
             onChange={handleTipoDocumentoChange}
-            fullWidth
+            className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
           >
-            <MenuItem value={'DNI'}>DNI</MenuItem>
-            <MenuItem value={'Pasaporte'}>Pasaporte</MenuItem>
-            <MenuItem value={'Carnet de extranjeria'}>Carnet de extr.</MenuItem>
-          </Select>
-        </FormControl>
+            <option value="" disabled selected hidden>Documento</option>
+            <option value="DNI">DNI</option>
+            <option value="Pasaporte">Pasaporte</option>
+            <option value="Carnet de extranjeria">Carnet de extranjería</option>
+          </select>
+        </div>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
+          <input
             required
+            placeholder={errors.numberId ? "ingrese su N° de DNI" : "N° de Documento"}
+            type="text"
             id="document-id"
             name="document-id"
-            label="N° de Documento"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
-            value={dni}
+            value={numberId}
             onChange={handleDniChange}
-            inputProps={tipoDocumento === 'DNI' ? { maxLength: 8 } : {}}
+            onBlur={() => setErrors((prev) => ({ ...prev, numberId: !numberId }))}
+            className={`w-full border ${errors.numberId ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
+            autoComplete="off"
+            maxLength={tipoDocumento === 'DNI' ? 8 : undefined}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
+          <input
             required
             id="nombres"
             name="nombres"
-            label="Nombres"
-            fullWidth
+            type='text'
+            placeholder={errors.nombres ? "ingrese Nombre":"Nombres"}
             autoComplete="off"
-            variant="standard"
             value={nombres}
             onChange={handleNombresChange}
+            onBlur={() => setErrors((prev) => ({ ...prev, nombres: !nombres }))}
+            className={`w-full border ${errors.nombres ? 'border-red-500': 'border-gray-300'}rounded p-2 focus:outline-none focus:border-blue-500`}  
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
+          <input
             required
             id="apellidos"
             name="apellidos"
-            label="Apellidos"
-            fullWidth
+            type='text'
+            placeholder={errors.apellidos ? "ingrese Apellidos":"Apellidos"}
             autoComplete="off"
-            variant="standard"
             value={apellidos}
             onChange={handleApellidosChange}
+            onBlur={() => setErrors((prev) => ({ ...prev, apellidos: !apellidos }))}
+            className={`w-full border ${errors.apellidos ? 'border-red-500': 'border-gray-300'}rounded p-2 focus:outline-none focus:border-blue-500`}
           />
         </Grid>
-        <Grid item xs={12} sm={12}>
-          <TextField
-            required
+        <Grid item xs={12} sm={6}>
+          <input
             id="email"
             name="email"
-            label="Correo electornico"
-            fullWidth
+            type='email'
+            placeholder="email(Opcional)"
             autoComplete="off"
-            variant="standard"
+            value={email}
+            onChange={handleEmail}
+            className='w-full border rounded p-2 focus:outline-none focus:border-blue-500'
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-            <Calendar/>
+            <Calendar 
+              label='Fecha de Nacimiento'
+              handleDate={handleDate}  
+            />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
+          <input
             required
-            id="celnumber"
-            name="celnumber"
-            label="celular o Telefono"
-            fullWidth
+            id="firstcelnumber"
+            name="firstcelnumber"
+            placeholder={errors.firstNumberPhone ? "ingrese Celular":"Celular o telefono"}
+            type='number'
             autoComplete="off"
-            variant="standard"
+            value={firstNumberPhone}
+            onChange={handleNumberPhone}
+            onBlur={() => setErrors((prev) => ({ ...prev, firstNumberPhone: !firstNumberPhone }))}
+            className={`w-full border ${errors.firstNumberPhone ? 'border-red-500': 'border-gray-300'}rounded p-2 focus:outline-none focus:border-blue-500`}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormControl>
-          <FormLabel id="demo-row-radio-buttons-group-label">Sexo</FormLabel>
-          <RadioGroup
-            row
-            aria-labelledby="demo-row-radio-buttons-group-label"
-            name="row-radio-buttons-group"
-          >
-            <FormControlLabel value="femenino" control={<Radio />} label="F" />
-            <FormControlLabel value="masculino" control={<Radio />} label="M" />
-          </RadioGroup>
-        </FormControl>
+          <input
+            id="secondcelnumber"
+            name="secondcelnumber"
+            placeholder="Segundo celular (opcional)"
+            autoComplete="off"
+            value={secondcelnumber}
+            onChange={handlesecNumberPhone}
+            className='w-full border rounded p-2 focus:outline-none focus:border-blue-500'
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <div className="flex items-center space-x-4">
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                name="sexo"
+                value="femenino"
+                checked={sexo === 'femenino'}
+                onChange={handleSexo}
+                className="form-radio text-blue-600"
+              />
+              <span className="ml-2">Femenino</span>
+            </label>
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                name="sexo"
+                value="masculino"
+                checked={sexo === 'masculino'}
+                onChange={handleSexo}
+                className="form-radio text-blue-600"
+              />
+              <span className="ml-2">Masculino</span>
+            </label>
+          </div>
        </Grid>
        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-          <InputLabel id="tipo-documento-label">Nacionalidad</InputLabel>
-          <Select
-            labelId="tipo-documento-label"
+          <div>
+          <select
             id="demo-simple-select"
             value={nacionalidad}
-            label="Nacionalidad"
-            onChange={handleNacionality}
-            fullWidth
+            onChange={handleNacionalidad}
+            className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
           >
-            {nacionalidades.map((nacionalidad) => (
-              <MenuItem key={nacionalidad.id} value={nacionalidad.title}>
-                {nacionalidad.title}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-          <InputLabel id="tipo-documento-label">Departamento</InputLabel>
-          <Select
-            labelId="tipo-documento-label"
-            id="demo-simple-select"
-            value={departamento}
-            label="Departamento"
-            onChange={handleDepartamento}
-            fullWidth
-          >
-            {departamentos.map((departamento) => (
-              <MenuItem key={departamento.id} value={departamento.id}>
-               {departamento.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-          <InputLabel id="tipo-documento-label">Provincia</InputLabel>
-          <Select
-            labelId="tipo-documento-label"
-            id="demo-simple-select"
-            value={provincia}
-            label="Provincia"
-            onChange={handleProvincia}
-            fullWidth
-            disabled={!departamento}
-          >
-            {provincias
-            .filter(provincia => provincia.department_id === departamento)
-            .map((provincia) => (
-              <MenuItem key={provincia.id} value={provincia.id}>
-                {provincia.name}
-              </MenuItem>
-          ))}
-          </Select>
-        </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
-          <InputLabel id="tipo-documento-label">Distrito</InputLabel>
-          <Select
-            labelId="tipo-documento-label"
-            id="demo-simple-select"
-            value={distrito}
-            label="Distrito"
-            onChange={handleDistrito}
-            fullWidth
-            disabled={!provincia}
-          >
-             {distritos
-            .filter(distrito => distrito.province_id === provincia)
-            .map((distrito) => (
-              <MenuItem key={distrito.id} value={distrito.id}>
-                {distrito.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="city"
-            name="city"
-            label="Direccion"
-            fullWidth
-            autoComplete="off"
-            variant="standard"
-          />
+              <option value={'Peru'}>
+                Peru
+              </option>
+          </select>
+        </div>
         </Grid>
       </Grid>
     </React.Fragment>
   );
-}
+};
+
+export default AddressForm;

@@ -97,7 +97,7 @@ export default function Checkout() {
       case 1:
         return <LocationForm formData={formData} onChange={(data)=> handleFormChange(data)}/>;
       case 2:
-        return < Cita formData={formData} onChange={(data)=> handleFormChange(data)} />;
+        return <Cita formData={formData} onChange={(data)=> handleFormChange(data)} />;
       case 3:
         return <Review formData={formData} />;
       default:

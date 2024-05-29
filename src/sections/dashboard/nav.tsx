@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import { alpha } from '@mui/material/styles';
@@ -13,8 +12,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import { usePathname } from '../../routes/hooks/index';
 import { RouterLink } from '../../routes/components/index';
 
-import { useResponsive } from '../../hooks/use-responsive.js';
-
 import { account } from '../../_mock/account';
 
 import Scrollbar from '../../components/scrollbar';
@@ -23,10 +20,13 @@ import { NAV } from '../../layout/config-layout.js';
 
 import navConfig from '../../layout/config-navigation.jsx';
 
-export default function Nav({ openNav, onCloseNav }) {
-  const pathname = usePathname();
+interface NavProps {
+  openNav: boolean;
+  onCloseNav: () => void;
+}
 
-  const upLg = useResponsive('up', 'lg');
+const Nav: React.FC<NavProps> = ({ openNav, onCloseNav }) => {
+  const pathname = usePathname();
 
   useEffect(() => {
     if (openNav) {
@@ -114,7 +114,6 @@ export default function Nav({ openNav, onCloseNav }) {
         width: { lg: NAV.WIDTH },
       }}
     >
-      {upLg ? (
         <Box
           sx={{
             height: 1,
@@ -126,31 +125,18 @@ export default function Nav({ openNav, onCloseNav }) {
         >
           {renderContent}
         </Box>
-      ) : (
-        <Drawer
-          open={openNav}
-          onClose={onCloseNav}
-          PaperProps={{
-            sx: {
-              width: NAV.WIDTH,
-            },
-          }}
-        >
-          {renderContent}
-        </Drawer>
-      )}
     </Box>
   );
 }
 
-Nav.propTypes = {
-  openNav: PropTypes.bool,
-  onCloseNav: PropTypes.func,
-};
+
 
 // ----------------------------------------------------------------------
+interface NavItemProps{
+  item: any;
+}
 
-function NavItem({ item }) {
+const NavItem: React.FC<NavItemProps> =({ item }) =>{
   const pathname = usePathname();
 
   const active = item.path === pathname;
@@ -188,3 +174,5 @@ function NavItem({ item }) {
 NavItem.propTypes = {
   item: PropTypes.object,
 };
+
+export default Nav;

@@ -9,10 +9,11 @@ import Calendar from '../../components/Date';
 
 interface AddressFormProps {
   formData:any;
+  errors: any;
   onChange: (data: any ) => void;
 }
 
-const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
+const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) => {
 
   const [tipoDocumento, setTipoDocumento] = useState(formData.typeId);
   const [numberId, setnumberId] = useState(formData.numberId);
@@ -25,15 +26,8 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
   const [email, setEmail] = useState(formData.email);
   const [ nacionalidad, setNacionalidad] = useState('Peru');
   const [tipoDocumentoFilled, setTipoDocumentoFilled] = useState(false);
-  const [errors, setErrors] = useState({
-    tipoDocumento: false,
-    numberId: false,
-    nombres: false,
-    apellidos: false,
-    sexo: false,
-    birthDate: false,
-    firstNumberPhone: false,
-  });
+
+  // Función para enfocar los campos vacíos
 
   useEffect(() => {
     setTipoDocumento(formData.typeId);
@@ -46,6 +40,8 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
     setSecondcelnumber(formData.secondNumberPhone);
     setEmail(formData.email);
   },[formData])
+
+  
 
   useEffect(() => {
     if (tipoDocumento !== 'DNI') {
@@ -117,6 +113,8 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
 
   //fecha de nacimiento
   const handleDate = (date: Date | null) => {
+    console.log(birthDate);
+    console.log(tipoDocumentoFilled);
     if (date) {
       const formattedDate = date.toISOString().split('T')[0];
       setBirthDate(date);
@@ -153,26 +151,26 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
 
   return (
     <React.Fragment>
-      <h2  className="text-lg font-bold mb-4">
+      <h2  className="text-lg font-bold mb-8">
         Datos Personales
       </h2>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
         <div>
           <select
             id="tipo-documento"
             value={tipoDocumento}
             onChange={handleTipoDocumentoChange}
-            className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
+            className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 bg-violet-700"
           >
             <option value="" disabled selected hidden>Documento</option>
-            <option value="DNI">DNI</option>
-            <option value="Pasaporte">Pasaporte</option>
-            <option value="Carnet de extranjeria">Carnet de extranjería</option>
+            <option className='bg-white' value="DNI">DNI</option>
+            <option className='bg-white' value="Pasaporte">Pasaporte</option>
+            <option className='bg-white' value="Carnet de extranjeria">Carnet de extranjería</option>
           </select>
         </div>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
           <input
             required
             placeholder={errors.numberId ? "ingrese su N° de DNI" : "N° de Documento"}
@@ -181,41 +179,42 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
             name="document-id"
             value={numberId}
             onChange={handleDniChange}
-            onBlur={() => setErrors((prev) => ({ ...prev, numberId: !numberId }))}
             className={`w-full border ${errors.numberId ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
             autoComplete="off"
             maxLength={tipoDocumento === 'DNI' ? 8 : undefined}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
+        <label className='block text-gray-900'>
           <input
             required
             id="nombres"
             name="nombres"
             type='text'
-            placeholder={errors.nombres ? "ingrese Nombre":"Nombres"}
+            placeholder={errors.name ? "Ingrese Nombre" : "Nombres"}
             autoComplete="off"
             value={nombres}
             onChange={handleNombresChange}
-            onBlur={() => setErrors((prev) => ({ ...prev, nombres: !nombres }))}
-            className={`w-full border ${errors.nombres ? 'border-red-500': 'border-gray-300'}rounded p-2 focus:outline-none focus:border-blue-500`}  
+            className={`w-full border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
           />
-        </Grid>
-        <Grid item xs={12} sm={6}>
+        </label>
+        {errors.name && <span className='text-red-800 text-sm'>{errors.name}</span>}
+      </Grid>
+
+        <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
           <input
             required
             id="apellidos"
             name="apellidos"
             type='text'
-            placeholder={errors.apellidos ? "ingrese Apellidos":"Apellidos"}
+            placeholder={errors.lastName ? "ingrese Apellidos":"Apellidos"}
             autoComplete="off"
             value={apellidos}
             onChange={handleApellidosChange}
-            onBlur={() => setErrors((prev) => ({ ...prev, apellidos: !apellidos }))}
-            className={`w-full border ${errors.apellidos ? 'border-red-500': 'border-gray-300'}rounded p-2 focus:outline-none focus:border-blue-500`}
+            className={`w-full border ${errors.lastName ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
           <input
             id="email"
             name="email"
@@ -227,27 +226,28 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
             className='w-full border rounded p-2 focus:outline-none focus:border-blue-500'
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
-            <Calendar 
-              label='Fecha de Nacimiento'
-              handleDate={handleDate}  
-            />
+        <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
+          <Calendar
+            label='Fecha de Nacimiento'
+            handleDate={handleDate}
+            error={errors.birthDate}
+          />
+          {errors.birthDate && <span className='text-red-800 text-sm'>{errors.birthDate}</span>}
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
           <input
             required
             id="firstcelnumber"
             name="firstcelnumber"
             placeholder={errors.firstNumberPhone ? "ingrese Celular":"Celular o telefono"}
-            type='number'
+            type='text'
             autoComplete="off"
             value={firstNumberPhone}
             onChange={handleNumberPhone}
-            onBlur={() => setErrors((prev) => ({ ...prev, firstNumberPhone: !firstNumberPhone }))}
-            className={`w-full border ${errors.firstNumberPhone ? 'border-red-500': 'border-gray-300'}rounded p-2 focus:outline-none focus:border-blue-500`}
+            className={`w-full border ${errors.firstNumberPhone ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
           <input
             id="secondcelnumber"
             name="secondcelnumber"
@@ -258,9 +258,11 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
             className='w-full border rounded p-2 focus:outline-none focus:border-blue-500'
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <div className="flex items-center space-x-4">
-            <label className="inline-flex items-center">
+        <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
+          <div className="flex flex-col items-center space-x-4">
+            <h3 className='self-start'>Sexo</h3>
+            <label className=''>
+            <label className="inline-flex items-center mr-4">
               <input
                 type="radio"
                 name="sexo"
@@ -282,9 +284,11 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, onChange }) => {
               />
               <span className="ml-2">Masculino</span>
             </label>
+            {errors.sexo && <span className='text-red-800 text-sm'>{errors.sexo}</span>}
+            </label>
           </div>
        </Grid>
-       <Grid item xs={12} sm={6}>
+       <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
           <div>
           <select
             id="demo-simple-select"

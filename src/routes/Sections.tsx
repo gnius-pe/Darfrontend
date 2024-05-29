@@ -1,4 +1,4 @@
-import { createBrowserRouter, Outlet } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import Login from '../pages/Login.tsx';
 import Dashboard from '../pages/Dashboard.tsx';
 import ProtectedRoute from './ProtectedRoute.tsx';

@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { useState, ChangeEvent, useEffect } from 'react';
-import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 
 interface CitaFormProps {
   formData: any;

@@ -11,9 +11,10 @@ dayjs.locale('es');
 interface CalendarProps {
   label: string;
   handleDate: (date: Date | null) => void;
+  error?: string;
 }
 
-export default function Calendar({ label, handleDate }: CalendarProps) {
+export default function Calendar({ label, handleDate, error }: CalendarProps) {
   const [ selectedDate, setselectedDate] = useState<Date | null>(null);
 
   const handleDateChange = (date: Date | null) =>{
@@ -29,6 +30,8 @@ export default function Calendar({ label, handleDate }: CalendarProps) {
         slotProps={{
           textField: {
             size: 'small',
+            error: !!error,
+            helperText: error,
           },
         }}
         value={selectedDate}

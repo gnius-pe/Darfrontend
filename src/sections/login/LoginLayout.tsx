@@ -39,6 +39,7 @@ export default function Login(){
         }
         else{
           console.log("peticion invalida contraseña incorrecta");
+          console.log(error)
         }
       }
       catch (error) {

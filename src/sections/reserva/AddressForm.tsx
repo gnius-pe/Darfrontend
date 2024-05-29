@@ -113,6 +113,8 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
 
   //fecha de nacimiento
   const handleDate = (date: Date | null) => {
+    console.log(birthDate);
+    console.log(tipoDocumentoFilled);
     if (date) {
       const formattedDate = date.toISOString().split('T')[0];
       setBirthDate(date);

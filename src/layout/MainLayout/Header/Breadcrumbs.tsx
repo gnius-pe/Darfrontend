@@ -1,9 +1,9 @@
-import { useLocation } from "react-router-dom";
-import { Link, Breadcrumbs as MuiBreadcrumbs, Typography } from "@mui/material";
-import navigation from "../../../routes/Navigation";
+//import { useLocation } from "react-router-dom";
+//import { Link, Breadcrumbs as MuiBreadcrumbs, Typography } from "@mui/material";
+//import navigation from "../../../routes/Navigation";
 
 type NameMap = Record<string, { title: string; linkable: boolean }>;
-
+/** 
 const nameMap = navigation.reduce<NameMap>((acc, section) => {
     section.links.forEach((link) => {
         if (link.children) {
@@ -50,4 +50,6 @@ const Breadcrumbs = () => {
         </MuiBreadcrumbs>
     );
 };
+
 export default Breadcrumbs;
+*/

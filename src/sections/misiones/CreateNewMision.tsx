@@ -10,32 +10,6 @@ const CreateNewMision = () => {
    const navigate = useNavigate();
 
    const handleSave = () => {
-      /*try {
-         const response = await fetch('https://goldfish-app-sryot.ondigitalocean.app/', {
-           method: 'POST',
-           headers: {
-             'Content-Type': 'application/json',
-           },
-           body: JSON.stringify({
-             nameMision: nombre,
-             description: descripcion,
-             stateMison: 'activo', // Puedes establecer el estado aquí según tus necesidades
-             startDate: fechaInicio,
-             finalDate: fechaFinal,
-           }),
-         });
-   
-         if (response.ok) {
-           // La solicitud se realizó con éxito, puedes manejar la respuesta aquí
-           console.log('Misión guardada con éxito');
-         } else {
-           // Si la solicitud no fue exitosa, puedes manejar el error aquí
-           console.error('Error al guardar la misión');
-         }
-       } catch (error) {
-         // Si hubo un error en la solicitud, puedes manejarlo aquí
-         console.error('Error en la solicitud:', error);
-       }*/
        console.log('Guardado');
    };
  

@@ -76,6 +76,7 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
               onChange={handleDepartamento}
               className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
             >
+              <option value="" disabled selected hidden>Departamento</option>
               {departamentos.map((departamento) => (
                 <option key={departamento.id} value={departamento.name}>
                   {departamento.name}
@@ -92,6 +93,7 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
               onChange={handleProvincia}
               className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
             >
+              <option value="" disabled selected hidden>Provincia</option>
               {provincias
                 .filter(provincia => provincia.department_id === departamentos.find(dep => dep.name === departamento)?.id)
                 .map((provincia) => (
@@ -111,6 +113,7 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
               disabled={!provincia}
               className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
             >
+              <option value="" disabled selected hidden>Distrito</option>
               {distritos
                 .filter(distrito => distrito.province_id === provincias.find(prov => prov.name === provincia)?.id)
                 .map((distrito) => (

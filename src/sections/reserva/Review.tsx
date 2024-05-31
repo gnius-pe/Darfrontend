@@ -10,7 +10,7 @@ interface ReviewFormProps {
 }
 
 const Review: React.FC<ReviewFormProps> = ({ formData }) => {
-  const { name, lastName, numberId, firstNumberPhone, sexo, birthDate, departamento, provincia, distrito, direccion, fechareserva, especiality, hora, mensaje, analisis, ayuda, visita } = formData;//tal como esta estructurado en el interface formProps
+  const { name, lastName, numberId, firstNumberPhone, sexo, birthDate, departamento, provincia, distrito, direccion, fechareserva, especiality, hora } = formData;//tal como esta estructurado en el interface formProps
 
   return (
     <React.Fragment>
@@ -21,10 +21,10 @@ const Review: React.FC<ReviewFormProps> = ({ formData }) => {
             Datos Personales
           </Typography>
           <Grid container>
-              <Typography gutterBottom className={`${name} ${lastName}` ? 'text-blue-800' : 'bg-red-400'}>{`${name} ${lastName}`}</Typography>
+              <Typography gutterBottom className= 'text-blue-800'>{`${name} ${lastName}`}</Typography>
               <React.Fragment >
                 <Grid item xs={6}>
-                  <Typography gutterBottom className={numberId ? 'text-blue-800' : 'bg-red-400'}>DNI</Typography>
+                  <Typography gutterBottom className='text-blue-800'>DNI</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography gutterBottom >{numberId}</Typography>
@@ -32,7 +32,7 @@ const Review: React.FC<ReviewFormProps> = ({ formData }) => {
               </React.Fragment>
               <React.Fragment >
                 <Grid item xs={6}>
-                  <Typography gutterBottom className={firstNumberPhone ? 'text-blue-800' : 'bg-red-400'}>Celular</Typography>
+                  <Typography gutterBottom className= 'text-blue-800'>Celular</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography gutterBottom >{firstNumberPhone}</Typography>
@@ -40,7 +40,7 @@ const Review: React.FC<ReviewFormProps> = ({ formData }) => {
               </React.Fragment>
               <React.Fragment >
                 <Grid item xs={6}>
-                  <Typography gutterBottom className={sexo ? 'text-blue-800' : 'bg-red-400'}>sexo</Typography>
+                  <Typography gutterBottom className= 'text-blue-800' >sexo</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography gutterBottom >{sexo}</Typography>
@@ -48,7 +48,7 @@ const Review: React.FC<ReviewFormProps> = ({ formData }) => {
               </React.Fragment>
               <React.Fragment >
                 <Grid item xs={6}>
-                  <Typography gutterBottom className={birthDate ? 'text-blue-800' : 'bg-red-400'}>Nacimiento</Typography>
+                  <Typography gutterBottom className='text-blue-800'>Nacimiento</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography gutterBottom >{birthDate}</Typography>
@@ -63,7 +63,7 @@ const Review: React.FC<ReviewFormProps> = ({ formData }) => {
           <Grid container>
               <React.Fragment >
                 <Grid item xs={6}>
-                  <Typography gutterBottom className={departamento ? 'text-blue-800' : 'bg-red-400'}>Departamento</Typography>
+                  <Typography gutterBottom className='text-blue-800'>Departamento</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography gutterBottom >{departamento}</Typography>
@@ -71,7 +71,7 @@ const Review: React.FC<ReviewFormProps> = ({ formData }) => {
               </React.Fragment>
               <React.Fragment >
                 <Grid item xs={6}>
-                  <Typography gutterBottom className={provincia ? 'text-blue-800' : 'bg-red-400'}>Provincia</Typography>
+                  <Typography gutterBottom className= 'text-blue-800'>Provincia</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography gutterBottom >{provincia}</Typography>

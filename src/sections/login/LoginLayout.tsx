@@ -39,6 +39,7 @@ export default function Login(){
         }
         else{
           console.log("peticion invalida contraseña incorrecta");
+          console.log(error)
         }
       }
       catch (error) {
@@ -49,11 +50,6 @@ export default function Login(){
     if(auth.isAuthenticated && window.location.pathname === "/"){
         return <Navigate to ="/dashboard" replace />;
     }
-
-    const handleLogout = () => {
-        localStorage.removeItem("jwtToken");
-        auth.logout();
-      };  
     
     return (
     <>
@@ -101,7 +97,7 @@ export default function Login(){
                             name="email"
                             autoComplete="email"
                             autoFocus
-                            value={email}
+                            value={email}   
                             onChange={(e) => setEmail(e.target.value)}
                         />
                         <TextField

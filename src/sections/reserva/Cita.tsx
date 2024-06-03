@@ -4,13 +4,14 @@ import Grid from '@mui/material/Grid';
 
 interface CitaFormProps {
   formData: any;
+  errors: any;
   onChange: (data: any) => void;
 }
 
 const FechasReserva = [
-  { id: "2", extendFecha: 'vie 12 Jul', fecha: '2024-07-12' },
-  { id: "3", extendFecha: 'sab 13 Jul', fecha: '2024-07-13' },
-  { id: "4", extendFecha: 'dom 14 Jul', fecha: '2024-07-14' },
+  { id: "01", extendFecha: 'vie 12 Jul', fecha: '2024-07-12' },
+  { id: "02", extendFecha: 'sab 13 Jul', fecha: '2024-07-13' },
+  { id: "03", extendFecha: 'juanes', fecha: '2024-07-14' },
 ];
 
 const Especialidades = [
@@ -22,20 +23,14 @@ const Especialidades = [
   { id: "006", especialidad: "medicina interna" },
 ];
 
-const CitaForm: React.FC<CitaFormProps> = ({ formData, onChange }) => {
-  const [dateReserva, setDateReserva] = useState( formData.fechareserva || '');
+const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
+  const [dateReserva, setDateReserva] = useState( formData.fechareserva);
   const [hora, setHora] = useState(formData.hora);
   const [especialidad, setEspecialidad] = useState(formData.especiality);
   const [mensaje, setMensaje] = useState(formData.mensaje);
   const [checkAnalisis, setCheckAnalisis] = useState(formData.analisis);
   const [checkAyuda, setCheckAyuda] = useState(formData.ayuda);
   const [checkVisita, setCheckVisita] = useState(formData.visita);
-  const [errors, setErrors] = useState({
-    fechareserva: false,
-    hora: false,
-    especiality: false,
-    mensaje: false,
-  });
 
   useEffect(() => {
     setDateReserva(formData.fechareserva);
@@ -49,33 +44,26 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, onChange }) => {
 
   const handleDateReserva = (event: ChangeEvent<HTMLSelectElement>) => {
     const newDateReservaString = event.target.value;
-    if (FechasReserva.some(fecha => fecha.fecha === newDateReservaString)) {
-        setDateReserva(newDateReservaString);
-        onChange({ ...formData, fechareserva: newDateReservaString });
-    }
-    setErrors((prev) => ({ ...prev, fechareserva: !newDateReservaString }));
+    setDateReserva(newDateReservaString);
+    onChange({ ...formData, fechareserva: newDateReservaString });
 };
-
   
   const handleHora = (event: ChangeEvent<HTMLInputElement>) => {
     const newHora = event.target.value;
     setHora(newHora);
     onChange({ ...formData, hora: newHora });
-    setErrors((prev) => ({ ...prev, hora: !newHora }));
   };
 
   const handleEspecialidad = (event: ChangeEvent<HTMLSelectElement>) => {
     const newEspecialidad = event.target.value;
     setEspecialidad(newEspecialidad);
     onChange({ ...formData, especiality: newEspecialidad });
-    setErrors((prev) => ({ ...prev, especiality: !newEspecialidad }));
   };
 
   const handleMensaje = (event: ChangeEvent<HTMLInputElement>) => {
     const newMensaje = event.target.value;
     setMensaje(newMensaje);
     onChange({ ...formData, mensaje: newMensaje });
-    setErrors((prev) => ({ ...prev, mensaje: !newMensaje }));
   };
 
   const handleCheckAnalisis = (event: ChangeEvent<HTMLInputElement>) => {
@@ -108,9 +96,9 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, onChange }) => {
               id="fecha-select"
               value={dateReserva}
               onChange={handleDateReserva}
-              onBlur={() => setErrors((prev) => ({ ...prev, fechareserva: !dateReserva }))}
-              className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
+              className={`w-full border ${errors.fechareserva ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
             >
+              <option value="" disabled hidden>Fecha de reserva</option>
               {FechasReserva.map((fecha) => (
                 <option key={fecha.id} value={fecha.fecha}>
                   {fecha.extendFecha}
@@ -118,6 +106,7 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, onChange }) => {
               ))}
             </select>
           </div>
+          {errors.fechareserva && <span className='text-red-800 text-sm'>{errors.fechareserva}</span>}
         </Grid>
         <Grid item xs={12} md={6}>
           <input 
@@ -127,8 +116,7 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, onChange }) => {
             autoComplete="none"
             value={hora}
             onChange={handleHora}
-            onBlur={() => setErrors((prev) => ({ ...prev, hora: !hora }))}
-            className={`w-full border ${errors.hora ? 'border-red-500': 'border-gray-300'}rounded p-2 focus:outline-none focus:border-blue-500`}
+            className={`w-full border ${errors.hora ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -137,8 +125,7 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, onChange }) => {
               id="select-especialidad"
               value={especialidad}
               onChange={handleEspecialidad}
-              onBlur={() => setErrors((prev) => ({ ...prev, especiality: !especialidad }))}
-              className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
+              className={`w-full border ${errors.especiality ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
             >
               {Especialidades.map((especialidad) => (
                 <option key={especialidad.id} value={especialidad.especialidad}>
@@ -147,17 +134,16 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, onChange }) => {
               ))}
             </select>
           </div>
+          {errors.especiality && <span className='text-red-800 text-sm'>{errors.especiality}</span>}
         </Grid>
         <Grid item xs={12}>
           <input
-            required
             id="mensaje"
             type='text'
             placeholder={errors.mensaje ? "Agregue un mensaje" : "Mensaje"}
             value={mensaje}
             onChange={handleMensaje}
-            onBlur={() => setErrors((prev) => ({ ...prev, mensaje: !mensaje }))}
-            className={`w-full border ${errors.mensaje ? 'border-red-500': 'border-gray-300'}rounded p-2 focus:outline-none focus:border-blue-500`}
+            className='w-full border rounded p-2 focus:outline-none focus:border-blue-500'
           />
         </Grid>
         <Grid item xs={12}>

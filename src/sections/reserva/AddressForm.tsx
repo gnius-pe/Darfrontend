@@ -156,20 +156,22 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
       </h2>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
-        <div>
-          <select
-            id="tipo-documento"
-            value={tipoDocumento}
-            onChange={handleTipoDocumentoChange}
-            className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 bg-violet-700"
-          >
-            <option value="" disabled selected hidden>Documento</option>
-            <option className='bg-white' value="DNI">DNI</option>
-            <option className='bg-white' value="Pasaporte">Pasaporte</option>
-            <option className='bg-white' value="Carnet de extranjeria">Carnet de extranjería</option>
-          </select>
-        </div>
+          <div>
+            <select
+              id="tipo-documento"
+              value={tipoDocumento}
+              onChange={handleTipoDocumentoChange}
+              className={`w-full border ${errors.typeId ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
+            >
+              <option value="" disabled hidden>Documento</option>
+              <option className='bg-white' value="DNI">DNI</option>
+              <option className='bg-white' value="Pasaporte">Pasaporte</option>
+              <option className='bg-white' value="Carnet de extranjeria">Carnet de extranjería</option>
+            </select>
+          </div>
+          {errors.typeId && <span className='text-red-800 text-sm'>{errors.typeId}</span>}
         </Grid>
+
         <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
           <input
             required
@@ -232,7 +234,6 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
             handleDate={handleDate}
             error={errors.birthDate}
           />
-          {errors.birthDate && <span className='text-red-800 text-sm'>{errors.birthDate}</span>}
         </Grid>
         <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
           <input

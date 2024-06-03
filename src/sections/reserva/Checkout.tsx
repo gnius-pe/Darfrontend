@@ -154,9 +154,12 @@ export default function Checkout() {
         specialty: formData.especiality,
         appointmentdetail: formData.mensaje,
       },
+      question:{
       questionExamRecent: formData.analisis,
       spiritualSupport: formData.ayuda,
       futureActivities: formData.visita,
+      },
+      estate : "ESPERA"
     };
   
     try {

@@ -4,6 +4,14 @@ import FormModal from '../reserva/CheckoutFloat';
 import ViewFormModal from './ViewPaciente';
 import UpdateForm from './UpdatePaciente';
 
+const NumberPages = [
+  { id: '01', value: 6},
+  { id: '02', value: 7},
+  { id: '03', value: 8},
+  { id: '04', value: 9},
+  { id: '05', value: 10},
+]
+
 const PacienteView: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [ isViewFormOpen, setIsViewFormOpen] = useState<boolean>(false);
@@ -11,7 +19,7 @@ const PacienteView: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const rowsPerPage = 6;
+  const [rowsPerPage, setRowsPerPage] = useState<number>(5);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -19,7 +27,6 @@ const PacienteView: React.FC = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    console.log('quiero cerrar pero algo anda mal')
   };
 
   const handleOpenFormModal = () => {
@@ -45,6 +52,11 @@ const PacienteView: React.FC = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
     setCurrentPage(1); 
+  };
+
+  const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setRowsPerPage(Number(event.target.value));
+    setCurrentPage(1); // Reset the current page when changing rows per page
   };
 
   const filteredRows = patientDates.filter(patient =>
@@ -149,16 +161,44 @@ const PacienteView: React.FC = () => {
             })}
           </tbody>
         </table>
-        <div className="flex justify-center mt-0">
-          {Array.from({ length: totalPages }, (_, index) => (
+        <div className='flex '>
+          <div>
+            <p>Ultima actualizacion a las<span> 3:05 pm</span> <button>Actualizar</button></p>
+          </div>
+          <div className="flex justify-center mt-0">
             <button
-              key={index}
-              className={`px-3 py-1 mx-1 border ${index + 1 === currentPage ? 'bg-blue-500 text-white' : 'bg-white'}`}
-              onClick={() => handlePageChange(index + 1)}
+              className={`px-3 py-1 mx-1 border ${currentPage === 1 ? 'bg-gray-200 cursor-not-allowed' : 'bg-blue-400'}`}
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
             >
-              {index + 1}
+              {'<'}
             </button>
-          ))}
+            <div className="flex items-center">
+              <p>{currentPage} de {totalPages}</p>
+            </div>
+            <button
+              className={`px-3 py-1 mx-1 border ${currentPage === totalPages ? 'bg-gray-200 cursor-not-allowed' : 'bg-blue-400'}`}
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              {'>'}
+            </button>
+          </div>
+          <div className='flex'>
+            <p>Filas por pagina: </p>
+            <div>
+              <select
+                id="numRows"
+                value={rowsPerPage} onChange={handleRowsPerPageChange}
+              >
+                {NumberPages.map((numberPag) => (
+                  <option key={numberPag.id} value={numberPag.value}>
+                    {numberPag.value}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
       </section>
       <FormModal isOpen={isModalOpen} onClose={handleCloseModal} useBackdrop={true}/>

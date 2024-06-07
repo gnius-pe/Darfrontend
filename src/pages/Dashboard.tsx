@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import Box from '@mui/material/Box';
-
 import Nav from '../sections/dashboard/nav';
 import Header from '../sections/dashboard/header';
 import { Outlet } from 'react-router-dom';
@@ -10,22 +8,19 @@ import { Outlet } from 'react-router-dom';
 export default function Dashboard() {
   const [openNav, setOpenNav] = useState(false);
   return (
-    <>
-      <Header/>
+    <div className="flex flex-col h-screen">
+      <Header />
       
-      <Box
-        sx={{
-          minHeight: 1,
-          display: 'flex',
-          flexDirection: { xs: 'column', lg: 'row' },
-        }}
-        className="bg-white"
-      >
-        <Nav openNav={openNav} onCloseNav={() => setOpenNav(false)}/>
-
-        <Outlet/>
-      </Box>
-    </>
+      <div className="flex bg-white">
+        <Nav openNav={openNav} onCloseNav={() => setOpenNav(false)} />
+        <div className="ml-64 flex-grow">
+            <div className="w-full h-full bg-custom-purple-800 pt-14">
+                <Outlet/>
+            </div>
+        </div>
+        
+      </div>
+    </div>
   );
 }
 

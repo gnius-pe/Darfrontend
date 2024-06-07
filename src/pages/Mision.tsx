@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Cards from '../sections/misiones/Cards';
 import SearchAndNew from '../sections/misiones/SearchAndNew';
 import PaginationYear from '../sections/misiones/paginationYear';
 
-export default function Mision(){
-    
-    
+export default function Mision() {
     return (
         <>
         <div className="container mx-auto ">
@@ -26,4 +24,3 @@ export default function Mision(){
         </>
     )
 }
-

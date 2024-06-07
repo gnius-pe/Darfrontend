@@ -5,8 +5,7 @@ function PaginationYear (){
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const [selectedYear, setSelectedYear] = useState(currentYear);
-
-    const handleYearChange = (year) => {
+    const handleYearChange = (year:number) => {
         setSelectedYear(year);
         // Aquí puedes cargar las misiones correspondientes al año seleccionado
     };

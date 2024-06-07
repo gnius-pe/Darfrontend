@@ -4,7 +4,7 @@ import Card from './Card';
 function Cards() {
     const [currentPage, setCurrentPage] = useState(1); // Página actual
     const cardsPerPage = 8; // Número de cards por página
-    const totalCards = 10; // Número total de cards (para ejemplo)
+    const totalCards = 20; // Número total de cards (para ejemplo)
 
     // Calcula el índice inicial y final de los cards que se mostrarán en la página actual
     const indexOfLastCard = currentPage * cardsPerPage;

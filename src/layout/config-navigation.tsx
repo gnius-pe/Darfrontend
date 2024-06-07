@@ -46,6 +46,7 @@ const navConfig = [
       <Icon name="" /> // Puedes añadir el icono correspondiente aquí
     ),
   },
+  
   {
     title: 'Médicos',
     path: '/dashboard/medico',

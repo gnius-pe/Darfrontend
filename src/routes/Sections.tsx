@@ -22,10 +22,7 @@ const router = createBrowserRouter([
     path: "/reserva",
     element: <ReservaCita />
   },
-  {
-    path: "/nuevaMision",
-    element: <CreateNewMision/>
-  },
+
   {
     path: "/",
     element: <ProtectedRoute />,
@@ -49,7 +46,11 @@ const router = createBrowserRouter([
           },
           {
             path: "mision",
-            element: <Mision />
+            element: <Mision />,
+          },
+          {
+            path: "nuevaMision",
+            element: <CreateNewMision />
           },
           {
             path: "user",

@@ -10,8 +10,7 @@ function SearchAndNew() {
     };
 
     const handleNewMission = () => {
-
-        navigate('/nuevaMision');
+        navigate('/dashboard/nuevaMision');
     };
 
     return (
@@ -27,17 +26,8 @@ function SearchAndNew() {
                 onClick={handleSearch}
                 className="flex items-center px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 mr-2"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                >
-                    <path
-                        fillRule="evenodd"
-                        d="M14.91 13.605a7.499 7.499 0 111.414-1.414l4.243 4.243a1 1 0 01-1.414 1.414l-4.243-4.243zm-.793-5.223a5.5 5.5 0 11-1.414 1.414l-4.243-4.243a1 1 0 10-1.414 1.414l4.243 4.243z"
-                        clipRule="evenodd"
-                    />
+                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                 </svg>
                 Buscar
             </button>

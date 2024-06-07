@@ -16,10 +16,10 @@ const Card = () => {
       </div>
       <hr className="my-4 border-[#442670]" />
       <div className="text-gray-700 text-base">
-        <p>Lugar: Nombre del lugar</p>
-        <p>Fecha de inicio: 01/01/2024</p>
-        <p>Fecha final: 01/02/2024</p>
-        <p>Especialista: Nombre del especialista</p>
+        <p>Nombre del lugar</p>
+        <p>inicio: 01/01/2024</p>
+        <p>final: 01/02/2024</p>
+        <p>Especialista</p>
       </div>
     </div>
   </div>

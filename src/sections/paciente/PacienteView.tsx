@@ -137,7 +137,7 @@ const PacienteView: React.FC = () => {
                   <td>{patient.personalInformation.numberIdentification}</td>
                   <td className="py-4">{patient.personalInformation.name}</td>
                   <td>{patient.personalInformation.firtsNumberPhone}</td>
-                  <td>{patient.personalInformation.birthDate}</td>
+                  <td>{patient.personalInformation.age}</td>
                   <td>{patient.cita.specialty}</td>
                   <td className={patient.question.questionExamRecent ? 'text-green-600': 'text-red-600'}>{patient.question.questionExamRecent? 'si' : 'no'}</td>
                   <td className={patient.state === 'en consulta' ? 'text-green-600' : patient.estate === 'atendido'? 'text-yellow-600':'text-red-700'}>{patient.estate}</td>

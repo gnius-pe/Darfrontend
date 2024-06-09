@@ -3,10 +3,7 @@ import PropTypes from "prop-types";
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
 import { alpha } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
 import ListItemButton from '@mui/material/ListItemButton';
 
 import { usePathname } from '../../routes/hooks/index';
@@ -14,11 +11,8 @@ import { RouterLink } from '../../routes/components/index';
 
 import { account } from '../../_mock/account';
 
-import Scrollbar from '../../components/scrollbar';
-
-import { NAV } from '../../layout/config-layout.js';
-
-import navConfig from '../../layout/config-navigation.jsx';
+import navConfig from '../../layout/config-navigation.tsx';
+import navBottom from "../../layout/config-navBot.tsx";
 
 interface NavProps {
   openNav: boolean;
@@ -32,100 +26,54 @@ const Nav: React.FC<NavProps> = ({ openNav, onCloseNav }) => {
     if (openNav) {
       onCloseNav();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const renderAccount = (
-    <Box
-      sx={{
-        my: 3,
-        mx: 2.5,
-        py: 2,
-        px: 2.5,
-        display: 'flex',
-        borderRadius: 1.5,
-        alignItems: 'center',
-        bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
-      }}
+    <div className=" flex flex-col items-center gap-2 py-4 text-white"
     >
-      <Avatar src={account.photoURL} alt="photoURL" />
+      <h2 className="font-bold text-teal-300">Mision San Diego</h2>
+      <div className="flex gap-2">
+      <img src={account.photoURL} alt="photoURL" />
 
-      <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">Paul Charaja</Typography>
-
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          Administrador
-        </Typography>
-      </Box>
-    </Box>
+      <div >
+        <h2 >Dar Admin</h2>
+        <h3>
+          Paul Charaja
+        </h3>
+        
+      </div>
+      </div>
+      <div className="w-48 h-0 border border-teal-300 rounded-lg overflow-hidden"></div>
+    </div>
   );
 
   const renderMenu = (
-    <Stack component="nav" spacing={0.5} sx={{ px: 2 }} className="bg-slate-800">
+    <Stack component="nav" spacing={0.5} sx={{ px: 2 }} >
       {navConfig.map((item) => (
         <NavItem key={item.title} item={item} />
       ))}
     </Stack>
   );
 
-  const renderUpgrade = (
-    <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
-      <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
-
-        <Button
-          className="bg-custom-purple-800"
-          href="#"
-          target="_blank"
-          variant="contained"
-          
-        >
-          Cerrar cesion
-        </Button>
-      </Stack>
-    </Box>
+  const renderMenuBottom = (
+    <Stack component="nav" spacing={0.5} sx={{ px: 2 }} >
+      {navBottom.map((item) => (
+        <NavItem key={item.title} item={item} />
+      ))}
+    </Stack>
   );
 
-  const renderContent = (
-    <Scrollbar
-      sx={{
-        height: 1,
-        '& .simplebar-content': {
-          height: 1,
-          display: 'flex',
-          flexDirection: 'column',
-        },
-      }}
-    >
-
-      {renderAccount}
-
-      {renderMenu}
-
-      <Box sx={{ flexGrow: 1 }} />
-
-      {renderUpgrade}
-    </Scrollbar>
-  );
 
   return (
-    <Box
-      sx={{
-        flexShrink: { lg: 0 },
-        width: { lg: NAV.WIDTH },
-      }}
+    <div className="fixed h-svh overflow-y-auto w-64 pt-14 flex flex-col justify-between bg-custom-blue"
     >
-        <Box
-          sx={{
-            height: 1,
-            position: 'fixed',
-            width: NAV.WIDTH,
-            borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
-          }}
-          className="bg-gray-700"
-        >
-          {renderContent}
-        </Box>
-    </Box>
+      <div>
+        { renderAccount}
+       
+        {renderMenu}
+      </div>
+        { renderMenuBottom}
+    </div>
   );
 }
 
@@ -162,11 +110,12 @@ const NavItem: React.FC<NavItemProps> =({ item }) =>{
         }),
       }}
     >
-      <Box component="span" sx={{ width: 24, height: 24, mr: 2 }}>
+      <div className="w-6 h-6 mr-2">
         {item.icon}
-      </Box>
+      </div>
 
-      <Box component="span">{item.title} </Box>
+
+      <Box component="span" className="text-white">{item.title} </Box>
     </ListItemButton>
   );
 }

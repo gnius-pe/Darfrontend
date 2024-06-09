@@ -9,22 +9,17 @@ import distritos from '../../assets/distritos.json';
 
 interface LocationForProps{
   formData:any;
+  errors: any;
   onChange: (data:any) => void;
 }
 
-const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
+const LocationForm: React.FC<LocationForProps> = ({ formData, errors,onChange}) => {
 
   
   const [departamento, setDepartamento] = useState(formData.departamento);
   const [provincia, setProvincia] = useState(formData.provincia);
   const [distrito, setDistrito] = useState(formData.distrito);
   const [ direccion, setDireccion] = useState(formData.direccion);
-  const [errors, setErrors] = useState({
-    departamento:false,
-    provincia:false,
-    distrito:false,
-    direccion:false,
-  });
 
   useEffect(() => {
     setDepartamento(formData.departamento);
@@ -74,9 +69,9 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
               value={departamento}
               aria-placeholder="Departamento"
               onChange={handleDepartamento}
-              className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
+              className={`w-full border ${errors.departamento ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
             >
-              <option value="" disabled selected hidden>Departamento</option>
+              <option value="default" disabled  hidden>Departamento</option>
               {departamentos.map((departamento) => (
                 <option key={departamento.id} value={departamento.name}>
                   {departamento.name}
@@ -84,6 +79,7 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
               ))}
             </select>
           </div>
+          {errors.departamento && <span className='text-red-800 text-sm'>{errors.departamento}</span>}
         </Grid>
         <Grid item xs={12} sm={6}>
           <div>
@@ -91,9 +87,9 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
               id="select-provincia"
               value={provincia}
               onChange={handleProvincia}
-              className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
+              className={`w-full border ${errors.provincia ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
             >
-              <option value="" disabled selected hidden>Provincia</option>
+              <option value="default" disabled hidden>Provincia</option>
               {provincias
                 .filter(provincia => provincia.department_id === departamentos.find(dep => dep.name === departamento)?.id)
                 .map((provincia) => (
@@ -103,6 +99,7 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
                 ))}
             </select>
           </div>
+          {errors.provincia && <span className='text-red-800 text-sm'>{errors.provincia}</span>}
         </Grid>
         <Grid item xs={12} sm={6}>
           <div>
@@ -111,9 +108,9 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
               value={distrito}
               onChange={handleDistrito}
               disabled={!provincia}
-              className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
+              className={`w-full border ${errors.distrito ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
             >
-              <option value="" disabled selected hidden>Distrito</option>
+              <option value="default" disabled hidden>Distrito</option>
               {distritos
                 .filter(distrito => distrito.province_id === provincias.find(prov => prov.name === provincia)?.id)
                 .map((distrito) => (
@@ -123,6 +120,7 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
                 ))}
             </select>
           </div>
+          {errors.distrito && <span className='text-red-800 text-sm'>{errors.distrito}</span>}
         </Grid>
         <Grid item xs={12}>
           <input
@@ -134,7 +132,6 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, onChange}) => {
             autoComplete="off"
             value={direccion}
             onChange={handleDireccion}
-            onBlur={() => setErrors((prev) => ({ ...prev, direccion: !direccion }))}
             className={`w-full border ${errors.direccion ? 'border-red-500': 'border-gray-300'}rounded p-2 focus:outline-none focus:border-blue-500`}
           />
         </Grid>

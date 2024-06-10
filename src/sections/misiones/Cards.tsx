@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Card from './Card';
 
 function Cards() {
@@ -14,10 +14,12 @@ function Cards() {
     // Calcula el número total de páginas
     const totalPages = Math.ceil(totalCards / cardsPerPage);
 
+    /*
     // Cambia a la página siguiente
     const nextPage = () => {
         setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
     };
+    */
 
     // Cambia a la página anterior
     const prevPage = () => {

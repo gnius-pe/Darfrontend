@@ -1,6 +1,4 @@
 
-import React from 'react';
-
 const Card = () => {
   return (
   <div className="max-w-sm rounded overflow-hidden shadow-lg border border-gray-700 border-opacity-50">

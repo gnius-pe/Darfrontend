@@ -5,21 +5,21 @@ import ic_mision from "../assets/images/navbar/ic_mision.svg";
 const navBottom = [
   {
     title: 'Panel de control',
-    path: '/dashboard',
+    path: '',
     icon: (
       <img src={ic_admins} alt="User Icon" />
     ),
   },
   {
     title: 'Pacientes',
-    path: '/dashboard/pacientes',
+    path: '/dashboard/mision',
     icon: (
       <img src={ic_mision} alt="User Icon" />
     )
   },
   {
     title: 'Área Médica',
-    path: '/dashboard/areamedica',
+    path: '',
     icon: (
       <img src={ic_especilidad} alt="User Icon" />
     ),

@@ -78,14 +78,14 @@ const Review: React.FC<ReviewFormProps> = ({ formData }) => {
                 </Grid>
               </React.Fragment><React.Fragment >
                 <Grid item xs={6}>
-                  <Typography gutterBottom className={distrito ? 'text-blue-800' : 'bg-red-400'}>Distrito</Typography>
+                  <Typography gutterBottom className={distrito }>Distrito</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography gutterBottom >{distrito}</Typography>
                 </Grid>
               </React.Fragment><React.Fragment > 
                 <Grid item xs={6}>
-                  <Typography gutterBottom className={direccion ? 'text-blue-800' : 'bg-red-400'}>Direccion</Typography>
+                  <Typography gutterBottom className={direccion}>Direccion</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography gutterBottom >{direccion}</Typography>

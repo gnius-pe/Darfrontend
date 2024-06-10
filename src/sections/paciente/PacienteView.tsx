@@ -122,7 +122,7 @@ const PacienteView: React.FC = () => {
               <th className="m-auto w-28">Nombre Completo</th>
               <th className="w-24">Celular</th>
               <th className="w-16 px-6 py-3 border-b-2 border-gray-300 text-left text-xs leading-4 font-medium uppercase">Edad</th>
-              <th className="px-2">Especialidades a consultar</th>
+              <th className="px-2 w-24">Especialidades a consultar</th>
               <th className="w-16 px-2">Examen clinico</th>
               <th className="w-20">Estado</th>
               <th className="w-32">Acciones</th>

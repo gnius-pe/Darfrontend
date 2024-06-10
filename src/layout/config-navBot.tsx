@@ -11,7 +11,7 @@ const navBottom = [
     ),
   },
   {
-    title: 'Pacientes',
+    title: 'Nuevo Mision',
     path: '/dashboard/nuevaMision',
     icon: (
       <img src={ic_mision} alt="User Icon" />

@@ -79,6 +79,7 @@ export const FormModal: FC<NewUserModal> = ({ isOpen, onClose, useBackdrop = fal
 
   const validatePage = (pageIndex: number) => {
     const newErrors: any = {};
+    
     if (pageIndex === 0) {
       if (!formData.typeId) newErrors.typeId = 'seleccione un documento';
       if (!formData.name) newErrors.name = 'Ingrese un nombre';
@@ -95,9 +96,10 @@ export const FormModal: FC<NewUserModal> = ({ isOpen, onClose, useBackdrop = fal
     }
     else if (pageIndex === 2) {
       if (!formData.fechareserva) newErrors.fechareserva = 'seleccione un fecha';
-      if (!formData.especiality) newErrors.especiality = 'seleccione una especialidad';
+      if (formData.especiality.length === 0) newErrors.especiality = 'seleccione al menos una especialidad';
       if (!formData.hora) newErrors.hora = 'seleccione un hora';
     }
+
     return newErrors;
   };
 

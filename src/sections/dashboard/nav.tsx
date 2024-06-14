@@ -28,6 +28,8 @@ const Nav: React.FC<NavProps> = ({ openNav, onCloseNav }) => {
     }
   }, [pathname]);
 
+  const userInfo = JSON.parse(sessionStorage.getItem("userInfo") || "{}");
+
   const renderAccount = (
     <div className=" flex flex-col items-center gap-2 py-4 text-white"
     >
@@ -36,9 +38,9 @@ const Nav: React.FC<NavProps> = ({ openNav, onCloseNav }) => {
       <img src={account.photoURL} alt="photoURL" />
 
       <div >
-        <h2 >Dar Admin</h2>
+        <h2 >{userInfo.role}</h2>
         <h3>
-          Paul Charaja
+          {userInfo.username}
         </h3>
         
       </div>

@@ -185,6 +185,7 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
             autoComplete="off"
             maxLength={tipoDocumento === 'DNI' ? 8 : undefined}
           />
+          {errors.numberId && <span className='text-red-800 text-sm'>{errors.numberId}</span>}
         </Grid>
         <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
         <label className='block text-gray-900'>
@@ -215,6 +216,7 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
             onChange={handleApellidosChange}
             className={`w-full border ${errors.lastName ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
           />
+          {errors.lastName && <span className='text-red-800 text-sm'>{errors.lastName}</span>}
         </Grid>
         <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
           <input
@@ -247,6 +249,7 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
             onChange={handleNumberPhone}
             className={`w-full border ${errors.firstNumberPhone ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
           />
+          {errors.firstNumberPhone && <span className='text-red-800 text-sm'>{errors.firstNumberPhone}</span>}
         </Grid>
         <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
           <input

@@ -2,7 +2,6 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 
 interface ReviewFormProps {
@@ -10,7 +9,7 @@ interface ReviewFormProps {
 }
 
 const Review: React.FC<ReviewFormProps> = ({ formData }) => {
-  const { name, lastName, numberId, firstNumberPhone, sexo, birthDate, departamento, provincia, distrito, direccion, fechareserva, especiality, hora } = formData;//tal como esta estructurado en el interface formProps
+  const { name, lastName, numberId, firstNumberPhone, sexo, birthDate, departamento, provincia, distrito, direccion, fechareserva} = formData;//tal como esta estructurado en el interface formProps
 
   return (
     <React.Fragment>
@@ -99,7 +98,6 @@ const Review: React.FC<ReviewFormProps> = ({ formData }) => {
       </Typography>
       <List disablePadding>
           <ListItem sx={{ py: 0, px: 0 }}>
-            <ListItemText primary={especiality} secondary={hora} />
             <Typography variant="body2">{fechareserva}</Typography>
           </ListItem>
       </List>

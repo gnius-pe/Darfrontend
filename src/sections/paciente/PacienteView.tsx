@@ -214,7 +214,7 @@ const PacienteView: React.FC = () => {
           </div>
         </div>
       </section>
-      <FormModal isOpen={isModalOpen} onClose={handleCloseModal} useBackdrop={true}/>
+      <FormModal isOpen={isModalOpen} onClose={handleCloseModal}/>
       <ViewFormModal isOpen={isViewFormOpen} onClose={handleCloseFormModal}/>
       <UpdateForm isOpen={isUpdateOpen} onClose={handleCloseUpdate}/>
     </>

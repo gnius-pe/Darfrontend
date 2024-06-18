@@ -11,11 +11,15 @@ import Medico from '../pages/Medico.tsx';
 import Mision from '../pages/Mision.tsx';
 import User from '../pages/User.tsx';
 import App from '../pages/AppView.tsx';
-
+import Landing from '../pages/LandingMain.tsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Landing />
+  },
+  {
+    path: "/login",
     element: <Login />
   },
   {

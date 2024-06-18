@@ -2,10 +2,12 @@ import logoHead from '../../assets/images/header/ic_logo.svg'
 import ic_notification from '../../assets/images/header/ic_notification.svg';
 import ic_message from '../../assets/images/header/ic_message.svg';
 import user_profile from '../../assets/images/user/user_profile.svg';
-import desglose from '../../assets/images/header/desglose.svg'
-
+import MenuUser from '../dashboard/view/Headercomp/logoutBtn';
 
 export default function Header() {
+  
+  const userInfo = JSON.parse(sessionStorage.getItem("userInfo") || "{}");
+
   return (
     <div className="fixed top-0 left-0 w-full h-14 z-10 bg-custom-blue flex items-center">
       <div className="w-64 flex justify-center items-center">
@@ -29,14 +31,14 @@ export default function Header() {
           </div>
           <div className='flex items-center gap-3 text-teal-300'>
             <div>
-              <h2 className='text-lg'>User</h2>
-              <p className='text-sm'>Administrador</p>
+              <h2 className='text-lg'>{userInfo.username}</h2>
+              <p className='text-sm'>{userInfo.role}</p>
             </div>
             <div>
               <img  src={user_profile} alt="" />
             </div>
             <div className='w-6 h-6 mr-24'>
-              <img src={desglose} alt="" />
+              <MenuUser />
             </div>
           </div>
         </div>

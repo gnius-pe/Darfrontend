@@ -81,7 +81,7 @@ const PacienteView: React.FC = () => {
 
   return (
     <>
-      <section className="flex flex-col gap-4 mt-3 mx-auto px-4">
+      <section className="flex flex-col gap-4 mt-3 mx-auto">
         <h1>Usuarios: </h1>
         <div className="flex gap-24">
         
@@ -141,7 +141,7 @@ const PacienteView: React.FC = () => {
                   <td>{patient.personalInformation.age}</td>
                   <td>{patient.cita.specialty}</td>
                   <td className={patient.question.questionExamRecent ? 'text-green-600': 'text-red-600'}>{patient.question.questionExamRecent? 'si' : 'no'}</td>
-                  <td className={patient.state === 'en consulta' ? 'text-green-600' : patient.estate === 'atendido'? 'text-yellow-600':'text-red-700'}>{patient.estate}</td>
+                  <td className={patient.estate ==='ESPERA' ? 'text-red-700' : patient.estate === 'pendiente'? 'text-yellow-600':' text-green-600'}>{patient.estate}</td>
                   <td className="py-4 flex justify-around">
                     <button name='view' onClick={handleOpenFormModal} className="w-6 h-6">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#442670" className="w-6 h-6">
@@ -214,7 +214,7 @@ const PacienteView: React.FC = () => {
           </div>
         </div>
       </section>
-      <FormModal isOpen={isModalOpen} onClose={handleCloseModal} useBackdrop={true}/>
+      <FormModal isOpen={isModalOpen} onClose={handleCloseModal}/>
       <ViewFormModal isOpen={isViewFormOpen} onClose={handleCloseFormModal}/>
       <UpdateForm isOpen={isUpdateOpen} onClose={handleCloseUpdate}/>
     </>

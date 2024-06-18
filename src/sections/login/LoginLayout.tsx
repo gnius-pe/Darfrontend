@@ -1,93 +1,63 @@
 import { useState } from "react"
 import { useAuth } from "../../auth/AuthProvider"
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import axios from "axios";
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import ic_arrow from '../../assets/images/login/arrowBefore.svg';
+import points from '../../assets/images/login/points.svg';
+import logologin from '../../assets/images/login/logologin.svg';
 
-const defaultTheme = createTheme();
-
-export default function Login(){
-
+export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const auth = useAuth();
-    const [error, setError] = useState("")
+    const [error, setError] = useState("");
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      try {
-        const response = await axios.post(import.meta.env.VITE_API_KEY, {
-          email,
-          password,
-        });
-        console.log(response.data);
-        if (response.status === 200) {
-            const jwtToken = response.data.token;
-            localStorage.setItem("jwtToken", jwtToken);
-            auth.login(() => {
-                window.location.href = "/dashboard"
-            })
+        e.preventDefault();
+        try {
+            const response = await axios.post(import.meta.env.VITE_API_KEY, {
+                email,
+                password,
+            });
+
+            if (response.status === 200) {
+                const userId = response.data.id;
+                sessionStorage.setItem("userId", userId);
+                sessionStorage.setItem("userInfo", JSON.stringify(response.data));
+                auth.login(() => {
+                    window.location.href = "/dashboard";
+                });
+            } else {
+                setError("Petición inválida: contraseña incorrecta.");
+            }
+        } catch (error) {
+            setError("Ha ocurrido un error. Por favor, inténtalo de nuevo.");
         }
-        else{
-          console.log("peticion invalida contraseña incorrecta");
-          console.log(error)
-        }
-      }
-      catch (error) {
-        setError("un error ah ocurrido aqui")
-      }
     };
 
-    if(auth.isAuthenticated && window.location.pathname === "/"){
-        return <Navigate to ="/dashboard" replace />;
+    if (auth.isAuthenticated && window.location.pathname === "/") {
+        return <Navigate to="/dashboard" replace />;
     }
-    
+
     return (
-    <>
-        <ThemeProvider theme={defaultTheme}>
-            <Grid container component="main" sx={{ height: '100vh' }}>
-            <CssBaseline />
-                <Grid
-                    item
-                    xs={false}
-                    sm={4}
-                    md={7}
-                    sx={{
-                        backgroundImage: '',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundColor: (t) =>
-                        t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                    }}
-                />
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-                <Box
-                    sx={{
-                    my: 8,
-                    mx: 4,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    }}
-                    
-                >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Login Dar
-                    </Typography>
-                    <Box component="form" sx={{ mt: 1 }} onSubmit={handleSubmit}>
+        <>
+            <div className="w-full h-svh bg-gradient-to-r from-[#442670] to-[#67D9C6] flex justify-center items-center">
+                <div className="w-96 h-max px-2 py-0 bg-white flex flex-col items-center rounded-md">
+                    <div className="w-full flex justify-between items-center">
+                        
+                        <div>
+                        <Link to="/">
+                            <img src={ic_arrow} alt="arrow" />
+                            </Link>
+                        </div>
+                    <img src={points} alt="" />
+                    </div>
+                    <img src={logologin} alt="" />
+                    <Box component="form" sx={{ mt: 1, pb: 2, px: 3}} onSubmit={handleSubmit}>
                         <TextField
                             margin="normal"
                             required
@@ -97,7 +67,7 @@ export default function Login(){
                             name="email"
                             autoComplete="email"
                             autoFocus
-                            value={email}   
+                            value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
                         <TextField
@@ -112,7 +82,7 @@ export default function Login(){
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                    
+                        {error && <Typography color="error">{error}</Typography>}
                         <Button
                             type="submit"
                             fullWidth
@@ -122,10 +92,9 @@ export default function Login(){
                             Ingresar
                         </Button>
                     </Box>
-                  </Box>
-                </Grid>
-            </Grid>
-        </ThemeProvider> 
-    </>
+                </div>
+            </div>
+        </>
     )
 }
+

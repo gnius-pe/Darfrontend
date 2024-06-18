@@ -1,6 +1,5 @@
-// CheckoutModal.tsx
 import * as React from 'react';
-import { useState, FC } from 'react';
+import { useState } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -14,12 +13,12 @@ import LocationForm from './LocationForm';
 import AddressForm from './AddressForm';
 import Review from './Review';
 import Cita from './Cita';
+import { FC } from 'react';
 
-interface NewUserModal {
-  isOpen: boolean;
-  onClose: () => void;
-  useBackdrop?: boolean; // Nueva prop opcional
-}
+interface NewUserModal{
+    isOpen: boolean;
+    onClose: () => void;
+  }
 
 interface FormData {
   typeId: string;
@@ -45,10 +44,13 @@ interface FormData {
   visita: boolean;
 }
 
-const steps = ['Datos', 'Ubicacion', 'Cita', 'Revision'];
+const steps = ['Datos', 'Ubicacion', 'Cita','revision'];
 
-export const FormModal: FC<NewUserModal> = ({ isOpen, onClose, useBackdrop = false }) => {
-  if (!isOpen) return null;
+
+
+const CheckoutFloat: FC<NewUserModal> = ({isOpen, onClose}) => {
+
+  if(!isOpen) return null;
 
   const [formData, setFormData] = useState<FormData>({
     typeId: '',
@@ -75,10 +77,11 @@ export const FormModal: FC<NewUserModal> = ({ isOpen, onClose, useBackdrop = fal
   });
 
   const [activeStep, setActiveStep] = React.useState(0);
-  const [errors, setErrors] = useState<any>({});
+  const [errors, setErrors]= useState<any>({});
 
   const validatePage = (pageIndex: number) => {
     const newErrors: any = {};
+    
     if (pageIndex === 0) {
       if (!formData.typeId) newErrors.typeId = 'seleccione un documento';
       if (!formData.name) newErrors.name = 'Ingrese un nombre';
@@ -95,16 +98,17 @@ export const FormModal: FC<NewUserModal> = ({ isOpen, onClose, useBackdrop = fal
     }
     else if (pageIndex === 2) {
       if (!formData.fechareserva) newErrors.fechareserva = 'seleccione un fecha';
-      if (!formData.especiality) newErrors.especiality = 'seleccione una especialidad';
+      if (formData.especiality.length === 0) newErrors.especiality = 'seleccione al menos una especialidad';
       if (!formData.hora) newErrors.hora = 'seleccione un hora';
     }
+
     return newErrors;
   };
 
   function getStepContent(step: number) {
     switch (step) {
       case 0:
-        return <AddressForm formData={formData} errors={errors} onChange={(data) => handleFormChange(data)} />;
+        return <AddressForm formData={formData} errors = {errors}  onChange={(data)=> handleFormChange(data)}/>;
       case 1:
         return <LocationForm formData={formData} errors={errors} onChange={(data) => handleFormChange(data)} />;
       case 2:
@@ -119,10 +123,10 @@ export const FormModal: FC<NewUserModal> = ({ isOpen, onClose, useBackdrop = fal
   const handleFormChange = (data: any) => {
     setFormData((prevFormData) => ({ ...prevFormData, ...data }));
 
-    // Remueve los errores del formulario 
-    const newErrors = { ...errors };
-    for (const key in data) {
-      if (data[key]) {
+    //remueve los errores del formulario 
+    const newErrors = { ...errors }
+    for ( const key in data){
+      if (data[key]){
         delete newErrors[key];
       }
     }
@@ -131,7 +135,7 @@ export const FormModal: FC<NewUserModal> = ({ isOpen, onClose, useBackdrop = fal
 
   const handleNext = () => {
     const newErrors = validatePage(activeStep);
-    if (Object.keys(newErrors).length === 0) {
+    if (Object.keys(newErrors).length === 0){
       setActiveStep(activeStep + 1);
     } else {
       setErrors(newErrors);
@@ -172,7 +176,7 @@ export const FormModal: FC<NewUserModal> = ({ isOpen, onClose, useBackdrop = fal
       },
       estate : "ESPERA"
     };
-
+  
     try {
       const response = await fetch('https://goldfish-app-sryot.ondigitalocean.app/api/patient', {
         method: 'POST',
@@ -181,22 +185,23 @@ export const FormModal: FC<NewUserModal> = ({ isOpen, onClose, useBackdrop = fal
         },
         body: JSON.stringify(dataFormPaciente),
       });
-
+  
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
+  
       const result = await response.text(); // Leer el mensaje de texto de la respuesta
       console.log('Success:', result);
     } catch (error) {
       console.error('Error:', error);
     }
-
+  
     console.log(dataFormPaciente);
-  };
+  };  
+  
 
-  const modalContent = (
-    <>
+  return (
+    <React.Fragment>
       <CssBaseline />
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
@@ -204,13 +209,14 @@ export const FormModal: FC<NewUserModal> = ({ isOpen, onClose, useBackdrop = fal
             <Typography component="h1" variant="h4" align="center">
               Reserva de cita
             </Typography>
-            <button
-              className="absolute top-0 right-0 mt-2 mr-2 focus:outline-none"
+            <button  
+              className="absolute top-0 right-0 mt-2 mr-2 focus:outline-none "
               onClick={onClose}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clipRule="evenodd" />
+                <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
               </svg>
+
             </button>
           </div>
           <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
@@ -238,40 +244,24 @@ export const FormModal: FC<NewUserModal> = ({ isOpen, onClose, useBackdrop = fal
                     Atras
                   </Button>
                 )}
-                {activeStep === steps.length - 1 ? (
-                  <Button
-                    variant="contained"
-                    onClick={handleSubmit}
-                    sx={{ mt: 3, ml: 1 }}
-                  >
-                    Reservar
-                  </Button>
-                ) : (
-                  <Button
-                    variant="contained"
-                    onClick={handleNext}
-                    sx={{ mt: 3, ml: 1 }}
-                  >
-                    Siguiente
-                  </Button>
-                )}
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    handleNext();
+                    if (activeStep === steps.length - 1) {
+                      handleSubmit();
+                    }
+                  }}
+                  sx={{ mt: 3, ml: 1 }}
+                >
+                  {activeStep === steps.length - 1 ? 'Reservar cita' : 'Siguiente'}
+                </Button>
               </Box>
             </React.Fragment>
           )}
         </Paper>
       </Container>
-    </>
-  );
-
-  return useBackdrop ? (
-    <div className='fixed inset-0 bg-black bg-opacity-50'>
-      {modalContent}
-    </div>
-  ) : (
-    modalContent
+    </React.Fragment>
   );
 };
-
-export default FormModal;
-
-///solamente falta el segundo numero para que se quede libre
+export default CheckoutFloat;

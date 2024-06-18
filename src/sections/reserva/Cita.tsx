@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { useState, ChangeEvent, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
+import {Especialidad, especialidadesNames } from './cita/especialidades'
+import Select, { MultiValue} from 'react-select';
+import timeOptions from './cita/timeOptions';
 
 interface CitaFormProps {
   formData: any;
@@ -14,23 +17,14 @@ const FechasReserva = [
   { id: "03", extendFecha: 'juanes', fecha: '2024-07-14' },
 ];
 
-const Especialidades = [
-  { id: "001", especialidad: "medicina interna" },
-  { id: "002", especialidad: "medicina interna" },
-  { id: "003", especialidad: "medicina interna" },
-  { id: "004", especialidad: "medicina interna" },
-  { id: "005", especialidad: "medicina interna" },
-  { id: "006", especialidad: "medicina interna" },
-];
-
 const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
-  const [dateReserva, setDateReserva] = useState( formData.fechareserva);
+  const [dateReserva, setDateReserva] = useState(formData.fechareserva);
   const [hora, setHora] = useState(formData.hora);
   const [especialidad, setEspecialidad] = useState(formData.especiality);
   const [mensaje, setMensaje] = useState(formData.mensaje);
-  const [checkAnalisis, setCheckAnalisis] = useState(formData.analisis);
-  const [checkAyuda, setCheckAyuda] = useState(formData.ayuda);
-  const [checkVisita, setCheckVisita] = useState(formData.visita);
+  const [checkAnalisis, setCheckAnalisis] = useState(formData.analisis );
+  const [checkAyuda, setCheckAyuda] = useState(formData.ayuda );
+  const [checkVisita, setCheckVisita] = useState(formData.visita );
 
   useEffect(() => {
     setDateReserva(formData.fechareserva);
@@ -46,18 +40,17 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
     const newDateReservaString = event.target.value;
     setDateReserva(newDateReservaString);
     onChange({ ...formData, fechareserva: newDateReservaString });
-};
-  
-  const handleHora = (event: ChangeEvent<HTMLInputElement>) => {
+  };
+
+  const handleHora = (event: ChangeEvent<HTMLSelectElement>) => {
     const newHora = event.target.value;
     setHora(newHora);
     onChange({ ...formData, hora: newHora });
   };
 
-  const handleEspecialidad = (event: ChangeEvent<HTMLSelectElement>) => {
-    const newEspecialidad = event.target.value;
-    setEspecialidad(newEspecialidad);
-    onChange({ ...formData, especiality: newEspecialidad });
+  const handleEspecialidad = (selectedOptions: MultiValue<Especialidad>) => {
+    setEspecialidad(selectedOptions);
+    onChange({ ...formData, especiality: selectedOptions });
   };
 
   const handleMensaje = (event: ChangeEvent<HTMLInputElement>) => {
@@ -108,31 +101,35 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
           </div>
           {errors.fechareserva && <span className='text-red-800 text-sm'>{errors.fechareserva}</span>}
         </Grid>
-        <Grid item xs={12} md={6}>
-          <input 
-            required
-            id="Hora"
-            placeholder={errors.hora ? "Agregue una hora" : "Hora"}
-            autoComplete="none"
-            value={hora}
-            onChange={handleHora}
-            className={`w-full border ${errors.hora ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={6} md={3}>
           <div>
             <select
-              id="select-especialidad"
-              value={especialidad}
-              onChange={handleEspecialidad}
-              className={`w-full border ${errors.especiality ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
+              id="fecha-select"
+              value={hora}
+              onChange={handleHora}
+              className={`w-full border ${errors.hora ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
             >
-              {Especialidades.map((especialidad) => (
-                <option key={especialidad.id} value={especialidad.especialidad}>
-                  {especialidad.especialidad}
+              <option value="" disabled hidden>Hora</option>
+              {timeOptions.map((hora, index) => (
+                <option key={index} value={hora}>
+                  {hora}
                 </option>
               ))}
             </select>
+          </div>
+          {errors.hora && <span className='text-red-800 text-sm'>{errors.hora}</span>}
+        </Grid>
+        <Grid item xs={12}>
+          <div className="container mx-auto w-full">
+            <Select
+              isMulti
+              name="especialidades"
+              value={especialidad}
+              options={especialidadesNames}
+              onChange={handleEspecialidad}
+              className="w-full"
+              classNamePrefix="select"
+            />
           </div>
           {errors.especiality && <span className='text-red-800 text-sm'>{errors.especiality}</span>}
         </Grid>
@@ -147,34 +144,34 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
           />
         </Grid>
         <Grid item xs={12}>
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="analisis"
-            name="analisis"
-            checked={checkAnalisis}
-            onChange={handleCheckAnalisis}
-            className="form-checkbox text-secondary h-5 w-5"
-          />
-          <label htmlFor="analisis" className="ml-2 text-gray-900">
-            ¿Cuentas con exámenes o algún análisis sobre tu consulta que tenga menos de 30 días?
-          </label>
-        </div>
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="analisis"
+              name="analisis"
+              checked={checkAnalisis}
+              onChange={handleCheckAnalisis}
+              className="form-checkbox text-secondary h-5 w-5"
+            />
+            <label htmlFor="analisis" className="ml-2 text-gray-900">
+              ¿Cuentas con exámenes o algún análisis sobre tu consulta que tenga menos de 30 días?
+            </label>
+          </div>
         </Grid>
         <Grid item xs={12}>
           <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="ayuda"
-            name="ayuda"
-            checked={checkAyuda}
-            onChange={handleCheckAyuda}
-            className="form-checkbox text-secondary h-4 w-4"
-          />
-          <label htmlFor="ayuda" className="ml-2 text-gray-900">
-            ¿Estas interesado en recibir ayuda espiritual?
-          </label>
-        </div>
+            <input
+              type="checkbox"
+              id="ayuda"
+              name="ayuda"
+              checked={checkAyuda}
+              onChange={handleCheckAyuda}
+              className="form-checkbox text-secondary h-4 w-4"
+            />
+            <label htmlFor="ayuda" className="ml-2 text-gray-900">
+              ¿Estas interesado en recibir ayuda espiritual?
+            </label>
+          </div>
         </Grid>
         <Grid item xs={12}>
           <div className="flex items-center">

@@ -9,7 +9,7 @@ export default function Signup(){
     const [name, setName] = useState("");
     const auth = useAuth();
 
-    if(auth.isAuthenticated) {
+    if(auth.isAuthenticated()) {
         return <Navigate to="/dashboard"/>
     }
 

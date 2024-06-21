@@ -24,3 +24,5 @@ Teconologias :
       ```
 Esto ejecutará la aplicación Node.js. Abre tu navegador web y navega a la dirección en la que se ejecuta la aplicación (http://localhost:5173/). 
 
+Derechos de autor 2024
+

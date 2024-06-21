@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import FormModal from '../reserva/CheckoutFloat';
+import AddPaciente from './CallbackReserva';
 import ViewFormModal from './ViewPaciente';
 import UpdateForm from './UpdatePaciente';
 import axios from 'axios';
@@ -214,7 +214,7 @@ const PacienteView: React.FC = () => {
           </div>
         </div>
       </section>
-      <FormModal isOpen={isModalOpen} onClose={handleCloseModal}/>
+      <AddPaciente isOpen={isModalOpen} onClose={handleCloseModal}/>
       <ViewFormModal isOpen={isViewFormOpen} onClose={handleCloseFormModal}/>
       <UpdateForm isOpen={isUpdateOpen} onClose={handleCloseUpdate}/>
     </>

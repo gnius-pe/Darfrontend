@@ -39,7 +39,7 @@ export default function Login() {
         }
     };
 
-    if (auth.isAuthenticated && window.location.pathname === "/") {
+    if (auth.isAuthenticated() ) {
         return <Navigate to="/dashboard" replace />;
     }
 

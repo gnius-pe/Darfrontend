@@ -1,13 +1,13 @@
-import * as React from 'react';
+import DefaultLayout from '../../layout/Defaultlayout';
 import FormModal from './CheckoutFloat';
 
 export default function Checkout() {
-  const [isOpen, setIsOpen] = React.useState(true);
-  const handleClose = () => setIsOpen(false);
-
+  
   return (
     <>
-      <FormModal isOpen={isOpen} onClose={handleClose}/>
+      <DefaultLayout>
+        <FormModal/>
+      </DefaultLayout>
     </>
   );
 }

@@ -1,3 +1,4 @@
+#doockerfile for frontend
 FROM node:18-alpine as buildFrontend_image
 
 WORKDIR /app/react-app

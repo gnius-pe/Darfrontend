@@ -1,23 +1,23 @@
 // Definir un tipo para los objetos del array
 export interface Especialidad {
-  label: string;
+  specialty: string;
   value: string;
 }
 
 // Declarar el array con el tipo definido
 export const especialidadesNames: Especialidad[] = [
-  { label: "Cardiología", value: "Cardiología" },
-  { label: "Dermatología", value: "Dermatología" },
-  { label: "Endocrinología", value: "Endocrinología" },
-  { label: "Gastroenterología", value: "Gastroenterología" },
-  { label: "Hematología", value: "Hematología" },
-  { label: "Neurología", value: "Neurología" },
-  { label: "Oftalmología", value: "Oftalmología" },
-  { label: "Oncología", value: "Oncología" },
-  { label: "Pediatría", value: "Pediatría" },
-  { label: "Psiquiatría", value: "Psiquiatría" },
-  { label: "Radiología", value: "Radiología" },
-  { label: "Urología", value: "Urología" },
+  { specialty: "Cardiología", value: "1" },
+  { specialty: "Dermatología", value: "2" },
+  { specialty: "Endocrinología", value: "3" },
+  { specialty: "Gastroenterología", value: "4" },
+  { specialty: "Hematología", value: "5" },
+  { specialty: "Neurología", value: "6" },
+  { specialty: "Oftalmología", value: "7" },
+  { specialty: "Oncología", value: "8" },
+  { specialty: "Pediatría", value: "9" },
+  { specialty: "Psiquiatría", value: "10" },
+  { specialty: "Radiología", value: "11" },
+  { specialty: "Urología", value: "12" },
   // Puedes agregar más especialidades si es necesario
 ];
 

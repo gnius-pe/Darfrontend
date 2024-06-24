@@ -1,69 +1,31 @@
-import { createBrowserRouter } from 'react-router-dom';
-import Login from '../pages/Login.tsx';
-import Dashboard from '../pages/Dashboard.tsx';
-import ProtectedRoute from './ProtectedRoute.tsx';
-import ReservaCita from '../pages/CitaReserve.tsx';
-import CreateNewMision from '../sections/misiones/CreateNewMision.tsx';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { ProtectedRoute } from './ProtectedRoute.tsx';
 
-import Pacientes from '../pages/Paciente.tsx';
-import Areamedica from '../pages/Areamedica.tsx';
-import Medico from '../pages/Medico.tsx';
-import Mision from '../pages/Mision.tsx';
-import User from '../pages/User.tsx';
-import App from '../pages/AppView.tsx';
-import Landing from '../pages/LandingMain.tsx';
+import { Landing, Login, Dashboard, App, Areamedica, ReservaCita, CreateNewMision, Pacientes, Medico, Mision, User } from '../routes/index.tsx';
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Landing />
-  },
-  {
-    path: "/login",
-    element: <Login />
-  },
-  {
-    path: "/reserva",
-    element: <ReservaCita />
-  },
-
-  {
-    path: "/",
-    element: <ProtectedRoute />,
-    children: [
-      {
-        path: "dashboard",
-        element: <Dashboard />,
-        children: [
-          { path:"", element: <App />, index:true },
-          {
-            path: "pacientes",
-            element: <Pacientes />
-          },
-          {
-            path: "areamedica",
-            element: <Areamedica />
-          },
-          {
-            path: "medico",
-            element: <Medico />
-          },
-          {
-            path: "mision",
-            element: <Mision />,
-          },
-          {
-            path: "nuevaMision",
-            element: <CreateNewMision />
-          },
-          {
-            path: "user",
-            element: <User />
-          }
-        ],
-      },
-    ]
-  }
-]);
+const router = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route index element={<Landing/>} />
+        <Route path='/login' element={<Login/>}/>
+        <Route path='/reserva' element={<ReservaCita/>}/>
+        <Route path='/dashboard' element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }>
+          <Route index element={<App/>} />
+          <Route path='areamedica' element={<Areamedica />} />
+          <Route path='pacientes' element={<Pacientes />} />
+          <Route path='medico' element={<Medico />} />
+          <Route path='mision' element={<Mision />} />
+          <Route path='user' element={<User />} />
+          <Route path='nuevaMision' element={<CreateNewMision/>} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
 
 export default router;

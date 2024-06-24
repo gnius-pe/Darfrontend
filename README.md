@@ -24,5 +24,12 @@ Teconologias :
       ```
 Esto ejecutará la aplicación Node.js. Abre tu navegador web y navega a la dirección en la que se ejecuta la aplicación (http://localhost:5173/). 
 
-Derechos de autor 2024
-
+## Cómo evitar conlictos
+1. Primero actualizar las ramas romtas, puedes estar en 'x' rama, no importa
+      ```bash
+      git fetch -p
+      ```
+2. Bajar cambios de la rama develop, ya que este comando no hace merge automáticamente.
+      ```bash
+      git pull origin develop
+      ```

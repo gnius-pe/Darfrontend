@@ -79,8 +79,6 @@ const Nav: React.FC<NavProps> = ({ openNav, onCloseNav }) => {
   );
 }
 
-
-
 // ----------------------------------------------------------------------
 interface NavItemProps{
   item: any;

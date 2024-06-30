@@ -1,11 +1,10 @@
 import { AuthProvider } from './auth/AuthProvider.tsx';
-import router from './routes/Sections.tsx';
-import { RouterProvider } from 'react-router-dom';
+import Router from './routes/Sections.tsx';
 
 function App() {
   return (
     <AuthProvider>
-      <RouterProvider router={router} />
+      <Router/>
     </AuthProvider>
   );
 }

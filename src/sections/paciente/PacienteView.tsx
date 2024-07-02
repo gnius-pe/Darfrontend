@@ -81,7 +81,7 @@ const PacienteView: React.FC = () => {
 
   return (
     <>
-      <section className="flex flex-col gap-4 mt-3 mx-auto">
+      <section className="flex flex-col gap-4 mt-3 mx-auto overflow-x-auto">
         <h1>Usuarios: </h1>
         <div className="flex gap-24">
         

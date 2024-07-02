@@ -39,9 +39,6 @@ const AppView = () => {
               strokeColor={"stroke-[#A66DE9]"}
             />
           </div>
-          <div>
-            <Cupos />
-          </div>
         </div>
       </div>
   );

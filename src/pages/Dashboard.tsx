@@ -6,19 +6,16 @@ import Header from '../sections/dashboard/header';
 import { Outlet } from 'react-router-dom';
 
 export default function Dashboard() {
-  const [openNav, setOpenNav] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
-    <div className="flex flex-col h-screen">
-      <Header />
-      
-      <div className="flex bg-white">
-        <Nav openNav={openNav} onCloseNav={() => setOpenNav(false)} />
-        <div className="ml-64 flex-grow">
-            <div className="w-full h-full bg-custom-purple-800 pt-14">
-                <Outlet/>
-            </div>
+    <div className="flex h-screen w-screen">
+      <Nav navbarOpen={sidebarOpen} setnavbarOpen={setSidebarOpen} />
+      <div className="flex flex-col flex-grow">
+        <Header navbarOpen={sidebarOpen} setnavbarOpen={setSidebarOpen} />
+        <div className="flex-grow overflow-auto bg-custom-purple-800">
+          <Outlet />
         </div>
-        
       </div>
     </div>
   );

@@ -1,56 +1,88 @@
-import { useEffect } from "react";
 import PropTypes from "prop-types";
-
-import Box from '@mui/material/Box';
+import { useEffect, useRef } from "react";
 import Stack from '@mui/material/Stack';
-import { alpha } from '@mui/material/styles';
-import ListItemButton from '@mui/material/ListItemButton';
 
 import { usePathname } from '../../routes/hooks/index';
-import { RouterLink } from '../../routes/components/index';
 
 import { account } from '../../_mock/account';
 
 import navConfig from '../../layout/config-navigation.tsx';
 import navBottom from "../../layout/config-navBot.tsx";
+import { Link } from "react-router-dom";
 
-interface NavProps {
-  openNav: boolean;
-  onCloseNav: () => void;
+interface NavPropItems {
+  navbarOpen: boolean;
+  setnavbarOpen: (arg: boolean) => void;
 }
 
-const Nav: React.FC<NavProps> = ({ openNav, onCloseNav }) => {
-  const pathname = usePathname();
+const Nav = ({ navbarOpen, setnavbarOpen}: NavPropItems) => {
+
+  const trigger = useRef<any>(null);
+  const sidebar = useRef<any>(null);
 
   useEffect(() => {
-    if (openNav) {
-      onCloseNav();
-    }
-  }, [pathname]);
+    const clickHandler = ({ target }: MouseEvent) => {
+      if (!sidebar.current || !trigger.current) return;
+      if (
+        !navbarOpen ||
+        sidebar.current.contains(target) ||
+        trigger.current.contains(target)
+      )
+        return;
+      setnavbarOpen(false);
+    };
+    document.addEventListener('click', clickHandler);
+    return () => document.removeEventListener('click', clickHandler);
+  });
+
+  // close if the esc key is pressed
+  useEffect(() => {
+    const keyHandler = ({ keyCode }: KeyboardEvent) => {
+      if (!navbarOpen || keyCode !== 27) return;
+      setnavbarOpen(false);
+    };
+    document.addEventListener('keydown', keyHandler);
+    return () => document.removeEventListener('keydown', keyHandler);
+  });
 
   const userInfo = JSON.parse(sessionStorage.getItem("userInfo") || "{}");
 
+  const renderHeaderNav = (
+    <div className="flex items-center justify-between gap-2 px-1 py-5.5 lg:py-6.5">
+      <img src="" alt="Logo" />
+
+      <button
+        ref={trigger}
+        onClick={() => setnavbarOpen(!navbarOpen)}
+        aria-controls="sidebar"
+        aria-expanded={navbarOpen}
+        className="block lg:hidden"
+      >
+        flc
+      </button>
+    </div>
+  );
+    
   const renderAccount = (
     <div className=" flex flex-col items-center gap-2 py-4 text-white"
     >
       <h2 className="font-bold text-teal-300">Mision San Diego</h2>
       <div className="flex gap-2">
-      <img src={account.photoURL} alt="photoURL" />
+        <img src={account.photoURL} alt="photoURL" />
 
-      <div >
-        <h2 >{userInfo.role}</h2>
-        <h3>
-          {userInfo.username}
-        </h3>
-        
-      </div>
+        <div >
+          <h2 >{userInfo.role}</h2>
+          <h3>
+            {userInfo.username}
+          </h3>
+        </div>
       </div>
       <div className="w-48 h-0 border border-teal-300 rounded-lg overflow-hidden"></div>
     </div>
   );
 
   const renderMenu = (
-    <Stack component="nav" spacing={0.5} sx={{ px: 2 }} >
+    <Stack component="nav" spacing={0.5} sx={{ px: 0 }} >
       {navConfig.map((item) => (
         <NavItem key={item.title} item={item} />
       ))}
@@ -58,65 +90,55 @@ const Nav: React.FC<NavProps> = ({ openNav, onCloseNav }) => {
   );
 
   const renderMenuBottom = (
-    <Stack component="nav" spacing={0.5} sx={{ px: 2 }} >
+    <Stack component="nav" spacing={0.5} sx={{ px: 0 }}
+      className={`mt-12`}
+    >
       {navBottom.map((item) => (
         <NavItem key={item.title} item={item} />
       ))}
     </Stack>
   );
 
-
   return (
-    <div className="fixed h-svh overflow-y-auto w-64 pt-14 flex flex-col justify-between bg-custom-blue"
+    <aside
+      ref={sidebar}
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-64 flex-col overflow-y-hidden bg-custom-blue duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+        navbarOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}
     >
-      <div>
-        { renderAccount}
-       
-        {renderMenu}
+      <div className="flex flex-col h-full items-center justify-between gap-2 py-1 lg:py-1.5">
+        <div>
+          { renderHeaderNav }
+          { renderAccount }
+          { renderMenu }
+          { renderMenuBottom }
+        </div>
       </div>
-        { renderMenuBottom}
-    </div>
+    </aside>
   );
 }
 
-// ----------------------------------------------------------------------
 interface NavItemProps{
   item: any;
 }
 
 const NavItem: React.FC<NavItemProps> =({ item }) =>{
   const pathname = usePathname();
-
   const active = item.path === pathname;
 
   return (
-    <ListItemButton
-      component={RouterLink}
-      href={item.path}
-      sx={{
-        minHeight: 44,
-        borderRadius: 0.75,
-        typography: 'body2',
-        color: 'text.secondary',
-        textTransform: 'capitalize',
-        fontWeight: 'fontWeightMedium',
-        ...(active && {
-          color: 'primary.main',
-          fontWeight: 'fontWeightSemiBold',
-          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
-          '&:hover': {
-            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
-          },
-        }),
-      }}
-    >
-      <div className="w-6 h-6 mr-2">
-        {item.icon}
+    <Link to={item.path} className="block">
+      <div
+        className={`flex items-center px-3 py-2 rounded-md text-sm font-medium capitalize transition
+          ${ active ? 'text-primary-600 font-semibold bg-gray-700 hover:bg-primary-200' : 'text-gray-600 hover:bg-blue-800'}`}
+        style={{ minHeight: '44px' }}
+      >
+        <div className="w-6 h-6 mr-2">
+          {item.icon}
+        </div>
+        <span className="text-white">{ item.title }</span>
       </div>
-
-
-      <Box component="span" className="text-white">{item.title} </Box>
-    </ListItemButton>
+    </Link> 
   );
 }
 

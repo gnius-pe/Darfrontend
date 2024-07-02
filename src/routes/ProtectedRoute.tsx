@@ -1,18 +1,19 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
+import React from "react";
 
-const ProtectedRoute = () => {
+interface ProtectedRouteProps {
+  children?: React.ReactNode;
+  redirectTo?: string;
+}
+
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, redirectTo='/login'}) => {
   const auth = useAuth();
 
+  console.log(auth)
   if (!auth.isAuthenticated()) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={redirectTo} />;
   }
 
-  if (auth.isAuthenticated() && window.location.pathname === "/") {
-    return <Navigate to="/dashboard" replace />;
-  }
-
-  return <Outlet />;
+  return children ? <>{children}</> : <Outlet />;
 };
-
-export default ProtectedRoute;

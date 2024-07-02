@@ -1,5 +1,4 @@
 import {Statistics} from '../sections/dashboard/view/Statistics'
-import {Cupos} from '../sections/dashboard/view/Cupos';
 
 const AppView = () => {
   return (

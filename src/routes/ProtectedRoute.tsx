@@ -1,5 +1,6 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
+import { hasAccess } from "./roleUtils";
 import React from "react";
 
 interface ProtectedRouteProps {
@@ -9,9 +10,10 @@ interface ProtectedRouteProps {
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, redirectTo='/login'}) => {
   const auth = useAuth();
+  const location = useLocation();
 
   console.log(auth)
-  if (!auth.isAuthenticated()) {
+  if (!auth.isAuthenticated() || !hasAccess(location.pathname)) {
     return <Navigate to={redirectTo} />;
   }
 

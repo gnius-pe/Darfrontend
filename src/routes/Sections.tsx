@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute.tsx';
-
 import { Landing, Login, Dashboard, App, Areamedica, ReservaCita, CreateNewMision, Pacientes, Medico, Mision, User } from '../routes/index.tsx';
 
 const router = () => {
@@ -16,12 +15,12 @@ const router = () => {
           </ProtectedRoute>
         }>
           <Route index element={<App/>} />
-          <Route path='areamedica' element={<Areamedica />} />
-          <Route path='pacientes' element={<Pacientes />} />
-          <Route path='medico' element={<Medico />} />
-          <Route path='mision' element={<Mision />} />
-          <Route path='user' element={<User />} />
-          <Route path='nuevaMision' element={<CreateNewMision/>} />
+          <Route path='areamedica' element={<ProtectedRoute><Areamedica /></ProtectedRoute>} />
+          <Route path='pacientes' element={<ProtectedRoute><Pacientes /></ProtectedRoute>} />
+          <Route path='medico' element={<ProtectedRoute><Medico /></ProtectedRoute>} />
+          <Route path='mision' element={<ProtectedRoute><Mision /></ProtectedRoute>} />
+          <Route path='user' element={<ProtectedRoute><User /></ProtectedRoute>}/>
+          <Route path='nuevaMision' element={<ProtectedRoute><CreateNewMision /></ProtectedRoute>} />
         </Route>
       </Routes>
     </BrowserRouter>

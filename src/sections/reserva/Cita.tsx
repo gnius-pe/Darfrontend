@@ -49,8 +49,13 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
   };
 
   const handleEspecialidad = (selectedOptions: MultiValue<Especialidad>) => {
-    setEspecialidad(selectedOptions);
-    onChange({ ...formData, especiality: selectedOptions });
+    if (selectedOptions.length <= 3) {
+      setEspecialidad(selectedOptions);
+      onChange({ ...formData, especiality: selectedOptions });
+    } else {
+      // Aquí puedes mostrar un mensaje de error o notificación al usuario si lo deseas
+      alert('Solo puedes seleccionar hasta 3 opciones.');
+    }
   };
 
   const handleMensaje = (event: ChangeEvent<HTMLInputElement>) => {

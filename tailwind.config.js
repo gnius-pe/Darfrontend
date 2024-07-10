@@ -6,9 +6,13 @@ export default {
   ],
   theme: {
     extend: {
+      minWidth: {
+        '80': '20rem', // Ajusta el valor según tus necesidades
+      },
       colors: {
         'custom-blue': '#071538',
         'custom-purple': '#442670',
+        'custom-skyblue': '#66E0C9',
       }},
   },
   plugins: [],

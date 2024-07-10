@@ -1,5 +1,4 @@
 import {Statistics} from '../sections/dashboard/view/Statistics'
-import {Cupos} from '../sections/dashboard/view/Cupos';
 
 const AppView = () => {
   return (
@@ -38,9 +37,6 @@ const AppView = () => {
               backgroundColor={"bg-[#A66DE9]"}
               strokeColor={"stroke-[#A66DE9]"}
             />
-          </div>
-          <div>
-            <Cupos />
           </div>
         </div>
       </div>

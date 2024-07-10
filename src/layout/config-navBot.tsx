@@ -5,7 +5,7 @@ import ic_mision from "../assets/images/navbar/ic_mision.svg";
 const navBottom = [
   {
     title: 'Usuarios',
-    path: '',
+    path: '/dashboard/mision',
     icon: (
       <img src={ic_admins} alt="User Icon" />
     ),
@@ -19,7 +19,7 @@ const navBottom = [
   },
   {
     title: 'Área Médica',
-    path: '',
+    path: '/dashboard/medico',
     icon: (
       <img src={ic_especilidad} alt="User Icon" />
     ),

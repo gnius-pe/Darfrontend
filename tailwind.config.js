@@ -12,6 +12,7 @@ export default {
       colors: {
         'custom-blue': '#071538',
         'custom-purple': '#442670',
+        'custom-skyblue': '#66E0C9',
       }},
   },
   plugins: [],

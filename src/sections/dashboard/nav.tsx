@@ -10,6 +10,7 @@ import navConfig from '../../layout/config-navigation.tsx';
 import navBottom from "../../layout/config-navBot.tsx";
 import { Link } from "react-router-dom";
 import logoHead from "../../assets/images/header/ic_logo.svg"
+import { getAccessibleRoutes } from "../../routes/roleUtils.ts";
 
 interface NavPropItems {
   navbarOpen: boolean;
@@ -47,6 +48,7 @@ const Nav = ({ navbarOpen, setnavbarOpen}: NavPropItems) => {
   });
 
   const userInfo = JSON.parse(sessionStorage.getItem("userInfo") || "{}");
+  const accessibleRoutes = getAccessibleRoutes();
 
   const renderHeaderNav = (
     <div className="flex items-center justify-center relative gap-2 px-1 py-5.5 lg:py-6.5 mt-2">
@@ -91,17 +93,15 @@ const Nav = ({ navbarOpen, setnavbarOpen}: NavPropItems) => {
 
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 0 }} >
-      {navConfig.map((item) => (
+      {navConfig.filter((item) => accessibleRoutes.includes(item.path)).map((item) => (
         <NavItem key={item.title} item={item} />
       ))}
     </Stack>
   );
 
   const renderMenuBottom = (
-    <Stack component="nav" spacing={0.5} sx={{ px: 0 }}
-      className={`mt-12`}
-    >
-      {navBottom.map((item) => (
+    <Stack component="nav" spacing={0.5} sx={{ px: 0 }} className={`mt-12`}>
+      {navBottom.filter((item) => accessibleRoutes.includes(item.path)).map((item) => (
         <NavItem key={item.title} item={item} />
       ))}
     </Stack>

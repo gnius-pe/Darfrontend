@@ -26,6 +26,7 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
   const [email, setEmail] = useState(formData.email);
   const [ nacionalidad, setNacionalidad] = useState('Peru');
   const [tipoDocumentoFilled, setTipoDocumentoFilled] = useState(false);
+  const [dniExists, setDniExists] = useState(false);
 
   // Función para enfocar los campos vacíos
 
@@ -41,7 +42,15 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
     setEmail(formData.email);
   },[formData])
 
-  
+  const checkDniExists = async (dni: string) => {
+    try {
+      const response = await axios.get(`https://goldfish-app-sryot.ondigitalocean.app/api/dni/${dni}`);
+      return response.data.state;
+    } catch (error) {
+      console.error('Error al verificar el DNI:', error);
+      return false;
+    }
+  };
 
   useEffect(() => {
     if (tipoDocumento !== 'DNI') {
@@ -54,30 +63,40 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
     if (!numberId || !(/^\d{8}$/.test(numberId))) return; // No hacer la solicitud si el DNI está vacío o no es igual a 8 caract
 
     
-    // Hacer la solicitud a la API
-    axios.get(`https://dniruc.apisperu.com/api/v1/dni/${numberId}?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBhdWxlbGRvdGVybzQ1NkBnbWFpbC5jb20ifQ.w3QyBrX1rCtVfaNT496rClCWWIBFnWzGGLCtWj8yDAs`)
-  .then(response => {
-    const data = response.data;
-    if (data.success) {
-      const nombres = data.nombres;
-      const apellidos = `${data.apellidoPaterno} ${data.apellidoMaterno}`;
-      const objeto = { name: nombres, lastName: apellidos };
-      setNombres(nombres);
-      setApellidos(apellidos);
-      onChange(objeto); // Update the state with the new object
-    } else {
-      // Manejar caso de error o DNI no encontrado
-      console.error('Error al obtener datos del DNI');
-      setNombres(formData.name);
-      setApellidos(formData.lastName);
-    }
-  })
-  .catch(error => {
-    console.error('Error al obtener datos del DNI:', error);
-    setNombres(formData.name);
-    setApellidos(formData.lastName);
-  });
-  }, [tipoDocumento, numberId]);
+        // Hacer la solicitud a la API
+        checkDniExists(numberId).then((exists) => {
+          if (exists) {
+            setDniExists(true);
+            setNombres(formData.name);
+            setApellidos(formData.lastName);
+          } else {
+            setDniExists(false);
+            // Hacer la solicitud a la API para obtener los datos del DNI
+            axios
+              .get(`https://dniruc.apisperu.com/api/v1/dni/${numberId}?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBhdWxlbGRvdGVybzQ1NkBnbWFpbC5jb20ifQ.w3QyBrX1rCtVfaNT496rClCWWIBFnWzGGLCtWj8yDAs`)
+              .then((response) => {
+                const data = response.data;
+                if (data.success) {
+                  const nombres = data.nombres;
+                  const apellidos = `${data.apellidoPaterno} ${data.apellidoMaterno}`;
+                  const objeto = { name: nombres, lastName: apellidos };
+                  setNombres(nombres);
+                  setApellidos(apellidos);
+                  onChange(objeto); // Actualizar el estado con el nuevo objeto
+                } else {
+                  console.error('Error al obtener datos del DNI');
+                  setNombres(formData.name);
+                  setApellidos(formData.lastName);
+                }
+              })
+              .catch((error) => {
+                console.error('Error al obtener datos del DNI:', error);
+                setNombres(formData.name);
+                setApellidos(formData.lastName);
+              });
+          }
+        });
+      }, [tipoDocumento, numberId]);
 
   const handleTipoDocumentoChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const newTypeid = event.target.value;
@@ -186,6 +205,7 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
             maxLength={tipoDocumento === 'DNI' ? 8 : undefined}
           />
           {errors.numberId && <span className='text-red-800 text-sm'>{errors.numberId}</span>}
+          {dniExists && <span className="text-red-800 text-sm">El DNI ya está registrado</span>}
         </Grid>
         <Grid item xs={12} sm={6} style={{ paddingTop: '12px' }}>
         <label className='block text-gray-900'>

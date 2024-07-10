@@ -5,15 +5,14 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import LocationForm from './LocationForm';
 import AddressForm from './AddressForm';
 import Review from './Review';
 import Cita from './Cita';
+import ReservaExitosa from './ReservaExitosa';
+import MobileStepper from './cita/MobileStepper';
 
 interface FormData {
   typeId: string;
@@ -69,6 +68,8 @@ export const FormModal: FC = () => {
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [errors, setErrors] = useState<any>({});
+  const [success, setSuccess] = useState(false);
+  const [numberFile, setNumberFile] = useState<number | null>(null);
 
   const validatePage = (pageIndex: number) => {
     const newErrors: any = {};
@@ -77,6 +78,7 @@ export const FormModal: FC = () => {
       if (!formData.name) newErrors.name = 'Ingrese un nombre';
       if (!formData.lastName) newErrors.lastName = 'Ingrese apellidos';
       if (!formData.numberId) newErrors.numberId = 'Ingrese su DNI';
+      if (errors.numberId === 'El DNI ya está registrado') newErrors.numberId = 'El DNI ya está registrado';
       if (!formData.firstNumberPhone) newErrors.firstNumberPhone = 'Ingrese su número';
       if (!formData.birthDate) newErrors.birthDate = 'Ingrese su fecha de nacimiento';
       if (!formData.sexo) newErrors.sexo = 'Seleccione su sexo';
@@ -179,8 +181,10 @@ export const FormModal: FC = () => {
         throw new Error('Network response was not ok');
       }
 
-      const result = await response.text(); // Leer el mensaje de texto de la respuesta
+      const result = await response.json(); // Leer el mensaje de texto de la respuesta
       console.log('Success:', result);
+      setNumberFile(result.numberFile);
+      setSuccess(true);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -193,18 +197,15 @@ export const FormModal: FC = () => {
       <CssBaseline />
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+          { success ? (numberFile !== null && <ReservaExitosa numberFile={numberFile}/>) 
+          : ( 
+            <>
+              <MobileStepper activeStep={activeStep} steps={steps.length} />
           <div className='relative'>
             <Typography component="h1" variant="h4" align="center">
               Reserva de cita
             </Typography>
           </div>
-          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
           {activeStep === steps.length ? (
             <React.Fragment>
               <Typography variant="h5" gutterBottom>
@@ -243,6 +244,8 @@ export const FormModal: FC = () => {
               </Box>
             </React.Fragment>
           )}
+            </> )}
+          
         </Paper>
       </Container>
     </>

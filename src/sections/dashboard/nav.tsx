@@ -3,13 +3,11 @@ import { useEffect, useRef } from "react";
 import Stack from '@mui/material/Stack';
 
 import { usePathname } from '../../routes/hooks/index';
-
-import { account } from '../../_mock/account';
-
 import navConfig from '../../layout/config-navigation.tsx';
 import navBottom from "../../layout/config-navBot.tsx";
 import { Link } from "react-router-dom";
 import logoHead from "../../assets/images/header/ic_logo.svg"
+import userPhoto from '../../assets/images/navbar/user_photo.svg';
 import { getAccessibleRoutes } from "../../routes/roleUtils.ts";
 
 interface NavPropItems {
@@ -77,8 +75,8 @@ const Nav = ({ navbarOpen, setnavbarOpen}: NavPropItems) => {
     <div className=" flex flex-col items-center gap-2 py-4 mt-2 text-white"
     >
       <h2 className="font-bold text-teal-300">Mision San Diego</h2>
-      <div className="flex gap-2">
-        <img src={account.photoURL} alt="photoURL" />
+      <div className="w-full flex justify-center items-center">
+        <img className="h-16" src={userPhoto} alt="photoURL" />
 
         <div >
           <h2 >{userInfo.role}</h2>

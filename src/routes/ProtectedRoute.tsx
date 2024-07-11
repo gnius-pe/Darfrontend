@@ -12,7 +12,6 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, redire
   const auth = useAuth();
   const location = useLocation();
 
-  console.log(auth)
   if (!auth.isAuthenticated() || !hasAccess(location.pathname)) {
     return <Navigate to={redirectTo} />;
   }

@@ -12,9 +12,7 @@ interface CitaFormProps {
 }
 
 const FechasReserva = [
-  { id: "01", extendFecha: 'vie 12 Jul', fecha: '2024-07-12' },
-  { id: "02", extendFecha: 'sab 13 Jul', fecha: '2024-07-13' },
-  { id: "03", extendFecha: 'juanes', fecha: '2024-07-14' },
+  { id: "01", extendFecha: '01/08/2024 (jueves)', fecha: '2024-08-01' },
 ];
 
 const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
@@ -123,6 +121,9 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
             </select>
           </div>
           {errors.hora && <span className='text-red-800 text-sm'>{errors.hora}</span>}
+        </Grid>
+        <Grid item xs={12}>
+          <p className='text-sm'>Puede elegir hasta 3 especialidades<span className='text-red-600'>*</span></p>
         </Grid>
         <Grid item xs={12}>
           <div className="container mx-auto w-full">

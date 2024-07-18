@@ -31,15 +31,13 @@ const Header = (props: {
             <span>Ayuda</span>
           </p>
           <div className="flex items-center gap-3">
-            <select name="" id="" className="mr-2 px-4 py-1 rounded-2xl">
-              <option className="bg-white" value="las">San Diego</option>
-              <option className="bg-white" value="DNI">La Libertad</option>
-              <option className="bg-white" value="Pasaporte">Ancash</option>
+            <select name="" id="" className="mr-2 px-4 py-1 rounded-full">
+              <option className="bg-white" value="las">Tingua</option>
             </select>
-            <div className="hidden sm:block bg-white px-1 py-2 rounded-3xl">
-              <img src={ic_notification} alt="notification icon" className="mr-2" />
+            <div className="hidden sm:block bg-white px-2 py-2 rounded-full">
+              <img src={ic_notification} alt="notification icon" />
             </div>
-            <div className="hidden sm:block bg-white px-1 py-2 rounded-3xl">
+            <div className="hidden sm:block bg-white px-2 py-2 rounded-full">
               <img src={ic_message} alt="message icon" />
             </div>
             <div className="flex justify-between items-center gap-3 text-teal-300">

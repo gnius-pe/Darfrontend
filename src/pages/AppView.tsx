@@ -1,4 +1,5 @@
 import {Statistics} from '../sections/dashboard/view/Statistics'
+import StatsEspec from '../sections/dashboard/view/StatsEspec';
 
 const AppView = () => {
   return (
@@ -38,6 +39,9 @@ const AppView = () => {
               strokeColor={"stroke-[#A66DE9]"}
             />
           </div>
+          <StatsEspec />
+          <StatsEspec />
+          <StatsEspec />
         </div>
       </div>
   );

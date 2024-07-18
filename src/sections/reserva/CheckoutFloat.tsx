@@ -53,9 +53,9 @@ export const FormModal: FC = () => {
     sexo: '',
     birthDate: '',
     nacionality: '',
-    departamento: 'default',
-    provincia: 'default',
-    distrito: 'default',
+    departamento: '',
+    provincia: '',
+    distrito: '',
     direccion: '',
     fechareserva: '',
     especiality: [],
@@ -69,7 +69,7 @@ export const FormModal: FC = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [errors, setErrors] = useState<any>({});
   const [success, setSuccess] = useState(false);
-  const [numberFile, setNumberFile] = useState<number | null>(null);
+  const [numberFile, setNumberFile] = useState<string | null>(null);
 
   const validatePage = (pageIndex: number) => {
     const newErrors: any = {};
@@ -79,7 +79,11 @@ export const FormModal: FC = () => {
       if (!formData.lastName) newErrors.lastName = 'Ingrese apellidos';
       if (!formData.numberId) newErrors.numberId = 'Ingrese su DNI';
       if (errors.numberId === 'El DNI ya está registrado') newErrors.numberId = 'El DNI ya está registrado';
-      if (!formData.firstNumberPhone) newErrors.firstNumberPhone = 'Ingrese su número';
+      if (!formData.firstNumberPhone) {
+        newErrors.firstNumberPhone = 'Ingrese su número';
+      } else if (formData.firstNumberPhone.length < 9) {
+        newErrors.firstNumberPhone = 'El número debe tener 9 dígitos';
+      }
       if (!formData.birthDate) newErrors.birthDate = 'Ingrese su fecha de nacimiento';
       if (!formData.sexo) newErrors.sexo = 'Seleccione su sexo';
     }
@@ -87,6 +91,7 @@ export const FormModal: FC = () => {
       if (!formData.departamento) newErrors.departamento = 'seleccione un departamento';
       if (!formData.provincia) newErrors.provincia = 'seleccione una provincia';
       if (!formData.distrito) newErrors.distrito = 'seleccione un distrito';
+      if (!formData.direccion) newErrors.direccion = 'Por favor ingrese su direccion';
     }
     else if (pageIndex === 2) {
       if (!formData.fechareserva) newErrors.fechareserva = 'seleccione un fecha';
@@ -183,7 +188,7 @@ export const FormModal: FC = () => {
 
       const result = await response.json(); // Leer el mensaje de texto de la respuesta
       console.log('Success:', result);
-      setNumberFile(result.numberFile);
+      setNumberFile(result._id);
       setSuccess(true);
     } catch (error) {
       console.error('Error:', error);

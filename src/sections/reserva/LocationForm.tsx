@@ -71,7 +71,7 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, errors,onChange}) 
               onChange={handleDepartamento}
               className={`w-full border ${errors.departamento ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
             >
-              <option value="default" disabled  hidden>Departamento</option>
+              <option value="" disabled  hidden>Departamento</option>
               {departamentos.map((departamento) => (
                 <option key={departamento.id} value={departamento.name}>
                   {departamento.name}
@@ -89,7 +89,7 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, errors,onChange}) 
               onChange={handleProvincia}
               className={`w-full border ${errors.provincia ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
             >
-              <option value="default" disabled hidden>Provincia</option>
+              <option value="" disabled hidden>Provincia</option>
               {provincias
                 .filter(provincia => provincia.department_id === departamentos.find(dep => dep.name === departamento)?.id)
                 .map((provincia) => (
@@ -110,7 +110,7 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, errors,onChange}) 
               disabled={!provincia}
               className={`w-full border ${errors.distrito ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
             >
-              <option value="default" disabled hidden>Distrito</option>
+              <option value="" disabled hidden>Distrito</option>
               {distritos
                 .filter(distrito => distrito.province_id === provincias.find(prov => prov.name === provincia)?.id)
                 .map((distrito) => (
@@ -134,6 +134,7 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, errors,onChange}) 
             onChange={handleDireccion}
             className={`w-full border ${errors.direccion ? 'border-red-500': 'border-gray-300'}rounded p-2 focus:outline-none focus:border-blue-500`}
           />
+          {errors.direccion && <span className='text-red-800 text-sm'>{errors.direccion}</span>}
         </Grid>
       </Grid>
     </React.Fragment>

@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
-const DeleteButton: React.FC = () => {
+interface DeleteButtonProps {
+  patientId: string;
+  onDelete: () => void; // Callback to trigger refresh after deletion
+}
+
+const DeleteButton: React.FC<DeleteButtonProps> = ({ patientId, onDelete }) => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
   const handleDeleteClick = () => {
@@ -11,9 +17,16 @@ const DeleteButton: React.FC = () => {
     setShowMenu(false);
   };
 
-  const handleAcceptClick = () => {
-    alert('Paciente eliminado');
-    setShowMenu(false);
+  const handleAcceptClick = async () => {
+    try {
+      await axios.delete(`https://goldfish-app-sryot.ondigitalocean.app/api/patient/${patientId}`);
+      alert('Paciente eliminado');
+      setShowMenu(false);
+      onDelete(); // Trigger refresh after successful deletion
+    } catch (error) {
+      console.error("Error eliminando al paciente:", error);
+      alert('Hubo un error al eliminar al paciente.');
+    }
   };
 
   return (

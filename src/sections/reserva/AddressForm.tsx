@@ -267,6 +267,7 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
             autoComplete="off"
             value={firstNumberPhone}
             onChange={handleNumberPhone}
+            maxLength={9}
             className={`w-full border ${errors.firstNumberPhone ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
           />
           {errors.firstNumberPhone && <span className='text-red-800 text-sm'>{errors.firstNumberPhone}</span>}

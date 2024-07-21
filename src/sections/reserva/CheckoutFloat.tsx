@@ -13,6 +13,7 @@ import Review from './Review';
 import Cita from './Cita';
 import ReservaExitosa from './ReservaExitosa';
 import MobileStepper from './cita/MobileStepper';
+import axios from 'axios';
 
 interface FormData {
   typeId: string;
@@ -174,27 +175,21 @@ export const FormModal: FC = () => {
     };
 
     try {
-      const response = await fetch('https://goldfish-app-sryot.ondigitalocean.app/api/patient', {
-        method: 'POST',
+      const response = await axios.post(import.meta.env.VITE_API_PATIENT, dataFormPaciente, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dataFormPaciente),
       });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const result = await response.json(); // Leer el mensaje de texto de la respuesta
-      console.log('Success:', result);
-      setNumberFile(result._id);
+    
+      // `response.data` contiene la respuesta JSON
+      console.log('Success:');
+      setNumberFile(response.data._id);
       setSuccess(true);
     } catch (error) {
       console.error('Error:', error);
     }
 
-    console.log(dataFormPaciente);
+    ///console.log(dataFormPaciente);
   };
 
   return (
@@ -204,51 +199,37 @@ export const FormModal: FC = () => {
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
           { success ? (numberFile !== null && <ReservaExitosa numberFile={numberFile}/>) 
           : ( 
-            <>
-              <MobileStepper activeStep={activeStep} steps={steps.length} />
-          <div className='relative'>
-            <Typography component="h1" variant="h4" align="center">
-              Reserva de cita
-            </Typography>
-          </div>
-          {activeStep === steps.length ? (
-            <React.Fragment>
-              <Typography variant="h5" gutterBottom>
-                Has reservado exitosamente
+            <><MobileStepper activeStep={activeStep} steps={steps.length} />
+            <div className='relative'>
+              <Typography component="h1" variant="h4" align="center">
+                Reserva de cita
               </Typography>
-              <Typography variant="subtitle1">
-                Tu reserva es la #000001 recibiras un correo de con tu ficha de reserva.
-              </Typography>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              {getStepContent(activeStep)}
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                {activeStep !== 0 && (
-                  <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                    Atras
-                  </Button>
-                )}
-                {activeStep === steps.length - 1 ? (
-                  <Button
-                    variant="contained"
-                    onClick={handleSubmit}
-                    sx={{ mt: 3, ml: 1 }}
-                  >
-                    Reservar
-                  </Button>
-                ) : (
-                  <Button
-                    variant="contained"
-                    onClick={handleNext}
-                    sx={{ mt: 3, ml: 1 }}
-                  >
-                    Siguiente
-                  </Button>
-                )}
-              </Box>
-            </React.Fragment>
-          )}
+            </div>
+            {getStepContent(activeStep)}
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              {activeStep !== 0 && (
+                <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                  Atras
+                </Button>
+              )}
+              {activeStep === steps.length - 1 ? (
+                <Button
+                  variant="contained"
+                  onClick={handleSubmit}
+                  sx={{ mt: 3, ml: 1 }}
+                >
+                  Reservar
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  onClick={handleNext}
+                  sx={{ mt: 3, ml: 1 }}
+                >
+                  Siguiente
+                </Button>
+              )}
+            </Box>
             </> )}
           
         </Paper>

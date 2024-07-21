@@ -15,6 +15,9 @@ interface AddressFormProps {
 
 const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) => {
 
+  const baseUrl = import.meta.env.VITE_API_DNI_BASE;
+  const token = import.meta.env.VITE_API_TOKEN;
+
   const [tipoDocumento, setTipoDocumento] = useState(formData.typeId);
   const [numberId, setnumberId] = useState(formData.numberId);
   const [nombres, setNombres] = useState(formData.name);
@@ -44,7 +47,7 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
 
   const checkDniExists = async (dni: string) => {
     try {
-      const response = await axios.get(`https://goldfish-app-sryot.ondigitalocean.app/api/dni/${dni}`);
+      const response = await axios.get(`${import.meta.env.VITE_API_DNI_EXIST}/${dni}`);
       return response.data.state;
     } catch (error) {
       console.error('Error al verificar el DNI:', error);
@@ -73,7 +76,7 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
             setDniExists(false);
             // Hacer la solicitud a la API para obtener los datos del DNI
             axios
-              .get(`https://dniruc.apisperu.com/api/v1/dni/${numberId}?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBhdWxlbGRvdGVybzQ1NkBnbWFpbC5jb20ifQ.w3QyBrX1rCtVfaNT496rClCWWIBFnWzGGLCtWj8yDAs`)
+              .get(`${baseUrl}${numberId}?token=${token}`)
               .then((response) => {
                 const data = response.data;
                 if (data.success) {

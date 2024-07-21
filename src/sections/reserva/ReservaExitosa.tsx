@@ -11,7 +11,7 @@ const ReservaExitosa: React.FC<ReservaExitosaProps> = ({ numberFile }) => {
 	const { isAuthenticated } = useAuth();
 
 	const handleDownload = () => {
-		const url = `http://209.38.48.146:3010/api/patient/downloader/${numberFile}`;
+		const url = `${import.meta.env.VITE_API_DOWNLOAD_PDF}/${numberFile}`;
 		window.location.href = url;
 	};
 	

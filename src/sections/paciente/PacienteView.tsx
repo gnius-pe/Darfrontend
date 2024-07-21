@@ -24,9 +24,9 @@ const PacienteView: React.FC = () => {
 
   const fetchPatients = async () => {
     try {
-      const response = await axios.get(
-        `https://goldfish-app-sryot.ondigitalocean.app/api/patients?page=${currentPage}&limit=${rowsPerPage}`
-      );
+      const baseUrl = import.meta.env.VITE_API_PATIENTS_BASE_ROW;
+      const url = `${baseUrl}?page=${currentPage}&limit=${rowsPerPage}`;
+      const response = await axios.get(url);
       const data = response.data.items.docs;
       setPatients(data);
       setTotalPages(Math.ceil(response.data.items.totalDocs / rowsPerPage));

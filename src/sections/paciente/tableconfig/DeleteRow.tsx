@@ -19,7 +19,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ patientId, onDelete }) => {
 
   const handleAcceptClick = async () => {
     try {
-      await axios.delete(`https://goldfish-app-sryot.ondigitalocean.app/api/patient/${patientId}`);
+      await axios.delete(`${import.meta.env.VITE_API_PATIENT}/${patientId}`);
       alert('Paciente eliminado');
       setShowMenu(false);
       onDelete(); // Trigger refresh after successful deletion

@@ -16,7 +16,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ patientId }) => {
   };
 
   const handleAcceptClick = async () => {
-    const url = `http://209.38.48.146:3010/api/patient/downloader/${patientId}`;
+    const url = `${import.meta.env.VITE_API_DOWNLOAD_PDF}/${patientId}`;
     window.location.href = url;
   };
 

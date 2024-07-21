@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, ChangeEvent, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
-import {Especialidad, especialidadesNames } from './cita/especialidades'
+import {Especialidad, fetchEspecialidades } from './cita/especialidades'
 import Select, { MultiValue} from 'react-select';
 import timeOptions from './cita/timeOptions';
 
@@ -19,6 +19,7 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
   const [dateReserva, setDateReserva] = useState(formData.fechareserva);
   const [hora, setHora] = useState(formData.hora);
   const [especialidad, setEspecialidad] = useState(formData.especiality);
+  const [especialidades, setEspecialidades] = useState<Especialidad[]>([]);
   const [mensaje, setMensaje] = useState(formData.mensaje);
   const [checkAnalisis, setCheckAnalisis] = useState(formData.analisis );
   const [checkAyuda, setCheckAyuda] = useState(formData.ayuda );
@@ -33,6 +34,15 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
     setCheckAyuda(formData.ayuda);
     setCheckVisita(formData.visita);
   }, [formData]);
+
+  useEffect(() => {
+    const getEspecialidades = async () => {
+      const fetchedEspecialidades = await fetchEspecialidades();
+      setEspecialidades(fetchedEspecialidades);
+    };
+
+    getEspecialidades();
+  }, []);
 
   const handleDateReserva = (event: ChangeEvent<HTMLSelectElement>) => {
     const newDateReservaString = event.target.value;
@@ -131,7 +141,7 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
               isMulti
               name="especialidades"
               value={especialidad}
-              options={especialidadesNames}
+              options={especialidades}
               onChange={handleEspecialidad}
               className="w-full"
               classNamePrefix="select"

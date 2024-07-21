@@ -15,7 +15,7 @@ const ViewFormModal: React.FC<ViewFormModalProps> = ({ isOpen, onClose, patientI
       const fetchPatientDetails = async () => {
         try {
           const response = await axios.get(
-            `https://goldfish-app-sryot.ondigitalocean.app/api/patient/${patientId}`
+            `${import.meta.env.VITE_API_PATIENT}/${patientId}`
           );
           setPatientData(response.data);
         } catch (error) {

@@ -74,9 +74,9 @@ const Nav = ({ navbarOpen, setnavbarOpen}: NavPropItems) => {
   const renderAccount = (
     <div className=" flex flex-col items-center gap-2 py-4 mt-2 text-white"
     >
-      <h2 className="font-bold text-teal-300">Mision San Diego</h2>
-      <div className="w-full flex justify-center items-center">
-        <img className="h-16" src={userPhoto} alt="photoURL" />
+      <h2 className="font-bold text-teal-300">Mision Tingua Huaraz</h2>
+      <div className="flex gap-2">
+        <img className="h-16" src={userPhoto} alt="photoURL" />	
 
         <div >
           <h2 >{userInfo.role}</h2>
@@ -98,7 +98,7 @@ const Nav = ({ navbarOpen, setnavbarOpen}: NavPropItems) => {
   );
 
   const renderMenuBottom = (
-    <Stack component="nav" spacing={0.5} sx={{ px: 0 }} className={`mt-12`}>
+    <Stack component="nav" spacing={0.5} sx={{ px: 0 }} className={`mt-9`}>
       {navBottom.filter((item) => accessibleRoutes.includes(item.path)).map((item) => (
         <NavItem key={item.title} item={item} />
       ))}
@@ -108,16 +108,14 @@ const Nav = ({ navbarOpen, setnavbarOpen}: NavPropItems) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-64 flex-col overflow-y-hidden bg-custom-blue duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
-        navbarOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}
+      className={`absolute left-0 top-0 z-50 flex h-screen w-64 flex-col overflow-y-hidden bg-custom-blue duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${navbarOpen ? 'translate-x-0' : '-translate-x-full'}`}
     >
       <div className="flex flex-col h-full items-center justify-between gap-2 py-1 lg:py-1.5">
         <div>
-          { renderHeaderNav }
-          { renderAccount }
-          { renderMenu }
-          { renderMenuBottom }
+          {renderHeaderNav}
+          {renderAccount}
+          {renderMenu}
+          {renderMenuBottom}
         </div>
       </div>
     </aside>

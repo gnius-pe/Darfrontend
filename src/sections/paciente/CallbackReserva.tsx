@@ -10,19 +10,21 @@ export const FormModal: FC<NewUserModal> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return  (
-    <div className="fixed inset-0 z-10 bg-black bg-opacity-50 flex justify-center items-center">
-    <div className="relative">
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center">
+      <div className="relative max-w-3xl max-h-screen overflow-y-auto bg-white rounded-lg shadow-lg">
       <button
-        className="absolute top-14 -right-3 focus:outline-none"
+        className="absolute top-4 right-4"
         onClick={onClose}
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-8 h-8">
-          <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clipRule="evenodd" />
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+</svg>
+
+
       </button>
-      <CheckoutFloat />
+        <CheckoutFloat />
+      </div>
     </div>
-  </div>
   );
 };
 

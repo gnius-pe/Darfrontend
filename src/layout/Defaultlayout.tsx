@@ -36,7 +36,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps){
             </div>
             </div>
 
-        <main>{children}</main>
+            <main>{children}</main>
         </>
     )
 }

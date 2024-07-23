@@ -5,6 +5,7 @@ import UpdateForm from './UpdatePaciente';
 import axios from 'axios';
 import Deletepatient from './tableconfig/DeleteRow';
 import search from '../../assets/images/user/search.svg';
+import DownloadButton from './tableconfig/DownloadButton';
 
 const PacienteView: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -16,23 +17,25 @@ const PacienteView: React.FC = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [patients, setPatients] = useState<any[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
 
   const userInfo = JSON.parse(sessionStorage.getItem("userInfo") || "{}");
   const userRole = userInfo.role;
 
+  const fetchPatients = async () => {
+    try {
+      const baseUrl = import.meta.env.VITE_API_PATIENTS_BASE_ROW;
+      const url = `${baseUrl}?page=${currentPage}&limit=${rowsPerPage}`;
+      const response = await axios.get(url);
+      const data = response.data.items.docs;
+      setPatients(data);
+      setTotalPages(Math.ceil(response.data.items.totalDocs / rowsPerPage));
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchPatients = async () => {
-      try {
-        const response = await axios.get(
-          `https://goldfish-app-sryot.ondigitalocean.app/api/patients?page=${currentPage}&limit=${rowsPerPage}`
-        );
-        const data = response.data.items.docs;
-        setPatients(data);
-        setTotalPages(Math.ceil(response.data.items.totalDocs / rowsPerPage));
-      } catch (error) {
-        console.error("Error fetching patients:", error);
-      }
-    };
     fetchPatients();
   }, [currentPage, rowsPerPage]);
 
@@ -44,12 +47,14 @@ const PacienteView: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const handleOpenFormModal = () => {
+  const handleOpenFormModal = (patientId: string) => {
+    setSelectedPatientId(patientId);
     setIsViewFormOpen(true);
   };
 
   const handleCloseFormModal = () => {
     setIsViewFormOpen(false);
+    setSelectedPatientId(null);
   };
 
   const handleOpenUpdate = () => {
@@ -74,6 +79,10 @@ const PacienteView: React.FC = () => {
     setCurrentPage(1); // Reset the current page when changing rows per page
   };
 
+  const handleDelete = () => {
+    fetchPatients();
+  };
+
   const filteredRows = patients.filter(patient =>
     `${patient.personalInformation.name} ${patient.personalInformation.lastName}`
       .toLowerCase()
@@ -84,11 +93,11 @@ const PacienteView: React.FC = () => {
 
   return (
     <>
-    <div className="flex h-screen w-screen lg:w-[910px]">
+    <div className="flex sm:justify-center sm:items-center h-auto w-screen lg:w-[910px]">
       <div className="mx-auto ">
         <div className="w-[900px] ">
         <section className="flex flex-col gap-4 mt-3">
-        <h1>Usuarios: </h1>
+        <h1>Pacientes: </h1>
         <div className="flex gap-24">
           <div className='flex bg-gray-50 items-center border-gray-300 rounded-3xl focus:outline-none dark:bg-white'>
             <input 
@@ -102,7 +111,7 @@ const PacienteView: React.FC = () => {
             <img src={search} alt='search' className='h-6 pr-2'/>
           </div>
           <button className="bg-custom-purple px-4 py-1 rounded-3xl text-white" onClick={handleOpenModal}>
-            Nuevo usuario
+            Nuevo paciente
           </button>
           <div className="flex gap-3 items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#442670" className="w-6 h-6">
@@ -123,7 +132,7 @@ const PacienteView: React.FC = () => {
               <th className="w-20">DNI</th>
               <th className="m-auto w-28">Nombre Completo</th>
               <th className="w-24">Celular</th>
-              <th className="w-16 px-6 py-3  ">Edad</th>
+              <th className="w-16 px-1 py-3  ">Edad</th>
               <th className="px-2 w-14">Especialidades a consultar</th>
               <th className="w-16 px-2">Examen clinico</th>
               <th className="w-20">Estado</th>
@@ -138,40 +147,36 @@ const PacienteView: React.FC = () => {
                     <input type="checkbox" name="" id="" />
                   </td>
                   <td>{patient.personalInformation.numberIdentification}</td>
-                  <td className="py-4">{patient.personalInformation.name}</td>
+                  <td className="py-4">{`${patient.personalInformation.name} ${patient.personalInformation.lastName}` }</td>
                   <td>{patient.personalInformation.firtsNumberPhone}</td>
                   <td>{patient.personalInformation.age}</td>
                   <td className="py-4 whitespace-nowrap">
                     {patient.cita.specialties.map((specialty: any, index: number) => (
                       <span key={index}>
-                        {specialty.specialty}
+                        {specialty.label}
                         {index < patient.cita.specialties.length - 1 && <br />}
                       </span>
                     ))}
                   </td>
                   <td className={patient.question.questionExamRecent ? 'text-green-600': 'text-red-600'}>{patient.question.questionExamRecent? 'si' : 'no'}</td>
                   <td className={patient.estate ==='ESPERA' ? 'text-red-700' : patient.estate === 'pendiente'? 'text-yellow-600':' text-green-600'}>{patient.estate}</td>
-                  <td className="py-4 flex justify-around">
-                    <button name='view' onClick={handleOpenFormModal} className="w-6 h-6">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#442670" className="w-6 h-6">
+                  <td className="py-6 flex justify-around">
+                    <button name='view' onClick={() => handleOpenFormModal(patient._id)} className="w-6 h-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#442670" className="w-6 h-6">
                         <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                         <path fillRule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clipRule="evenodd" />
                       </svg>
                     </button>
                     {userRole === 'admin' && (
-                          <Deletepatient />
-                        )}
+                      <Deletepatient patientId={patient._id} onDelete={handleDelete}/>
+                    )}
                     <button name='update' onClick={handleOpenUpdate} className="w-6 h-6">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#442670" className="w-6 h-6">
                       <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
                       <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
                     </svg>
                     </button>
-                    <button name='donwload'  className="w-6 h-6">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#442670" className="w-6 h-6">
-                          <path fillRule="evenodd" d="M12 2.25a.75.75 0 0 1 .75.75v11.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 1 1 1.06-1.06l3.22 3.22V3a.75.75 0 0 1 .75-.75Zm-9 13.5a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
-                      </svg>
-                    </button>
+                    <DownloadButton patientId={patient._id} />
                   </td>
                 </tr>
             ))}
@@ -215,9 +220,9 @@ const PacienteView: React.FC = () => {
                 value={rowsPerPage} onChange={handleRowsPerPageChange}
               >
                 <option value={5}>5 filas</option>
-                <option value={7}>10 filas</option>
-                <option value={9}>15 filas</option>
-                <option value={12}>20 filas</option>
+                <option value={7}>7 filas</option>
+                <option value={10}>10 filas</option>
+                <option value={15}>15 filas</option>
               </select>
             </div>
             
@@ -229,7 +234,13 @@ const PacienteView: React.FC = () => {
     </div>
       
       <AddPaciente isOpen={isModalOpen} onClose={handleCloseModal}/>
-      <ViewFormModal isOpen={isViewFormOpen} onClose={handleCloseFormModal}/>
+      {selectedPatientId && (
+        <ViewFormModal
+          isOpen={isViewFormOpen}
+          onClose={handleCloseFormModal}
+          patientId={selectedPatientId}
+        />
+      )}
       <UpdateForm isOpen={isUpdateOpen} onClose={handleCloseUpdate}/>
     </>
   );

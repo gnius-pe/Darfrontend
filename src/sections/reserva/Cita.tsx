@@ -66,7 +66,7 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
     }
   };
 
-  const handleMensaje = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleMensaje = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const newMensaje = event.target.value;
     setMensaje(newMensaje);
     onChange({ ...formData, mensaje: newMensaje });
@@ -142,21 +142,22 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
               name="especialidades"
               value={especialidad}
               options={especialidades}
+              placeholder='¿En que area quieres ser atendido?'
               onChange={handleEspecialidad}
               className="w-full"
-              classNamePrefix="select"
+              classNamePrefix="selecciona tus especialidades"
             />
           </div>
           {errors.especiality && <span className='text-red-800 text-sm'>{errors.especiality}</span>}
         </Grid>
         <Grid item xs={12}>
-          <input
+          <textarea
             id="mensaje"
-            type='text'
-            placeholder={errors.mensaje ? "Agregue un mensaje" : "Mensaje"}
+            placeholder={"Cuentanos que enfermades tienes                                             Ejemplo, tengo problemas de gastritis"}
             value={mensaje}
             onChange={handleMensaje}
-            className='w-full border rounded p-2 focus:outline-none focus:border-blue-500'
+            rows={3} // Altura de 3 filas
+            className='w-full border rounded p-2 resize-none focus:outline-none focus:border-blue-500'
           />
         </Grid>
         <Grid item xs={12}>

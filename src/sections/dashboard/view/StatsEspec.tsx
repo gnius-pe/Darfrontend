@@ -65,9 +65,9 @@ const StatsEspec: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center sm:flex-row sm:items-start w-auto">
-      <div className="relative w-[200px]  z-10">
-        <h2 className='font-bold text-lg'>Cupos por Especialidad</h2>
+    <div className="flex flex-col items-center md:flex-row sm:justify-around px-6 md:px-14 py-4 border border-solid rounded-3xl bg-white shadow-lg">
+      <div className="flex flex-col w-full  z-10 text-center space-y-2">
+        <h2 className='font-bold text-2xl'>Cupos por Especialidad</h2>
         <ResponsiveContainer height={200}>
           <PieChart>
             <Pie
@@ -75,7 +75,7 @@ const StatsEspec: React.FC = () => {
               cx="50%"
               cy="50%"
               innerRadius={60}
-              outerRadius={80}
+              outerRadius={90 }
               fill="#8884d8"
               paddingAngle={5}
               dataKey="value"
@@ -87,18 +87,18 @@ const StatsEspec: React.FC = () => {
           </PieChart>
         </ResponsiveContainer>
       </div>
-      <div className="flex flex-col gap-2 items-center w-auto">
+      <div className="flex flex-col gap-6 items-center w-max">
         <select 
           onChange={handleSelectChange} 
-          className="mt-2 w-32 px-3 py-1 self-end rounded-full border border-gray-500 focus:outline-none"
+          className="mt-2 py-4 self-end rounded-full border border-gray-500 focus:outline-none mr-6 text-center text-lg"
           value={selectedSpecialty}
         >
           {data.map((item, index) => (
             <option key={index} value={item.Especialidad}>{item.Especialidad}</option>
           ))}
         </select>
-        <div className="flex flex-col justify-center h-full gap-3">
-          <div className="flex gap-2">
+        <div className="flex flex-col justify-center h-full gap-3 text-xl">
+          <div className="flex gap-6">
             <div className="text-center flex items-center gap-1">
               <span className="inline-block w-3 h-3 bg-blue-500 rounded-full"></span>
               <div>
@@ -114,7 +114,7 @@ const StatsEspec: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-6">
             <div className="text-center flex items-center gap-1">
               <span className="inline-block w-3 h-3 bg-yellow-500 rounded-full"></span>
               <div>

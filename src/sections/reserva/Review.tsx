@@ -52,7 +52,7 @@ const Review: React.FC<ReviewFormProps> = ({ formData }) => {
         
         <Grid item xs={12} sm={6}>
           <Typography variant="h6" gutterBottom className="text-red-700">
-            Locación
+            Ubicacion
           </Typography>
           <TableContainer component={Paper}>
             <Table>

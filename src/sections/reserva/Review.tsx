@@ -19,7 +19,7 @@ const Review: React.FC<ReviewFormProps> = ({ formData }) => {
     <React.Fragment>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom className="text-red-700">
+          <Typography variant="h6" gutterBottom className="text-purple-700">
             Datos Personales
           </Typography>
           <TableContainer component={Paper}>
@@ -51,8 +51,8 @@ const Review: React.FC<ReviewFormProps> = ({ formData }) => {
         </Grid>
         
         <Grid item xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom className="text-red-700">
-            Ubicacion
+          <Typography variant="h6" gutterBottom className="text-purple-700">
+            Ubicación
           </Typography>
           <TableContainer component={Paper}>
             <Table>
@@ -79,7 +79,7 @@ const Review: React.FC<ReviewFormProps> = ({ formData }) => {
         </Grid>
       </Grid>
 
-      <Typography variant="h6" gutterBottom className="text-red-600" sx={{ mt: 2 }}>
+      <Typography variant="h6" gutterBottom className="text-purple-600" sx={{ mt: 2 }}>
         Citas
       </Typography>
       <TableContainer component={Paper}>
@@ -93,7 +93,7 @@ const Review: React.FC<ReviewFormProps> = ({ formData }) => {
               <React.Fragment>
                 <TableRow>
                   <TableCell colSpan={2}>
-                    <Typography variant="h6" gutterBottom className="text-red-600">
+                    <Typography variant="h6" gutterBottom className="text-purple-600">
                       Especialidades
                     </Typography>
                   </TableCell>
@@ -101,7 +101,7 @@ const Review: React.FC<ReviewFormProps> = ({ formData }) => {
                 {especiality.map((especialidad: { label: string, value: string }, index: number) => (
                   <TableRow key={index}>
                     <TableCell className="text-blue-800">{especialidad.label}</TableCell>
-                    <TableCell>{especialidad.value}</TableCell>
+                    <TableCell>{`00${index+1}`}</TableCell>
                   </TableRow>
                 ))}
               </React.Fragment>

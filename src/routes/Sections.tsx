@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute.tsx';
-import { Landing, Login, Dashboard, App, Areamedica, ReservaCita, CreateNewMision, Pacientes, Medico, Mision, User } from '../routes/index.tsx';
+import { Landing, Login, Dashboard, App, Areamedica, ReservaCita, CreateNewMision, Pacientes, Medico, Mision, User, CuposDisp, ConfCupos } from '../routes/index.tsx';
 
 const router = () => {
   return (
@@ -21,6 +21,8 @@ const router = () => {
           <Route path='mision' element={<ProtectedRoute><Mision /></ProtectedRoute>} />
           <Route path='user' element={<ProtectedRoute><User /></ProtectedRoute>}/>
           <Route path='nuevaMision' element={<ProtectedRoute><CreateNewMision /></ProtectedRoute>} />
+          <Route path='cupos' element={<ProtectedRoute><CuposDisp/></ProtectedRoute>} />
+          <Route path='configcupos' element={<ProtectedRoute><ConfCupos/></ProtectedRoute>} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -75,7 +75,7 @@ export const FormModal: FC = () => {
   const validatePage = (pageIndex: number) => {
     const newErrors: any = {};
     if (pageIndex === 0) {
-      if (!formData.typeId) newErrors.typeId = 'seleccione un documento';
+      /*if (!formData.typeId) newErrors.typeId = 'Seleccione un documento';*/
       if (!formData.name) newErrors.name = 'Ingrese un nombre';
       if (!formData.lastName) newErrors.lastName = 'Ingrese apellidos';
       if (!formData.numberId) newErrors.numberId = 'Ingrese su DNI';
@@ -89,15 +89,15 @@ export const FormModal: FC = () => {
       if (!formData.sexo) newErrors.sexo = 'Seleccione su sexo';
     }
     else if (pageIndex === 1) {
-      if (!formData.departamento) newErrors.departamento = 'seleccione un departamento';
-      if (!formData.provincia) newErrors.provincia = 'seleccione una provincia';
-      if (!formData.distrito) newErrors.distrito = 'seleccione un distrito';
+      if (!formData.departamento) newErrors.departamento = 'Seleccione un departamento';
+      if (!formData.provincia) newErrors.provincia = 'Seleccione una provincia';
+      if (!formData.distrito) newErrors.distrito = 'Seleccione un distrito';
       if (!formData.direccion) newErrors.direccion = 'Por favor ingrese su direccion';
     }
     else if (pageIndex === 2) {
-      if (!formData.fechareserva) newErrors.fechareserva = 'seleccione un fecha';
-      if (formData.especiality.length === 0) newErrors.especiality = 'seleccione al menos una especialidad';
-      if (!formData.hora) newErrors.hora = 'seleccione un hora';
+      if (!formData.fechareserva) newErrors.fechareserva = 'Seleccione un fecha';
+      if (formData.especiality.length === 0) newErrors.especiality = 'Seleccione al menos una especialidad';
+      if (!formData.hora) newErrors.hora = 'Seleccione un hora';
     }
     return newErrors;
   };

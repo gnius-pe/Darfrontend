@@ -3,7 +3,7 @@ import axios from 'axios';
 
 interface DeleteButtonProps {
   patientId: string;
-  onDelete: () => void; // Callback to trigger refresh after deletion
+  onDelete: () => void;
 }
 
 const DeleteButton: React.FC<DeleteButtonProps> = ({ patientId, onDelete }) => {

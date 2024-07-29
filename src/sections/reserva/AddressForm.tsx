@@ -56,12 +56,12 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
   };
 
   useEffect(() => {
-    if (tipoDocumento !== 'DNI') {
+    {/*if (tipoDocumento !== 'DNI') {
       // Si el tipo de documento no es "DNI", restablecer los nombres y apellidos
       setNombres(formData.name);
       setApellidos(formData.lastName);
       return; // Salir del efecto si no es "DNI"
-    }
+    }*/}
 
     if (!numberId || !(/^\d{8}$/.test(numberId))) return; // No hacer la solicitud si el DNI está vacío o no es igual a 8 caract
 
@@ -185,10 +185,10 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
               onChange={handleTipoDocumentoChange}
               className={`w-full border ${errors.typeId ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
             >
-              <option value="" disabled hidden>Documento</option>
               <option className='bg-white' value="DNI">DNI</option>
+              {/*<option value="" disabled hidden>Documento</option>
               <option className='bg-white' value="Pasaporte">Pasaporte</option>
-              <option className='bg-white' value="Carnet de extranjeria">Carnet de extranjería</option>
+              <option className='bg-white' value="Carnet de extranjeria">Carnet de extranjería</option>*/}
             </select>
           </div>
           {errors.typeId && <span className='text-red-800 text-sm'>{errors.typeId}</span>}
@@ -205,7 +205,7 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
             onChange={handleDniChange}
             className={`w-full border ${errors.numberId ? 'border-red-500' : 'border-gray-300'} rounded p-2 focus:outline-none focus:border-blue-500`}
             autoComplete="off"
-            maxLength={tipoDocumento === 'DNI' ? 8 : undefined}
+            maxLength={/*tipoDocumento === 'DNI' ?*/ 8 /*: undefined*/}
           />
           {errors.numberId && <span className='text-red-800 text-sm'>{errors.numberId}</span>}
           {dniExists && <span className="text-red-800 text-sm">El DNI ya está registrado</span>}
@@ -283,6 +283,7 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
             autoComplete="off"
             value={secondcelnumber}
             onChange={handlesecNumberPhone}
+            maxLength={9}
             className='w-full border rounded p-2 focus:outline-none focus:border-blue-500'
           />
         </Grid>
@@ -294,8 +295,8 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
               <input
                 type="radio"
                 name="sexo"
-                value="femenino"
-                checked={sexo === 'femenino'}
+                value="Femenino"
+                checked={sexo === 'Femenino'}
                 onChange={handleSexo}
                 className="form-radio text-blue-600"
               />
@@ -305,8 +306,8 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
               <input
                 type="radio"
                 name="sexo"
-                value="masculino"
-                checked={sexo === 'masculino'}
+                value="Masculino"
+                checked={sexo === 'Masculino'}
                 onChange={handleSexo}
                 className="form-radio text-blue-600"
               />

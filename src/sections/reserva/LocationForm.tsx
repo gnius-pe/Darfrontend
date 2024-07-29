@@ -59,7 +59,7 @@ const LocationForm: React.FC<LocationForProps> = ({ formData, errors,onChange}) 
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Locacion
+        Ubicación
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>

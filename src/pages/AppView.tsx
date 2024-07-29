@@ -14,7 +14,7 @@ const AppView = () => {
 							<option value="01 de agosto">1 de agosto</option>
 						</select>
 					</div> 
-          <div className="mt-4 grid grid-cols-1 gap:2 lg:gap-4 md:grid-cols-3 p-2 sm:p-0 md:grid-rows-5 max-w-[1070px] mx-auto">
+          <div className="mt-4 space-y-3 md:space-y-0 grid grid-cols-1 gap:2 lg:gap-4 md:grid-cols-3 p-2 sm:p-0 md:grid-rows-5 max-w-[1070px] mx-auto">
             <div className="row-span-2 md:row-span-2">
               <Cupos />
             </div>

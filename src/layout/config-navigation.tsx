@@ -21,15 +21,15 @@ const navConfig = [
     )
   },
   {
-    title: 'Área Médica',
-    path: '/dashboard/areamedica',
+    title: 'Medicos',
+    path: '/dashboard/medico',
     icon: (
       <img src={ic_medical} alt="User Icon" />
     ),
   },
   {
-    title: 'Usuarios',
-    path: '/dashboard/user',
+    title: 'Cupos disp.',
+    path: '/dashboard/cupos',
     icon: (
       <img src={ic_list} alt="services Icons" />
     ),
@@ -43,8 +43,8 @@ const navConfig = [
   },
   
   {
-    title: 'Médicos',
-    path: '/dashboard/medico',
+    title: 'Conf Cupos',
+    path: '/dashboard/configcupos',
     icon: (
       <img src={ic_config} alt="admin" />
     ),

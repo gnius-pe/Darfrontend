@@ -12,6 +12,7 @@ export default {
         'custom-skyblue': '#66E0C9',
         'custom-celeste': '#142E45',
         'custom-fondodash': '#F1F5F9',
+        'custom-bluebarra': '#1A90FF',
       }},
   },
   plugins: [],

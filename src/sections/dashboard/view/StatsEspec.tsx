@@ -27,7 +27,7 @@ const StatsEspec: React.FC = () => {
     // Fetch data from the API using Axios
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://retoolapi.dev/QllS8j/data');
+        const response = await axios.get(import.meta.env.VITE_API_DASHESPEC);
         const result: ApiData[] = response.data;
         setData(result);
         if (result.length > 0) {

@@ -3,12 +3,15 @@ import axios from 'axios';
 import search from '../../assets/images/user/search.svg';
 
 interface Specialty {
+  _id: number;
+  createdAt: string;
   specialtyName: string;
   initial?: string;
   color?: string;
+  fecha?: string; // Agrega este campo para la fecha formateada
 }
 
-const PacienteView: React.FC = () => {
+const CuposDisponibles: React.FC = () => {
 
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
 
@@ -17,11 +20,17 @@ const PacienteView: React.FC = () => {
     axios.get<Specialty[]>(import.meta.env.VITE_API_ESPECIALTY)
       .then(response => {
         const colors = ['bg-red-600', 'bg-blue-600', 'bg-green-600', 'bg-yellow-600', 'bg-purple-600'];
-        const specialtiesWithColors = response.data.map((specialty, index) => ({
-          specialtyName: specialty.specialtyName,
-          initial: specialty.specialtyName.charAt(0).toUpperCase(),
-          color: colors[index % colors.length]
-        }));
+        const specialtiesWithColors = response.data.map((specialty, index) => {
+          // Formatea la fecha
+          const formattedDate = new Date(specialty.createdAt).toISOString().split('T')[0];
+          return {
+            ...specialty,
+            Especialidad: specialty.specialtyName,
+            initial: specialty.specialtyName.charAt(0).toUpperCase(),
+            color: colors[index % colors.length],
+            fecha: formattedDate, // Usa la fecha formateada
+          };
+        });
         setSpecialties(specialtiesWithColors);
       })
       .catch(error => {
@@ -33,9 +42,9 @@ const PacienteView: React.FC = () => {
     <>
     <div className="flex sm:justify-center sm:items-center h-auto w-screen lg:w-[910px]">
       <div className="mx-auto ">
-        <div className="w-[720px] ">
+        <div className="max-w-[720px] ">
         <section className="flex flex-col gap-4 mt-3">
-        <h1>Pacientes: </h1>
+        <h1>Cupos por Especialidad</h1>
         <div className="flex gap-24">
           <div className='flex bg-gray-50 items-center border-gray-300 rounded-3xl focus:outline-none dark:bg-white'>
             <input 
@@ -56,18 +65,18 @@ const PacienteView: React.FC = () => {
               <th className="w-8 py-4">
                 <input type="checkbox" name="" id="" />
               </th>
-              <th className="w-24 pr-8">Especialidades</th>
-              <th className="m-auto w-14">Cupos Disponibles</th>
-              <th className="w-14">Cupos atendidos</th>
-              <th className="w-14 px-1 py-3  ">Cupos en consulta</th>
-              <th className="px-2 w-8">Cupos pendientes</th>
-              <th className="w-14 px-2">Cupos totales</th>
-              <th className="w-10"> </th>
+              <th className="w-24">Especialidades</th>
+              <th className="m-auto w-14">Estado para esta mision</th>
+              <th className="w-14">Num Cupos Dia 01</th>
+              <th className="w-14">Num Cupos Dia 02</th>
+              <th className="w-14">Num Cupos Dia 03</th>
+              <th className="w-6 px-1 py-3  "></th>
             </tr>
           </thead>
           <tbody>
-            {specialties.map((specialty, index) => (
-              <tr className='py-2' key={index}>
+          {specialties.map((specialty) => {
+            return (
+              <tr className='py-2' key={specialty._id}>
                 <td><input type="checkbox" name="" id="" /></td>
                 <td className='h-12 flex'>
                   <div className='flex items-center gap-3'>
@@ -77,18 +86,44 @@ const PacienteView: React.FC = () => {
                     <h2>{specialty.specialtyName}</h2>
                   </div>
                 </td>
-                <td>30</td>
-                <td>15</td>
-                <td>15</td>
-                <td>40</td>
-                <td>100</td>
+                <td>
+                  <div className='px-1 rounded-full bg-blue-400'>Activado</div>
+                </td>
+                <td className=''>
+                  <select className="border rounded p-1">
+                    {[...Array(100).keys()].map(num => (
+                      <option key={num} value={num}>
+                        {num}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+                <td className=''>
+                  <select className="border rounded p-1">
+                    {[...Array(100).keys()].map(num => (
+                      <option key={num} value={num}>
+                        {num}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+                <td className=''>
+                  <select className="border rounded p-1">
+                    {[...Array(100).keys()].map(num => (
+                      <option key={num} value={num}>
+                        {num}
+                      </option>
+                    ))}
+                  </select>
+                </td>
                 <td>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                     <path fillRule="evenodd" d="M10.5 6a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm0 6a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm0 6a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" clipRule="evenodd" />
                   </svg>
                 </td>
               </tr>
-            ))}
+            );
+          })}
           </tbody>  
         </table>
         <div className='flex bg-white justify-between items-center px-2 py-1 rounded-md'>
@@ -140,4 +175,4 @@ const PacienteView: React.FC = () => {
   );
 };
 
-export default PacienteView;
+export default CuposDisponibles;

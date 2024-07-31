@@ -41,6 +41,14 @@ const UpdateForm: React.FC<FormModalProps> = ({ isOpen, onClose, patientId }) =>
     }));
   };
 
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+    setEditedData((prevData: any) => ({
+      ...prevData,
+      estate: value,
+    }));
+  };
+
   const handleSave = async () => {
     try {
       await axios.put(`${import.meta.env.VITE_API_PATIENT}/${patientId}`, editedData);
@@ -116,7 +124,7 @@ const UpdateForm: React.FC<FormModalProps> = ({ isOpen, onClose, patientId }) =>
                   patientData.personalInformation.firtsNumberPhone
                 )}
               </td>
-              <td className="border p-2 font-medium">Direccion</td>
+              <td className="border p-2 font-medium">Direccion:</td>
               <td className="border p-2">
                 {isEditing ? (
                   <input
@@ -131,7 +139,25 @@ const UpdateForm: React.FC<FormModalProps> = ({ isOpen, onClose, patientId }) =>
                 )}
               </td>
             </tr>
-            
+            <tr>
+              <td className="border p-2 font-medium">Estado:</td>
+              <td className="border p-2 font-bold">
+                {isEditing ? (
+                  <select
+                    name="estate"
+                    value={editedData.estate}
+                    onChange={handleSelectChange}
+                    className="w-full p-1 border rounded"
+                  >
+                    <option value="PENDIENTE">PENDIENTE</option>
+                    <option value="ATENDIDO">ATENDIDO</option>
+                    <option value="CONSULTA">CONSULTA</option>
+                  </select>
+                ) : (
+                  patientData.estate
+                )}
+              </td>
+            </tr>
           </tbody>
         </table>
         <div className="flex justify-end mt-4">

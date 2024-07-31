@@ -148,7 +148,7 @@ const PacienteView: React.FC = () => {
                     <input type="checkbox" name="" id="" />
                   </td>
                   <td>{patient.personalInformation.numberIdentification}</td>
-                  <td className="py-4">{`${patient.personalInformation.name} ${patient.personalInformation.lastName}` }</td>
+                  <td className="py-4 uppercase">{`${patient.personalInformation.name} ${patient.personalInformation.lastName}` }</td>
                   <td>{patient.personalInformation.firtsNumberPhone}</td>
                   <td>{patient.personalInformation.age}</td>
                   <td className="py-4 whitespace-nowrap">
@@ -159,8 +159,8 @@ const PacienteView: React.FC = () => {
                       </span>
                     ))}
                   </td>
-                  <td className={patient.question.questionExamRecent ? 'text-green-600': 'text-red-600'}>{patient.question.questionExamRecent? 'si' : 'no'}</td>
-                  <td className={patient.estate ==='ESPERA' ? 'text-red-700' : patient.estate === 'pendiente'? 'text-yellow-600':' text-green-600'}>{patient.estate}</td>
+                  <td className={`font-semibold ${patient.question.questionExamRecent ? 'text-green-600': 'text-red-600'}`}>{patient.question.questionExamRecent? 'si' : 'no'}</td>
+                  <td className={`font-semibold ${patient.estate === 'ESPERA' ? 'text-red-700' : patient.estate === 'PENDIENTE' ? 'text-yellow-600' : 'text-green-600'}`}>{patient.estate}</td>
                   <td className="py-6 flex justify-around">
                     <button name='view' onClick={() => handleOpenFormModal(patient._id)} className="w-6 h-6">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#442670" className="w-6 h-6">

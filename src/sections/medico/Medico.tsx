@@ -35,7 +35,7 @@ const Medico: React.FC = () => {
         <div className="mx-auto">
           <div className="max-w-[720px]">
             <section className="flex flex-col gap-4 mt-3">
-              <h1>Usuarios</h1>
+              <h1 className='font-bold text-xl'>Usuarios</h1>
               <div className="flex gap-24">
                 <div className='flex bg-gray-50 items-center border-gray-300 rounded-3xl focus:outline-none dark:bg-white'>
                   <input 
@@ -70,7 +70,7 @@ const Medico: React.FC = () => {
                       <tr className='h-12' key={user._id}>
                         <td><input type="checkbox" name="" id="" /></td>
                         <td>{user.numberIdentification}</td>
-                        <td>{fullName}</td>
+                        <td className='uppercase'>{fullName}</td>
                         <td>{user.firtsNumberPhone}</td>
                         <td>{user.role}</td>
                         <td>{user.specialty || 'No asignado'}</td>

@@ -132,7 +132,7 @@ const UpdateForm: React.FC<FormModalProps> = ({ isOpen, onClose, patientId }) =>
                     name="reference"
                     value={editedData.location.reference}
                     onChange={handleInputChange}
-                    className="w-full p-1 border rounded"
+                    className="w-full p-1 border rounded "
                   />
                 ) : (
                   patientData.location.reference
@@ -147,7 +147,7 @@ const UpdateForm: React.FC<FormModalProps> = ({ isOpen, onClose, patientId }) =>
                     name="estate"
                     value={editedData.estate}
                     onChange={handleSelectChange}
-                    className="w-full p-1 border rounded"
+                    className="w-full p-1 border rounded bg-blue-900 text-white"
                   >
                     <option value="PENDIENTE">PENDIENTE</option>
                     <option value="ATENDIDO">ATENDIDO</option>

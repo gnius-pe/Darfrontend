@@ -6,6 +6,7 @@ import axios from 'axios';
 import Deletepatient from './tableconfig/DeleteRow';
 import search from '../../assets/images/user/search.svg';
 import DownloadButton from './tableconfig/DownloadButton';
+import DonwloadList from './tableconfig/DownloadList';
 
 const PacienteView: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -38,6 +39,10 @@ const PacienteView: React.FC = () => {
   useEffect(() => {
     fetchPatients();
   }, [currentPage, rowsPerPage]);
+
+  const handleRefresh = () => {
+    fetchPatients(); // Refresh the table data
+  };
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -118,13 +123,11 @@ const PacienteView: React.FC = () => {
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#442670" className="w-6 h-6">
               <path fillRule="evenodd" d="M7.875 1.5C6.839 1.5 6 2.34 6 3.375v2.99c-.426.053-.851.11-1.274.174-1.454.218-2.476 1.483-2.476 2.917v6.294a3 3 0 0 0 3 3h.27l-.155 1.705A1.875 1.875 0 0 0 7.232 22.5h9.536a1.875 1.875 0 0 0 1.867-2.045l-.155-1.705h.27a3 3 0 0 0 3-3V9.456c0-1.434-1.022-2.7-2.476-2.917A48.716 48.716 0 0 0 18 6.366V3.375c0-1.036-.84-1.875-1.875-1.875h-8.25ZM16.5 6.205v-2.83A.375.375 0 0 0 16.125 3h-8.25a.375.375 0 0 0-.375.375v2.83a49.353 49.353 0 0 1 9 0Zm-.217 8.265c.178.018.317.16.333.337l.526 5.784a.375.375 0 0 1-.374.409H7.232a.375.375 0 0 1-.374-.409l.526-5.784a.373.373 0 0 1 .333-.337 41.741 41.741 0 0 1 8.566 0Zm.967-3.97a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H18a.75.75 0 0 1-.75-.75V10.5ZM15 9.75a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75V10.5a.75.75 0 0 0-.75-.75H15Z" clipRule="evenodd" />
             </svg>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#442670" className="w-6 h-6">
-              <path fillRule="evenodd" d="M12 2.25a.75.75 0 0 1 .75.75v11.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 1 1 1.06-1.06l3.22 3.22V3a.75.75 0 0 1 .75-.75Zm-9 13.5a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
-            </svg>
+            <DonwloadList/>
           </div>
         </div>
       
-        <table className="text-center bg-white rounded-lg min-w-full">
+        <table className="text-center bg-white rounded-lg min-w-full shadow-lg">
           <thead>
             <tr>
               <th className="w-8 py-4">
@@ -148,7 +151,7 @@ const PacienteView: React.FC = () => {
                     <input type="checkbox" name="" id="" />
                   </td>
                   <td>{patient.personalInformation.numberIdentification}</td>
-                  <td className="py-4">{`${patient.personalInformation.name} ${patient.personalInformation.lastName}` }</td>
+                  <td className="py-4 uppercase">{`${patient.personalInformation.name} ${patient.personalInformation.lastName}` }</td>
                   <td>{patient.personalInformation.firtsNumberPhone}</td>
                   <td>{patient.personalInformation.age}</td>
                   <td className="py-4 whitespace-nowrap">
@@ -159,8 +162,8 @@ const PacienteView: React.FC = () => {
                       </span>
                     ))}
                   </td>
-                  <td className={patient.question.questionExamRecent ? 'text-green-600': 'text-red-600'}>{patient.question.questionExamRecent? 'si' : 'no'}</td>
-                  <td className={patient.estate ==='ESPERA' ? 'text-red-700' : patient.estate === 'pendiente'? 'text-yellow-600':' text-green-600'}>{patient.estate}</td>
+                  <td className={`font-semibold ${patient.question.questionExamRecent ? 'text-green-600': 'text-red-600'}`}>{patient.question.questionExamRecent? 'si' : 'no'}</td>
+                  <td className={`font-semibold ${patient.estate === 'ESPERA' ? 'text-red-700' : patient.estate === 'PENDIENTE' ? 'text-yellow-600' : patient.estate === 'CONSULTA' ? 'text-green-600' : 'text-blue-600'}`}>{patient.estate}</td>
                   <td className="py-6 flex justify-around">
                     <button name='view' onClick={() => handleOpenFormModal(patient._id)} className="w-6 h-6">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#442670" className="w-6 h-6">
@@ -188,7 +191,7 @@ const PacienteView: React.FC = () => {
           <svg className="w-6 h-6 text-green-500" viewBox="0 0 20 20" fill="currentColor">
             <circle cx="10" cy="10" r="5" />
           </svg>
-            <p> Ultima actualizacion a las<span> 3:05 pm</span> <button className='underline'>Actualizar</button></p>
+            <p> Ultima actualizacion a las<span> 3:05 pm</span> <button className='underline' onClick={handleRefresh}>Actualizar</button></p>
           </div>
           <div className="flex gap-2">
             <button

@@ -9,7 +9,7 @@ export interface Especialidad {
 // Función para obtener las especialidades desde la API
 export const fetchEspecialidades = async (): Promise<Especialidad[]> => {
   try {
-    const response = await axios.get(import.meta.env.VITE_API_ESPECIALTY); 
+    const response = await axios.get(import.meta.env.VITE_API_ESPECIALTY_AVAILABLE); 
     return response.data.map((especialidad: any) => ({
       label: especialidad.specialtyName,
       value: especialidad._id,

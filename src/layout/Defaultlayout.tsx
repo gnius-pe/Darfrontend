@@ -11,14 +11,13 @@ export default function DefaultLayout({ children }: DefaultLayoutProps){
         <>
             <div className="fixed top-0 left-0 w-full h-14 z-10 bg-custom-blue flex items-center">
             <Link to="/">
-                <div className="w-64 flex justify-center items-center">
+                <div className="w-12 md:w-64 flex justify-center items-center">
                     <img className='self-center' src={logoHead} alt="logo Dar" />
                 </div>
             </Link>
             <div className="w-0 h-10 border border-teal-300 rounded-lg overflow-hidden"></div>
             
-            <div className="flex flex-grow px-4 items-center justify-between">
-                <p className='text-teal-300'><span>Ayuda</span></p>
+            <div className="flex flex-grow px-4 items-center justify-end">
                 <div className="flex items-center gap-3">
                 <select name="" id="" className="mr-2 px-4 py-1 rounded-2xl">
                     <option className='bg-white' value="las" >San Diego</option>  
@@ -37,7 +36,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps){
             </div>
             </div>
 
-        <main>{children}</main>
+            <main>{children}</main>
         </>
     )
 }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, ChangeEvent, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
-import {Especialidad, especialidadesNames } from './cita/especialidades'
+import {Especialidad, fetchEspecialidades } from './cita/especialidades'
 import Select, { MultiValue} from 'react-select';
 import timeOptions from './cita/timeOptions';
 
@@ -12,15 +12,14 @@ interface CitaFormProps {
 }
 
 const FechasReserva = [
-  { id: "01", extendFecha: 'vie 12 Jul', fecha: '2024-07-12' },
-  { id: "02", extendFecha: 'sab 13 Jul', fecha: '2024-07-13' },
-  { id: "03", extendFecha: 'juanes', fecha: '2024-07-14' },
+  { id: "01", extendFecha: '01/08/2024 (Jueves)', fecha: '2024-08-01' },
 ];
 
 const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
   const [dateReserva, setDateReserva] = useState(formData.fechareserva);
   const [hora, setHora] = useState(formData.hora);
   const [especialidad, setEspecialidad] = useState(formData.especiality);
+  const [especialidades, setEspecialidades] = useState<Especialidad[]>([]);
   const [mensaje, setMensaje] = useState(formData.mensaje);
   const [checkAnalisis, setCheckAnalisis] = useState(formData.analisis );
   const [checkAyuda, setCheckAyuda] = useState(formData.ayuda );
@@ -36,6 +35,15 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
     setCheckVisita(formData.visita);
   }, [formData]);
 
+  useEffect(() => {
+    const getEspecialidades = async () => {
+      const fetchedEspecialidades = await fetchEspecialidades();
+      setEspecialidades(fetchedEspecialidades);
+    };
+
+    getEspecialidades();
+  }, []);
+
   const handleDateReserva = (event: ChangeEvent<HTMLSelectElement>) => {
     const newDateReservaString = event.target.value;
     setDateReserva(newDateReservaString);
@@ -49,11 +57,15 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
   };
 
   const handleEspecialidad = (selectedOptions: MultiValue<Especialidad>) => {
-    setEspecialidad(selectedOptions);
-    onChange({ ...formData, especiality: selectedOptions });
+    if (selectedOptions.length <= 3) {
+      setEspecialidad(selectedOptions);
+      onChange({ ...formData, especiality: selectedOptions });
+    } else {
+      alert('Solo puedes seleccionar hasta 3 opciones.');
+    }
   };
 
-  const handleMensaje = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleMensaje = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const newMensaje = event.target.value;
     setMensaje(newMensaje);
     onChange({ ...formData, mensaje: newMensaje });
@@ -120,27 +132,31 @@ const CitaForm: React.FC<CitaFormProps> = ({ formData, errors, onChange }) => {
           {errors.hora && <span className='text-red-800 text-sm'>{errors.hora}</span>}
         </Grid>
         <Grid item xs={12}>
+          <p className='text-sm'>Puede elegir hasta 3 especialidades<span className='text-red-600'>*</span></p>
+        </Grid>
+        <Grid item xs={12}>
           <div className="container mx-auto w-full">
             <Select
               isMulti
               name="especialidades"
               value={especialidad}
-              options={especialidadesNames}
+              options={especialidades}
+              placeholder='¿En que área quieres ser atendido?'
               onChange={handleEspecialidad}
               className="w-full"
-              classNamePrefix="select"
+              classNamePrefix="selecciona tus especialidades"
             />
           </div>
           {errors.especiality && <span className='text-red-800 text-sm'>{errors.especiality}</span>}
         </Grid>
         <Grid item xs={12}>
-          <input
+          <textarea
             id="mensaje"
-            type='text'
-            placeholder={errors.mensaje ? "Agregue un mensaje" : "Mensaje"}
+            placeholder={"Cuentanos que enfermades tienes                                             Ejemplo, tengo problemas de gastritis"}
             value={mensaje}
             onChange={handleMensaje}
-            className='w-full border rounded p-2 focus:outline-none focus:border-blue-500'
+            rows={3} // Altura de 3 filas
+            className='w-full border rounded p-2 resize-none focus:outline-none focus:border-blue-500'
           />
         </Grid>
         <Grid item xs={12}>

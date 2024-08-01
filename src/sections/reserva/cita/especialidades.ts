@@ -1,25 +1,24 @@
+import axios from 'axios';
+
 // Definir un tipo para los objetos del array
 export interface Especialidad {
-  specialty: string;
+  label: string;
   value: string;
 }
 
-// Declarar el array con el tipo definido
-export const especialidadesNames: Especialidad[] = [
-  { specialty: "Cardiología", value: "1" },
-  { specialty: "Dermatología", value: "2" },
-  { specialty: "Endocrinología", value: "3" },
-  { specialty: "Gastroenterología", value: "4" },
-  { specialty: "Hematología", value: "5" },
-  { specialty: "Neurología", value: "6" },
-  { specialty: "Oftalmología", value: "7" },
-  { specialty: "Oncología", value: "8" },
-  { specialty: "Pediatría", value: "9" },
-  { specialty: "Psiquiatría", value: "10" },
-  { specialty: "Radiología", value: "11" },
-  { specialty: "Urología", value: "12" },
-  // Puedes agregar más especialidades si es necesario
-];
+// Función para obtener las especialidades desde la API
+export const fetchEspecialidades = async (): Promise<Especialidad[]> => {
+  try {
+    const response = await axios.get(import.meta.env.VITE_API_ESPECIALTY_AVAILABLE); 
+    return response.data.map((especialidad: any) => ({
+      label: especialidad.specialtyName,
+      value: especialidad._id,
+    }));
+  } catch (error) {
+    console.error('Error fetching specialties:', error);
+    return [];
+  }
+};
 
 
 

@@ -20,9 +20,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps){
             <div className="flex flex-grow px-4 items-center justify-end">
                 <div className="flex items-center gap-3">
                 <select name="" id="" className="mr-2 px-4 py-1 rounded-2xl">
-                    <option className='bg-white' value="las" >San Diego</option>  
-                    <option className='bg-white' value="DNI">La Libertad</option>
-                    <option className='bg-white' value="Pasaporte">Ancash</option>
+                    <option className='bg-white' value="las" >Tingua</option>  
                 </select>
                 <Link to="/login">
                     <div className='flex items-center gap-3 text-teal-300 cursor-pointer'>

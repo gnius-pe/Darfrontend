@@ -17,7 +17,7 @@ const DownloadList: React.FC = () => {
           const urlBlob = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement('a');
           link.href = urlBlob;
-          link.setAttribute('download', 'pacientes.xlsx'); // Nombre del archivo a descargar
+          link.setAttribute('download', 'pacientes.csv'); // Nombre del archivo a descargar
           document.body.appendChild(link);
           link.click();
           link.remove();

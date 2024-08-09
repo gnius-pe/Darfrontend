@@ -86,7 +86,7 @@ const Nav = ({ navbarOpen, setnavbarOpen }: NavPropItems) => {
               edge="start"
               aria-label="close drawer"
             >
-              <ChevronLeftIcon />
+              <ChevronLeftIcon sx={{ color: 'white' }} />
             </IconButton>
           )}
           <img src={logoHead} alt="logo" style={{ width: "50px", margin: "auto" }} />

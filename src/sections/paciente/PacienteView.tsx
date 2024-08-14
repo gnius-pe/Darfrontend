@@ -249,3 +249,4 @@ const PacienteView: React.FC = () => {
 };
 
 export default PacienteView;
+/*twngo que cambiar la tabla del shadcn UI*/ 

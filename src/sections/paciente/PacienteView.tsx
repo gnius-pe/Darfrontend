@@ -96,7 +96,7 @@ const PacienteView: React.FC = () => {
 
   return (
     <>
-    <div className="flex sm:justify-center sm:items-center h-auto w-screen lg:w-[910px]">
+    <div className="flex sm:justify-center sm:items-center h-auto  w-screen lg:w-[910px]">
       <div className="mx-auto ">
         <div className="w-[900px] ">
         <section className="flex flex-col gap-4 mt-3">

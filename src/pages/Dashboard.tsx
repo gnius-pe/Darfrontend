@@ -13,7 +13,7 @@ export default function Dashboard() {
       <Nav navbarOpen={sidebarOpen} setnavbarOpen={setSidebarOpen} />
       <div className="flex flex-col flex-grow">
         <Header navbarOpen={sidebarOpen} setnavbarOpen={setSidebarOpen} />
-        <div className="flex-grow overflow-auto bg-custom-purple-800">
+        <div className="overflow-auto w-auto">
           <Outlet />
         </div>
       </div>

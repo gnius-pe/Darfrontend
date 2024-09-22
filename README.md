@@ -33,3 +33,25 @@ Esto ejecutará la aplicación Node.js. Abre tu navegador web y navega a la dire
       ```bash
       git pull origin develop
       ```
+
+## Ejecutar en Docker
+1. Construye la imagen Docker, Ejecuta el siguiente comando para construir la imagen
+      ```bash
+      docker build -t dar-client-webapp .
+      ```
+2. Ejecuta la imagen Docker, Una vez que la imagen se ha construido con éxito, ejecuta el siguiente comando para iniciar un contenedor a partir de la imagen. Esto expondrá la aplicación en el puerto por defecto (normalmente 5173 o el que definas en tu aplicación).
+      ```bash
+      docker run -d --name dar-client-webapp-container -p 5173:5173 dar-client-webapp
+      ```
+
+3. Ingresa a la url.
+ 
+      [![Acceder a la aplicación web](https://img.shields.io/badge/Acceder%20a%20la%20aplicación-blue?style=flat&logo=appveyor)](http://localhost:5173/)
+
+## Vista de la Aplicación
+
+Esta es la interfaz principal de la aplicación, donde los usuarios pueden navegar y acceder a las funcionalidades disponibles.
+[![landing.jpg](https://i.postimg.cc/sXSKKSjh/landing.jpg)](https://postimg.cc/BLSxnj1S)
+
+Esta parte de la sesion.
+[![login.jpg](https://i.postimg.cc/LsGNzvpS/login.jpg)](https://postimg.cc/FfgyvyzC)

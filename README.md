@@ -46,7 +46,7 @@ Esto ejecutará la aplicación Node.js. Abre tu navegador web y navega a la dire
 
 3. Ingresa a la url.
  
-      [![Acceder a la aplicación web](https://img.shields.io/badge/Acceder%20a%20la%20aplicación-blue?style=flat&logo=appveyor)](http://localhost:5173/)
+      http://localhost:5173
 
 ## Vista de la Aplicación
 
@@ -55,3 +55,11 @@ Esta es la interfaz principal de la aplicación, donde los usuarios pueden naveg
 
 Esta parte de la sesion.
 [![login.jpg](https://i.postimg.cc/LsGNzvpS/login.jpg)](https://postimg.cc/FfgyvyzC)
+
+
+
+## Derechos de Autor
+
+© 2024 gnius-pe. Todos los derechos reservados.
+
+Este proyecto está alojado en el repositorio [dar-client-webapp](https://github.com/gnius-pe/Darfrontend). El uso del código y los recursos de este proyecto están sujetos a los términos de la licencia [Licencia MIT](./LICENSE).

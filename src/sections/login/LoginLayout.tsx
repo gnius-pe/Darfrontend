@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import ic_arrow from '../../assets/images/login/arrowBefore.svg';
 import points from '../../assets/images/login/points.svg';
 import logologin from '../../assets/images/login/logologin.svg';
+import config from '../../config';
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ export default function Login() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await axios.post(import.meta.env.VITE_API_KEY, {
+            const response = await axios.post(`${config.apiUrl}/login`, {
                 email,
                 password,
             });

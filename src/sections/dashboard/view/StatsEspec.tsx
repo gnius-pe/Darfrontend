@@ -1,6 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
+import config from '../../../config';
 
 type DataOption = {
   name: string;
@@ -27,7 +28,7 @@ const StatsEspec: React.FC = () => {
     // Fetch data from the API using Axios
     const fetchData = async () => {
       try {
-        const response = await axios.get(import.meta.env.VITE_API_DASHESPEC);
+        const response = await axios.get(`${config.apiUrl}/report/specialty`);
         const result: ApiData[] = response.data;
         setData(result);
         if (result.length > 0) {

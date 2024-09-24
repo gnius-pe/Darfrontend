@@ -7,6 +7,7 @@ import Deletepatient from './tableconfig/DeleteRow';
 import search from '../../assets/images/user/search.svg';
 import DownloadButton from './tableconfig/DownloadButton';
 import DonwloadList from './tableconfig/DownloadList';
+import config from '../../config';
 
 const PacienteView: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -25,7 +26,7 @@ const PacienteView: React.FC = () => {
 
   const fetchPatients = async () => {
     try {
-      const baseUrl = import.meta.env.VITE_API_PATIENTS_BASE_ROW;
+      const baseUrl = `${config.apiUrl}/patients`;
       const url = `${baseUrl}?page=${currentPage}&limit=${rowsPerPage}`;
       const response = await axios.get(url);
       const data = response.data.items.docs;

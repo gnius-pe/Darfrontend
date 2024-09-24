@@ -6,6 +6,7 @@ import { SelectChangeEvent } from '@mui/material/Select';
 import axios from 'axios';
 
 import Calendar from '../../components/Date';
+import config from '../../config';
 
 interface AddressFormProps {
   formData:any;
@@ -15,8 +16,8 @@ interface AddressFormProps {
 
 const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) => {
 
-  const baseUrl = import.meta.env.VITE_API_DNI_BASE;
-  const token = import.meta.env.VITE_API_TOKEN;
+  const baseUrl = `${config.apiDniBase}`;
+  const token = `${config.apiToken}`;
 
   const [tipoDocumento, setTipoDocumento] = useState(formData.typeId);
   const [numberId, setnumberId] = useState(formData.numberId);
@@ -47,7 +48,7 @@ const AddressForm: React.FC<AddressFormProps> = ({formData, errors, onChange }) 
 
   const checkDniExists = async (dni: string) => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_DNI_EXIST}/${dni}`);
+      const response = await axios.get(`${config.apiUrl}/dni/${dni}`);
       return response.data.state;
     } catch (error) {
       console.error('Error al verificar el DNI:', error);

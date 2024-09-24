@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import search from '../../assets/images/user/search.svg';
+import config from '../../config';
 
 interface Specialty {
   _id: number;
@@ -17,7 +18,7 @@ const Especialidades: React.FC = () => {
 
   useEffect(() => {
     // Llamada a la API para obtener las especialidades
-    axios.get<Specialty[]>(import.meta.env.VITE_API_ESPECIALTY)
+    axios.get<Specialty[]>(`${config.apiUrl}/specialty`)
       .then(response => {
         const colors = ['bg-red-600', 'bg-blue-600', 'bg-green-600', 'bg-yellow-600', 'bg-purple-600'];
         const specialtiesWithColors = response.data.map((specialty, index) => {

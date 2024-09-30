@@ -1,4 +1,5 @@
 import axios from 'axios';
+import config from '../../../config';
 
 // Definir un tipo para los objetos del array
 export interface Especialidad {
@@ -9,7 +10,7 @@ export interface Especialidad {
 // Función para obtener las especialidades desde la API
 export const fetchEspecialidades = async (): Promise<Especialidad[]> => {
   try {
-    const response = await axios.get(import.meta.env.VITE_API_ESPECIALTY_AVAILABLE); 
+    const response = await axios.get(`${config.apiUrl}/specialty-available`); 
     return response.data.map((especialidad: any) => ({
       label: especialidad.specialtyName,
       value: especialidad._id,

@@ -1,12 +1,13 @@
 import React from 'react';
 import axios from 'axios';
+import config from '../../../config';
 
 const DownloadList: React.FC = () => {
     const handleDownload = async () => {
         try {
-          const baseUrl = import.meta.env.VITE_API_LIST_DOWNLOAD as string;
+          const baseUrl = `${config.apiDownloader}/patient/download/csv` as string;
           if (!baseUrl) {
-            console.error('VITE_API_LIST_DOWNLOAD is not defined');
+            console.error('Download is not defined');
             return;
           }
     

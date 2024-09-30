@@ -7,6 +7,9 @@ import Deletepatient from './tableconfig/DeleteRow';
 import search from '../../assets/images/user/search.svg';
 import DownloadButton from './tableconfig/DownloadButton';
 import DonwloadList from './tableconfig/DownloadList';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton} from '@mui/material';
+import { Visibility as VisibilityIcon, Edit as EditIcon } from '@mui/icons-material';
+import config from '../../config';
 
 const PacienteView: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -20,12 +23,12 @@ const PacienteView: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
 
-  const userInfo = JSON.parse(sessionStorage.getItem("userInfo") || "{}");
-  const userRole = userInfo.role;
+  /*const userInfo = JSON.parse(sessionStorage.getItem("userInfo") || "{}");*/
+  /*const userRole = userInfo.role;*/
 
   const fetchPatients = async () => {
     try {
-      const baseUrl = import.meta.env.VITE_API_PATIENTS_BASE_ROW;
+      const baseUrl = `${config.apiUrl}/patients`;
       const url = `${baseUrl}?page=${currentPage}&limit=${rowsPerPage}`;
       const response = await axios.get(url);
       const data = response.data.items.docs;
@@ -85,21 +88,16 @@ const PacienteView: React.FC = () => {
     setCurrentPage(1); // Reset the current page when changing rows per page
   };
 
-  const handleDelete = () => {
-    fetchPatients();
-  };
-
   const filteredRows = patients.filter(patient =>
     `${patient.personalInformation.name} ${patient.personalInformation.lastName}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
   );
 
-  const currentRows = filteredRows;
 
   return (
     <>
-    <div className="flex sm:justify-center sm:items-center h-auto w-screen lg:w-[910px]">
+    <div className="flex sm:justify-center sm:items-center h-auto  w-screen lg:w-[910px]">
       <div className="mx-auto ">
         <div className="w-[900px] ">
         <section className="flex flex-col gap-4 mt-3">
@@ -127,65 +125,63 @@ const PacienteView: React.FC = () => {
           </div>
         </div>
       
-        <table className="text-center bg-white rounded-lg min-w-full shadow-lg">
-          <thead>
-            <tr>
-              <th className="w-8 py-4">
-                <input type="checkbox" name="" id="" />
-              </th>
-              <th className="w-20">DNI</th>
-              <th className="m-auto w-28">Nombre Completo</th>
-              <th className="w-24">Celular</th>
-              <th className="w-16 px-1 py-3  ">Edad</th>
-              <th className="px-2 w-14">Especialidades a consultar</th>
-              <th className="w-16 px-2">Examen clinico</th>
-              <th className="w-20">Estado</th>
-              <th className="w-32">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentRows.map((patient) => (
-              
-                <tr key={patient._id} className={`py-3 px-5 border border-gray-300 border-b border-blue-gray-50`}>
-                  <td>
-                    <input type="checkbox" name="" id="" />
-                  </td>
-                  <td>{patient.personalInformation.numberIdentification}</td>
-                  <td className="py-4 uppercase">{`${patient.personalInformation.name} ${patient.personalInformation.lastName}` }</td>
-                  <td>{patient.personalInformation.firtsNumberPhone}</td>
-                  <td>{patient.personalInformation.age}</td>
-                  <td className="py-4 whitespace-nowrap">
-                    {patient.cita.specialties.map((specialty: any, index: number) => (
-                      <span key={index}>
-                        {specialty.label}
-                        {index < patient.cita.specialties.length - 1 && <br />}
-                      </span>
+        <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>
+                        <input type="checkbox" />
+                      </TableCell>
+                      <TableCell>DNI</TableCell>
+                      <TableCell>Nombre Completo</TableCell>
+                      <TableCell>Celular</TableCell>
+                      <TableCell>Edad</TableCell>
+                      <TableCell>Especialidades a consultar</TableCell>
+                      <TableCell>Examen clínico</TableCell>
+                      <TableCell>Estado</TableCell>
+                      <TableCell>Acciones</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {filteredRows.map((patient) => (
+                      <TableRow key={patient._id}>
+                        <TableCell>
+                          <input type="checkbox" />
+                        </TableCell>
+                        <TableCell>{patient.personalInformation.numberIdentification}</TableCell>
+                        <TableCell>{`${patient.personalInformation.name} ${patient.personalInformation.lastName}`}</TableCell>
+                        <TableCell>{patient.personalInformation.firtsNumberPhone}</TableCell>
+                        <TableCell>{patient.personalInformation.age}</TableCell>
+                        <TableCell>
+                          {patient.cita.specialties.map((specialty: any, index: number) => (
+                            <span key={index}>
+                              {specialty.label}
+                              {index < patient.cita.specialties.length - 1 && <br />}
+                            </span>
+                          ))}
+                        </TableCell>
+                        <TableCell className={`font-semibold ${patient.question.questionExamRecent ? 'text-green-600': 'text-red-600'}`}>{patient.question.questionExamRecent ? 'sí' : 'no'}</TableCell>
+                        <TableCell className={`font-semibold ${patient.estate === 'ESPERA' ? 'text-red-700' : patient.estate === 'PENDIENTE' ? 'text-yellow-600' : patient.estate === 'CONSULTA' ? 'text-green-600' : 'text-blue-600'}`}>{patient.estate}</TableCell>
+                        <TableCell>
+                          <div className='flex items-center'>
+                          <IconButton onClick={() => handleOpenFormModal(patient._id)}>
+                            <VisibilityIcon />
+                          </IconButton>
+                          {/*{userRole === 'admin' && (
+                            <Deletepatient patientId={patient._id} onDelete={fetchPatients} />
+                          )}*/}
+                          <Deletepatient patientId={patient._id} onDelete={fetchPatients} />
+                          <IconButton onClick={() => handleOpenUpdate(patient._id)}>
+                            <EditIcon />
+                          </IconButton>
+                          <DownloadButton patientId={patient._id} />
+                          </div>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </td>
-                  <td className={`font-semibold ${patient.question.questionExamRecent ? 'text-green-600': 'text-red-600'}`}>{patient.question.questionExamRecent? 'si' : 'no'}</td>
-                  <td className={`font-semibold ${patient.estate === 'ESPERA' ? 'text-red-700' : patient.estate === 'PENDIENTE' ? 'text-yellow-600' : patient.estate === 'CONSULTA' ? 'text-green-600' : 'text-blue-600'}`}>{patient.estate}</td>
-                  <td className="py-6 flex justify-around">
-                    <button name='view' onClick={() => handleOpenFormModal(patient._id)} className="w-6 h-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#442670" className="w-6 h-6">
-                        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                        <path fillRule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clipRule="evenodd" />
-                      </svg>
-                    </button>
-                    {userRole === 'admin' && (
-                      <Deletepatient patientId={patient._id} onDelete={handleDelete}/>
-                    )}
-                    <button name='update' onClick={()=>handleOpenUpdate(patient._id)} className="w-6 h-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#442670" className="w-6 h-6">
-                      <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
-                      <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
-                    </svg>
-                    </button>
-                    <DownloadButton patientId={patient._id} />
-                  </td>
-                </tr>
-            ))}
-          </tbody>
-        </table>
+                  </TableBody>
+                </Table>
+              </TableContainer>
         <div className='flex bg-white justify-between items-center px-2 py-1 rounded-md'>
           <div className='flex'>
           <svg className="w-6 h-6 text-green-500" viewBox="0 0 20 20" fill="currentColor">
@@ -254,3 +250,4 @@ const PacienteView: React.FC = () => {
 };
 
 export default PacienteView;
+/*twngo que cambiar la tabla del shadcn UI*/ 

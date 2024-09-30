@@ -14,6 +14,7 @@ import Cita from './Cita';
 import ReservaExitosa from './ReservaExitosa';
 import MobileStepper from './cita/MobileStepper';
 import axios from 'axios';
+import config from '../../config';
 
 interface FormData {
   typeId: string;
@@ -175,7 +176,7 @@ export const FormModal: FC = () => {
     };
 
     try {
-      const response = await axios.post(import.meta.env.VITE_API_PATIENT, dataFormPaciente, {
+      const response = await axios.post(`${config.apiUrl}/patient`, dataFormPaciente, {
         headers: {
           'Content-Type': 'application/json',
         },

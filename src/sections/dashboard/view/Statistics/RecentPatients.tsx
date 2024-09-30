@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { PacienteCard } from './PacientInfo';
+import config from '../../../../config';
 
 const RecentPatients = () => {
   const [recentPatients, setRecentPatients] = useState<any[]>([]);
@@ -12,7 +13,7 @@ const RecentPatients = () => {
 
   const fetchRecentPatients = async () => {
     try {
-      const baseUrl = import.meta.env.VITE_API_PATIENTS_BASE_ROW;
+      const baseUrl = `${config.apiUrl}/api/patients`;
       const url = `${baseUrl}?sort=-registrationDate&page=1&limit=5`;
       const response = await axios.get(url);
       const data = response.data.items.docs;

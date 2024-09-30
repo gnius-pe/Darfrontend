@@ -6,6 +6,7 @@ import ic_human from '../assets/images/dashboard/ic_human.svg';
 import RecentPatients from '../sections/dashboard/view/Statistics/RecentPatients';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../config';
 
 interface ApiResponse {
   patientChildren: number;
@@ -22,7 +23,7 @@ const AppView: React.FC = () => {
 
   useEffect(() => {
     // Llamada a la API para obtener los datos
-    axios.get<ApiResponse>(import.meta.env.VITE_API_DASHCOUNT)
+    axios.get<ApiResponse>(`${config.apiUrl}/report/count`)
       .then(response => {
         setData(response.data);
       })

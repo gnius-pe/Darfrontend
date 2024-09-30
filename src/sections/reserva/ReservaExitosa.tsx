@@ -2,6 +2,7 @@
 import React from 'react';
 import { useAuth } from '../../auth/AuthProvider';
 import { Link } from "react-router-dom";
+import config from '../../config';
 
 interface ReservaExitosaProps {
 	numberFile: string;
@@ -11,11 +12,10 @@ const ReservaExitosa: React.FC<ReservaExitosaProps> = ({ numberFile }) => {
 	const { isAuthenticated } = useAuth();
 
 	const handleDownload = () => {
-		const url = `${import.meta.env.VITE_API_DOWNLOAD_PDF}/${numberFile}`;
+		const url = `${config.apiDownloader}/patient/downloader/${numberFile}`;
 		window.location.href = url;
 	};
 	
-
   return (
 		<>
 			<div className='h-72 flex flex-col justify-center items-center gap-4'>

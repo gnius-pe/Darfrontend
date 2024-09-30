@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../../config';
 
 interface FormModalProps {
   isOpen: boolean;
@@ -17,7 +18,7 @@ const UpdateForm: React.FC<FormModalProps> = ({ isOpen, onClose, patientId }) =>
       const fetchPatientDetails = async () => {
         try {
           const response = await axios.get(
-            `${import.meta.env.VITE_API_PATIENT}/${patientId}`
+            `${config.apiUrl}/patient/${patientId}`
           );
           setPatientData(response.data);
           setEditedData(response.data); // Initializing editedData with fetched data
@@ -51,7 +52,7 @@ const UpdateForm: React.FC<FormModalProps> = ({ isOpen, onClose, patientId }) =>
 
   const handleSave = async () => {
     try {
-      await axios.put(`${import.meta.env.VITE_API_PATIENT}/${patientId}`, editedData);
+      await axios.put(`${config.apiUrl}/patient/${patientId}`, editedData);
       setPatientData(editedData); // Update the displayed data with the edited data
       setIsEditing(false); // Exit editing mode
     } catch (error) {
